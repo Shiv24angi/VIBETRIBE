@@ -1,11 +1,12 @@
 /* @import rules must come first */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
 
-/* Then Tailwind directives */
+/* Tailwind Directives */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* Global styles */
 body {
   font-family: 'Inter', sans-serif;
   margin: 0;
@@ -13,8 +14,8 @@ body {
   box-sizing: border-box;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  /* Set the global background color to Burgundy */
-  background-color: #800020; /* Updated to Burgundy */
+
+  /* ✨ Removed hardcoded background-color here to allow page-level gradients */
 }
 
 /* Ensure root element takes full height */
