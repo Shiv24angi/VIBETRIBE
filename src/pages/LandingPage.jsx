@@ -1,74 +1,5 @@
 import React, { useState, useRef } from 'react';
-
-// Placeholder for AuthForm if it's not provided in the same file
-const AuthForm = ({ onAuthSuccess }) => {
-  const [isSignIn, setIsSignIn] = useState(true);
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // In a real app, you'd handle authentication here (Firebase, etc.)
-    console.log(`Attempting to ${isSignIn ? 'sign in' : 'sign up'} with:`, { email, password });
-    // Simulate success
-    if (onAuthSuccess) {
-      onAuthSuccess();
-    }
-  };
-
-  return (
-    <div className="bg-white p-8 rounded-xl shadow-lg w-full max-w-md mx-auto text-gray-800">
-      <h3 className="text-3xl font-bold text-center text-[#2A1E5C] mb-6">
-        {isSignIn ? 'Sign In' : 'Sign Up'}
-      </h3>
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <label htmlFor="email" className="block text-gray-700 text-sm font-bold mb-2">
-            Email
-          </label>
-          <input
-            type="email"
-            id="email"
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </div>
-        <div>
-          <label htmlFor="password" className="block text-gray-700 text-sm font-bold mb-2">
-            Password
-          </label>
-          <input
-            type="password"
-            id="password"
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </div>
-        <button
-          type="submit"
-          className="bg-[#A970FF] hover:bg-[#8B4DEB] text-white font-bold py-2 px-4 rounded-full w-full transition duration-300"
-        >
-          {isSignIn ? 'Sign In' : 'Sign Up'}
-        </button>
-      </form>
-      <p className="text-center text-sm mt-4">
-        {isSignIn ? "Don't have an account?" : "Already have an account?"}{' '}
-        <button
-          type="button"
-          onClick={() => setIsSignIn(!isSignIn)}
-          className="text-[#A970FF] hover:text-[#8B4DEB] font-bold"
-        >
-          {isSignIn ? 'Sign Up' : 'Sign In'}
-        </button>
-      </p>
-    </div>
-  );
-};
-
+import AuthForm from '../components/AuthForm'; // Correctly import AuthForm from its file
 
 const LandingPage = ({ onAuthSuccess }) => {
   const [showAuthForm, setShowAuthForm] = useState(false);
@@ -106,6 +37,10 @@ const LandingPage = ({ onAuthSuccess }) => {
     setContactEmail('');
     setContactMessage('');
   };
+
+  // Calculate header height dynamically or use a fixed value if known
+  // For this example, assuming header height is roughly 96px (pt-24 on main)
+  const headerHeight = 96; // Based on pt-24 on main, which pushes content down
 
   return (
     <div
@@ -150,7 +85,11 @@ const LandingPage = ({ onAuthSuccess }) => {
         {!showAuthForm ? (
           <>
             {/* Welcome Section */}
-            <section ref={welcomeRef} className="text-center text-white mb-20 max-w-4xl mx-auto min-h-screen"> {/* Changed to min-h-screen */}
+            <section
+              ref={welcomeRef}
+              className="text-center text-white mb-20 max-w-4xl mx-auto w-full"
+              style={{ minHeight: `calc(100vh - ${headerHeight}px)` }} // Adjust min-height for header
+            >
               <div className="flex flex-col items-center justify-center h-full">
                 <h2 className="text-6xl font-extrabold leading-tight mb-4 drop-shadow-lg text-[#F3EBFF]">
                   Discover Your Tribe
@@ -171,7 +110,8 @@ const LandingPage = ({ onAuthSuccess }) => {
             {/* About Section */}
             <section
               ref={aboutRef}
-              className="bg-white bg-opacity-20 p-10 rounded-xl shadow-lg w-full max-w-4xl mx-auto mb-20 text-white min-h-screen" // Changed to min-h-screen
+              className="bg-white bg-opacity-20 p-10 rounded-xl shadow-lg w-full max-w-4xl mx-auto mb-20 text-white"
+              style={{ minHeight: `calc(100vh - ${headerHeight}px)` }} // Adjust min-height for header
             >
               <div className="flex flex-col items-center justify-center h-full">
                 <h3 className="text-4xl font-bold text-center text-[#F3EBFF] mb-6">About VibeTribe</h3>
@@ -192,7 +132,8 @@ const LandingPage = ({ onAuthSuccess }) => {
             {/* Contact Section (Form) */}
             <section
               ref={contactRef}
-              className="bg-white bg-opacity-20 p-10 rounded-xl shadow-lg w-full max-w-4xl mx-auto mb-20 text-white min-h-screen" // Changed to min-h-screen
+              className="bg-white bg-opacity-20 p-10 rounded-xl shadow-lg w-full max-w-4xl mx-auto mb-20 text-white"
+              style={{ minHeight: `calc(100vh - ${headerHeight}px)` }} // Adjust min-height for header
             >
               <div className="flex flex-col items-center justify-center h-full">
                 <h3 className="text-4xl font-bold text-center text-[#F3EBFF] mb-6">Contact Us</h3>
@@ -250,7 +191,7 @@ const LandingPage = ({ onAuthSuccess }) => {
             </section>
           </>
         ) : (
-          // Auth Form (still an overlay/separate view)
+          // Auth Form overlay
           <div className="w-full max-w-md mx-auto">
             <AuthForm onAuthSuccess={onAuthSuccess} />
             <button
