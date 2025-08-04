@@ -11,13 +11,14 @@ import { getFirestore } from 'firebase/firestore';
 const firebaseConfig = typeof __firebase_config !== 'undefined'
   ? JSON.parse(__firebase_config)
   : {
-      apiKey: "AIzaSyBCbL09h3WqzEVECEma5sIfmsWS8dxBfZ4",
-      authDomain: "vibetribe-37c9b.firebaseapp.com",
-      projectId: "vibetribe-37c9b",
-      storageBucket: "vibetribe-37c9b.firebasestorage.app",
-      messagingSenderId: "127059430677",
-      appId: "1:127059430677:web:e81b6d721f17b8d6b06d1c"
-    };
+    apiKey: "AIzaSyCBH0a8kM3Z7h6IxxyhV7ddT8J_EVy_Ju8",
+    authDomain: "vibe-f65d9.firebaseapp.com",
+    projectId: "vibe-f65d9",
+    storageBucket: "vibe-f65d9.firebasestorage.app",
+    messagingSenderId: "1019930103489",
+    appId: "1:1019930103489:web:5da52c3ede9ecd644d8e40",
+
+  };
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);

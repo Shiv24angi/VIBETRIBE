@@ -1,4 +1,3 @@
-// App.jsx
 import React, { useState, useEffect } from 'react';
 import LandingPage from './pages/LandingPage';
 import ProfileCreationPage from './pages/ProfileCreationPage';

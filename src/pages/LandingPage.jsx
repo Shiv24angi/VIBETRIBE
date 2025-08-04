@@ -91,7 +91,16 @@ const LandingPage = ({ onAuthSuccess }) => {
               style={{ minHeight: `calc(100vh - ${headerHeight}px)` }} // Adjust min-height for header
             >
               <div className="flex flex-col items-center justify-center h-full">
+                <br></br>
+                <br></br>
+                <br></br>
+                <br></br>
+                <br></br>
+                <br></br>
+                <br></br>
+                <br></br>
                 <h2 className="text-6xl font-extrabold leading-tight mb-4 drop-shadow-lg text-[#F3EBFF]">
+                  
                   Discover Your Tribe
                 </h2>
                 <p className="text-2xl font-light max-w-2xl mx-auto drop-shadow-md text-[#F3EBFF] mb-6">
@@ -114,6 +123,11 @@ const LandingPage = ({ onAuthSuccess }) => {
               style={{ minHeight: `calc(100vh - ${headerHeight}px)` }} // Adjust min-height for header
             >
               <div className="flex flex-col items-center justify-center h-full">
+                <br></br>
+                <br></br>
+                <br></br>
+                <br></br>
+                <br></br>
                 <h3 className="text-4xl font-bold text-center text-[#F3EBFF] mb-6">About VibeTribe</h3>
                 <p className="text-lg leading-relaxed mb-4">
                   VibeTribe helps you discover meaningful connections through:
@@ -221,7 +235,7 @@ const LandingPage = ({ onAuthSuccess }) => {
           <div className="py-6 px-4 flex justify-between items-center" style={{ backgroundColor: '#8c59c6' }}>
             {/* Left content */}
             <div className="text-white text-sm">
-              <p>Designed by Elegant Themes | Powered by WordPress</p>
+              <p>Designed by </p>
             </div>
 
             {/* Right content - Social Media Icons */}
