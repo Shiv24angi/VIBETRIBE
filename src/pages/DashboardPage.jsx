@@ -5,14 +5,39 @@ import { db } from '../firebase/firebaseConfig';
 import LoadingSpinner from '../components/LoadingSpinner';
 import ProfileForm from '../components/ProfileForm';
 
+/**
+ * DashboardPage component displays the user's dashboard, including their profile
+ * and a list of potential matches. It also handles navigation within the dashboard
+ * and user logout.
+ * @param {Object} props - Component props.
+ * @param {Object} props.user - The current authenticated user object.
+ * @param {function(): void} props.onLogout - Callback function to handle user logout.
+ */
 const DashboardPage = ({ user, onLogout }) => {
   const [profile, setProfile] = useState(null);
   const [matches, setMatches] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const [view, setView] = useState('dashboard'); // 'dashboard', 'my-profile', 'edit-profile'
+  // 'vibemate' is the new state for the messaging view.
+  const [view, setView] = useState('dashboard'); // 'dashboard', 'my-profile', 'edit-profile', 'vibemate', 'settings'
+  const [selectedMatch, setSelectedMatch] = useState(null);
 
-  // Function to fetch the current user's profile and all potential matches
+  // State for the new settings functionality
+  const [settings, setSettings] = useState({
+    minAge: 18,
+    maxAge: 35,
+    gender: 'All',
+    maxDistance: 50,
+    minVibeScore: 50,
+    schedule: 'Night Owl',
+    petFriendly: false,
+  });
+
+  /**
+   * Fetches the current user's profile and all potential matches from Firestore.
+   * This function looks for profiles of other users (including those signed in with Google)
+   * who share at least one "vibe" with the current user.
+   */
   const fetchUserProfileAndMatches = async () => {
     if (!user || !user.uid) {
       setLoading(false);
@@ -45,7 +70,8 @@ const DashboardPage = ({ user, onLogout }) => {
 
       if (userVibes.length > 0) {
         for (const userDoc of usersSnapshot.docs) {
-          if (userDoc.id !== user.uid) { // Exclude the current user
+          // Exclude the current user from the matches list
+          if (userDoc.id !== user.uid) { 
             // Correctly build the path to the other user's nested profile document
             const otherProfileDocRef = doc(db, `artifacts/${appId}/users/${userDoc.id}/profiles`, 'myProfile');
             const otherProfileDoc = await getDoc(otherProfileDocRef);
@@ -79,6 +105,9 @@ const DashboardPage = ({ user, onLogout }) => {
   };
 
   useEffect(() => {
+    // This effect runs on component mount and whenever the 'user' object changes.
+    // This is where the app fetches all potential matches, including those
+    // who signed in via Google, as long as they have a profile created.
     fetchUserProfileAndMatches();
   }, [user]);
 
@@ -185,6 +214,217 @@ const DashboardPage = ({ user, onLogout }) => {
       );
     }
 
+    if (view === 'vibemate') {
+      return (
+        <div className="flex flex-1 p-8">
+          <div className="flex flex-col w-1/3 bg-white rounded-l-xl shadow-lg border-r border-gray-200 p-4 space-y-4">
+            <h3 className="text-2xl font-bold text-[#2A1E5C] mb-4">VibeMates</h3>
+            {matches.length > 0 ? (
+              matches.map((match) => (
+                <button
+                  key={match.id}
+                  onClick={() => setSelectedMatch(match)}
+                  className={`
+                    flex items-center space-x-4 p-3 rounded-lg transition-colors duration-200
+                    ${selectedMatch?.id === match.id ? 'bg-[#E8E3F5] text-[#2A1E5C] font-semibold' : 'hover:bg-gray-100'}
+                  `}
+                >
+                  <img
+                    src={match.imageUrl || `https://placehold.co/50x50/A970FF/FFFFFF?text=${match.name.charAt(0)}`}
+                    alt={match.name}
+                    className="w-12 h-12 rounded-full object-cover"
+                  />
+                  <div className="flex-1 text-left">
+                    <p className="font-semibold">{match.name}</p>
+                    <span className="text-sm text-gray-500">Start a chat...</span>
+                  </div>
+                </button>
+              ))
+            ) : (
+              <p className="text-sm text-gray-500 text-center">No VibeMates found.</p>
+            )}
+          </div>
+          <div className="flex-1 bg-white rounded-r-xl shadow-lg p-6 flex flex-col">
+            {selectedMatch ? (
+              <>
+                <div className="flex items-center space-x-4 border-b border-gray-200 pb-4 mb-4">
+                  <img
+                    src={selectedMatch.imageUrl}
+                    alt={selectedMatch.name}
+                    className="w-12 h-12 rounded-full object-cover"
+                  />
+                  <h3 className="text-2xl font-bold">{selectedMatch.name}</h3>
+                </div>
+                <div className="flex-1 overflow-y-auto space-y-4">
+                  {/* Chat messages will be displayed here */}
+                  <p className="text-center text-gray-500">Chat history will appear here...</p>
+                </div>
+                <div className="flex items-center mt-4 pt-4 border-t border-gray-200">
+                  <input
+                    type="text"
+                    placeholder={`Message ${selectedMatch.name}...`}
+                    className="flex-1 px-4 py-3 rounded-full bg-gray-100 focus:outline-none focus:ring-2 focus:ring-[#A970FF]"
+                  />
+                  <button className="ml-4 bg-[#A970FF] text-white p-3 rounded-full hover:bg-[#8B4DEB] transition-colors duration-200">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                    </svg>
+                  </button>
+                </div>
+              </>
+            ) : (
+              <div className="flex flex-1 items-center justify-center text-center text-gray-500">
+                <p className="text-xl">Select a VibeMate to start a conversation!</p>
+              </div>
+            )}
+          </div>
+        </div>
+      );
+    }
+
+    if (view === 'settings') {
+      return (
+        <div className="flex flex-1 items-center justify-center p-8 text-[#2A1E5C]">
+          <div className="bg-white p-8 rounded-xl shadow-lg w-full max-w-2xl mx-auto space-y-6">
+            <h2 className="text-4xl font-bold text-center text-[#2A1E5C] mb-4">
+              Personalize Your Vibe ⚙️
+            </h2>
+            <p className="text-center text-gray-600 mb-6">Adjust your preferences to find the best VibeMates for you!</p>
+
+            {/* Age Range Setting */}
+            <div>
+              <div className="flex justify-between items-center mb-2">
+                <label className="text-lg font-semibold text-[#2A1E5C]">Age Range 🎂</label>
+                <span className="text-gray-500">{settings.minAge} - {settings.maxAge}</span>
+              </div>
+              <div className="flex items-center space-x-4">
+                <input
+                  type="range"
+                  min="18"
+                  max="60"
+                  value={settings.minAge}
+                  onChange={(e) => setSettings({ ...settings, minAge: Number(e.target.value) })}
+                  className="w-1/2 appearance-none h-2 bg-gray-200 rounded-lg outline-none slider-thumb-purple"
+                />
+                <input
+                  type="range"
+                  min="18"
+                  max="60"
+                  value={settings.maxAge}
+                  onChange={(e) => setSettings({ ...settings, maxAge: Number(e.target.value) })}
+                  className="w-1/2 appearance-none h-2 bg-gray-200 rounded-lg outline-none slider-thumb-purple"
+                />
+              </div>
+            </div>
+
+            {/* Gender Preference Setting */}
+            <div>
+              <label className="block text-lg font-semibold text-[#2A1E5C] mb-2">Gender Preference 🤔</label>
+              <div className="flex flex-wrap gap-3">
+                {['Male', 'Female', 'Non-binary', 'All'].map((gender) => (
+                  <button
+                    key={gender}
+                    onClick={() => setSettings({ ...settings, gender })}
+                    className={`
+                      px-5 py-2 rounded-full text-sm font-medium transition duration-300 ease-in-out
+                      ${settings.gender === gender
+                        ? 'bg-[#A970FF] text-white shadow-md'
+                        : 'bg-[#E8E3F5] text-[#2A1E5C] hover:bg-[#D6CCF1]'
+                      }
+                    `}
+                  >
+                    {gender}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Distance Setting */}
+            <div>
+              <div className="flex justify-between items-center mb-2">
+                <label className="text-lg font-semibold text-[#2A1E5C]">Max Distance 📍</label>
+                <span className="text-gray-500">{settings.maxDistance} km</span>
+              </div>
+              <input
+                type="range"
+                min="1"
+                max="200"
+                value={settings.maxDistance}
+                onChange={(e) => setSettings({ ...settings, maxDistance: Number(e.target.value) })}
+                className="w-full appearance-none h-2 bg-gray-200 rounded-lg outline-none slider-thumb-purple"
+              />
+            </div>
+            
+            {/* Vibe Match Score Setting */}
+            <div>
+              <div className="flex justify-between items-center mb-2">
+                <label className="text-lg font-semibold text-[#2A1E5C]">Min Vibe Match Score ✨</label>
+                <span className="text-gray-500">{settings.minVibeScore}%</span>
+              </div>
+              <input
+                type="range"
+                min="0"
+                max="100"
+                step="5"
+                value={settings.minVibeScore}
+                onChange={(e) => setSettings({ ...settings, minVibeScore: Number(e.target.value) })}
+                className="w-full appearance-none h-2 bg-gray-200 rounded-lg outline-none slider-thumb-purple"
+              />
+            </div>
+            
+            {/* Schedule Preference Setting */}
+            <div>
+              <label className="block text-lg font-semibold text-[#2A1E5C] mb-2">Your Schedule ⏰</label>
+              <div className="flex flex-wrap gap-3">
+                {['Night Owl', 'Early Bird'].map((schedule) => (
+                  <button
+                    key={schedule}
+                    onClick={() => setSettings({ ...settings, schedule })}
+                    className={`
+                      px-5 py-2 rounded-full text-sm font-medium transition duration-300 ease-in-out
+                      ${settings.schedule === schedule
+                        ? 'bg-[#A970FF] text-white shadow-md'
+                        : 'bg-[#E8E3F5] text-[#2A1E5C] hover:bg-[#D6CCF1]'
+                      }
+                    `}
+                  >
+                    {schedule}
+                  </button>
+                ))}
+              </div>
+            </div>
+            
+            {/* Pet Friendly Setting */}
+            <div className="flex items-center justify-between">
+              <label className="text-lg font-semibold text-[#2A1E5C]">Pet Friendly 🐾</label>
+              <button
+                onClick={() => setSettings({ ...settings, petFriendly: !settings.petFriendly })}
+                className={`
+                  relative w-14 h-8 flex items-center rounded-full p-1 transition-colors duration-300
+                  ${settings.petFriendly ? 'bg-[#A970FF]' : 'bg-gray-300'}
+                `}
+              >
+                <span
+                  className={`
+                    block w-6 h-6 rounded-full bg-white shadow-md transform transition-transform duration-300
+                    ${settings.petFriendly ? 'translate-x-6' : 'translate-x-0'}
+                  `}
+                />
+              </button>
+            </div>
+
+            {/* Save Button */}
+            <button
+              onClick={() => console.log('Saving settings:', settings)}
+              className="w-full mt-8 bg-[#A970FF] text-white py-3 rounded-lg font-semibold hover:bg-[#8B4DEB] transition duration-300 shadow-md"
+            >
+              Save Settings
+            </button>
+          </div>
+        </div>
+      );
+    }
+
     // Default 'dashboard' view
     return (
       <div className="flex-1 p-8">
@@ -204,7 +444,14 @@ const DashboardPage = ({ user, onLogout }) => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {matches.length > 0 ? (
             matches.map((match) => (
-              <div key={match.id} className="relative rounded-xl overflow-hidden shadow-md group">
+              <button
+                key={match.id}
+                onClick={() => {
+                  setView('vibemate');
+                  setSelectedMatch(match);
+                }}
+                className="relative rounded-xl overflow-hidden shadow-md group text-left cursor-pointer transition-transform duration-300 hover:scale-[1.02]"
+              >
                 <img
                   src={match.imageUrl || `https://placehold.co/150x150/A970FF/FFFFFF?text=${match.name.charAt(0)}`}
                   alt={match.name}
@@ -217,7 +464,7 @@ const DashboardPage = ({ user, onLogout }) => {
                     Visit Profile
                   </button>
                 </div>
-              </div>
+              </button>
             ))
           ) : (
             <p className="text-center text-xl text-gray-500 col-span-full">
@@ -234,10 +481,13 @@ const DashboardPage = ({ user, onLogout }) => {
       {/* Sidebar */}
       <aside className="w-64 bg-[#2A1E5C] text-white p-6 shadow-xl flex flex-col justify-between">
         <div>
-          <div className="flex items-center space-x-2 mb-8">
+          <button
+            onClick={() => setView('dashboard')}
+            className="w-full flex items-center space-x-2 mb-8 text-left"
+          >
             <div className="w-10 h-10 bg-[#A970FF] rounded-full flex items-center justify-center text-white font-bold text-xl">V</div>
             <h1 className="text-2xl font-bold">VibeTribe</h1>
-          </div>
+          </button>
           <button
             onClick={() => setView('my-profile')}
             className="w-full flex items-center space-x-4 mb-8 text-left p-2 rounded-lg hover:bg-gray-700 transition-colors duration-200"
@@ -254,15 +504,12 @@ const DashboardPage = ({ user, onLogout }) => {
             <button onClick={() => setView('dashboard')} className="w-full flex items-center p-3 rounded-lg hover:bg-gray-700 transition-colors duration-200 text-left">
               <span className="mr-3">🏠</span> Discover
             </button>
-            <a href="#" className="flex items-center p-3 rounded-lg hover:bg-gray-700 transition-colors duration-200">
-              <span className="mr-3">✉️</span> Messages
-            </a>
-            <a href="#" className="flex items-center p-3 rounded-lg hover:bg-gray-700 transition-colors duration-200">
-              <span className="mr-3">📰</span> News Feed
-            </a>
-            <a href="#" className="flex items-center p-3 rounded-lg hover:bg-gray-700 transition-colors duration-200">
+            <button onClick={() => setView('vibemate')} className="w-full flex items-center p-3 rounded-lg hover:bg-gray-700 transition-colors duration-200 text-left">
+              <span className="mr-3">✉️</span> VibeMate
+            </button>
+            <button onClick={() => setView('settings')} className="w-full flex items-center p-3 rounded-lg hover:bg-gray-700 transition-colors duration-200 text-left">
               <span className="mr-3">⚙️</span> Settings
-            </a>
+            </button>
           </nav>
         </div>
         <button
