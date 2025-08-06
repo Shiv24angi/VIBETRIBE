@@ -16,6 +16,7 @@ const ProfileForm = ({ userId, onProfileCreated }) => {
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
   const [currentImageUrl, setCurrentImageUrl] = useState(null);
+  // Removed location state from here
 
   const vibeOptions = [
     'Chill', 'Energetic', 'Creative', 'Analytical', 'Adventurous', 'Calm',
@@ -47,6 +48,7 @@ const ProfileForm = ({ userId, onProfileCreated }) => {
           setSelectedVibes(data.vibes || []);
           setSelectedMoods(data.moods || []);
           setCurrentImageUrl(data.imageUrl || null);
+          // Removed location loading from here
           setMessage('Profile loaded successfully!');
         } else {
           setMessage('Welcome! Please create your profile.');
@@ -61,6 +63,8 @@ const ProfileForm = ({ userId, onProfileCreated }) => {
 
     fetchProfile();
   }, [userId]);
+
+  // Removed handleGetLocation function from here
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -81,7 +85,7 @@ const ProfileForm = ({ userId, onProfileCreated }) => {
       let imageUrl = currentImageUrl;
       if (imageFile) {
         const storageRef = ref(storage, `profiles/${userId}/${imageFile.name}`);
-        await uploadBytes(storageRef, imageFile);
+        await uploadBytes(storageRef, imageFile); // Pass imageFile directly
         imageUrl = await getDownloadURL(storageRef);
       }
 
@@ -92,6 +96,7 @@ const ProfileForm = ({ userId, onProfileCreated }) => {
         moods: selectedMoods,
         userId: userId,
         imageUrl: imageUrl,
+        // Removed location from profileData here
         createdAt: new Date(),
         updatedAt: new Date(),
       };
@@ -172,6 +177,8 @@ const ProfileForm = ({ userId, onProfileCreated }) => {
           selectedOptions={selectedMoods}
           onSelectionChange={setSelectedMoods}
         />
+
+        {/* Removed Location button and display from here */}
 
         <button
           type="submit"

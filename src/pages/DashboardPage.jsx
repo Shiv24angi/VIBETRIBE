@@ -9,12 +9,13 @@ import {
   orderBy, 
   onSnapshot, 
   addDoc, 
+  setDoc, // Import setDoc for updating location
   serverTimestamp 
 } from 'firebase/firestore';
 import { db } from '../firebase/firebaseConfig';
 import LoadingSpinner from '../components/LoadingSpinner';
 import ProfileForm from '../components/ProfileForm';
-import { fetchMatches } from '../utils/MatchinLogic';
+import { fetchMatches, calculateDistance } from '../utils/MatchinLogic'; // Import calculateDistance
 
 /**
  * DashboardPage component displays the user's dashboard, including their profile
@@ -48,6 +49,40 @@ const DashboardPage = ({ user, onLogout }) => {
   });
 
   /**
+   * Handles requesting the user's current geolocation and saving it to Firestore.
+   */
+  const handleGetLocation = () => {
+    setError(''); // Clear previous errors
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        async (position) => {
+          const newLocation = {
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
+          };
+          
+          try {
+            const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+            const profileDocRef = doc(db, `artifacts/${appId}/users/${user.uid}/profiles`, 'myProfile');
+            await setDoc(profileDocRef, { location: newLocation }, { merge: true });
+            setProfile(prevProfile => ({ ...prevProfile, location: newLocation })); // Update local state
+            setError('Location saved successfully!'); // Use error state for success message
+          } catch (err) {
+            console.error("Error saving location:", err);
+            setError("Failed to save location. Please try again.");
+          }
+        },
+        (err) => {
+          setError(`Location access denied. Please enable location services for this site to use this feature.`);
+          console.error("Geolocation error:", err);
+        }
+      );
+    } else {
+      setError('Geolocation is not supported by your browser.');
+    }
+  };
+
+  /**
    * Fetches the current user's profile and all potential matches from Firestore.
    */
   const fetchUserProfileAndMatches = async () => {
@@ -76,7 +111,21 @@ const DashboardPage = ({ user, onLogout }) => {
       // 2. Fetch matches using the new efficient logic
       const userVibes = userProfileData.vibes || [];
       const matchedProfiles = await fetchMatches(user, userVibes);
-      setMatches(matchedProfiles);
+      
+      // Calculate distance for each matched profile if current user has location
+      const profilesWithDistance = matchedProfiles.map(match => {
+        if (userProfileData.location && match.location) {
+          const distance = calculateDistance(
+            userProfileData.location.latitude,
+            userProfileData.location.longitude,
+            match.location.latitude,
+            match.location.longitude
+          );
+          return { ...match, distance: distance.toFixed(1) }; // Round to 1 decimal place
+        }
+        return match;
+      });
+      setMatches(profilesWithDistance);
 
     } catch (err) {
       console.error("Error fetching dashboard data:", err);
@@ -258,7 +307,15 @@ const DashboardPage = ({ user, onLogout }) => {
                   />
                   <div className="flex-1 text-left">
                     <p className="font-semibold">{match.name}</p>
-                    <span className="text-sm text-gray-500">Start a chat...</span>
+                    {/* Display distance here */}
+                    {match.distance && (
+                      <span className="text-sm text-gray-500">{match.distance} km away</span>
+                    )}
+                    {match.location && (
+                      <span className="text-xs text-gray-400 block">
+                        Lat: {match.location.latitude.toFixed(4)}, Lng: {match.location.longitude.toFixed(4)}
+                      </span>
+                    )}
                   </div>
                 </button>
               ))
@@ -475,6 +532,29 @@ const DashboardPage = ({ user, onLogout }) => {
             </button>
           </div>
         </header>
+
+        {/* Display current user's location on the main dashboard */}
+        <div className="bg-white p-6 rounded-xl shadow-lg mb-8 text-[#2A1E5C]">
+          <h3 className="text-2xl font-bold mb-4">Your Current Location 📍</h3>
+          {profile?.location ? (
+            <>
+              <p className="text-lg">Latitude: {profile.location.latitude.toFixed(4)}</p>
+              <p className="text-lg">Longitude: {profile.location.longitude.toFixed(4)}</p>
+            </>
+          ) : (
+            <>
+              <p className="text-lg text-gray-700 mb-4">Your location is not set. Allow location access to connect with nearby VibeMates!</p>
+              <button
+                onClick={handleGetLocation}
+                className="px-6 py-2 bg-[#A970FF] text-white font-semibold rounded-lg shadow-md hover:bg-[#8B4DEB] transition duration-300"
+              >
+                Allow My Location
+              </button>
+            </>
+          )}
+          {error && <p className="text-red-600 mt-4">{error}</p>} {/* Display location-related errors here */}
+        </div>
+
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {matches.length > 0 ? (
             matches.map((match) => (
@@ -493,7 +573,15 @@ const DashboardPage = ({ user, onLogout }) => {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent p-4 flex flex-col justify-end">
                   <h3 className="text-xl font-bold text-white mb-1">{match.name}</h3>
-                  <span className="text-sm text-gray-300">{match.distance || 'Unknown distance'}</span>
+                  {/* Display distance in km */}
+                  {match.distance && (
+                    <span className="text-sm text-gray-300">{match.distance} km away</span>
+                  )}
+                  {match.location && (
+                    <span className="text-xs text-gray-400 block">
+                      Lat: {match.location.latitude.toFixed(4)}, Lng: {match.location.longitude.toFixed(4)}
+                    </span>
+                  )}
                   <button className="mt-2 text-white bg-[#A970FF] px-4 py-2 rounded-full font-semibold opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     Visit Profile
                   </button>
