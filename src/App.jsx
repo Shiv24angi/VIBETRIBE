@@ -6,7 +6,8 @@ import DashboardPage from './pages/DashboardPage';
 import LoadingSpinner from './components/LoadingSpinner';
 import { useAuth } from './hooks/useAuth';
 import { doc, getDoc } from 'firebase/firestore';
-import { db } from './firebase/firebaseConfig';
+import { db, auth } from './firebase/firebaseConfig';
+import { signOut } from 'firebase/auth';
 
 /**
  * The main App component for VibeTribe.
@@ -18,6 +19,7 @@ const App = () => {
   const { user, loading, isAuthReady, isAnonymousUser } = useAuth();
   const [hasProfile, setHasProfile] = useState(false);
   const [checkingProfile, setCheckingProfile] = useState(true);
+  const [initialDashboardView, setInitialDashboardView] = useState('dashboard');
 
   // Determine the app ID for Firestore path
   const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
@@ -35,13 +37,19 @@ const App = () => {
     }
 
     try {
+      // Removed setLoading(true) here as 'checkingProfile' handles this state
       const profileDocRef = doc(db, `artifacts/${appId}/users/${user.uid}/profiles`, 'myProfile');
       const docSnap = await getDoc(profileDocRef);
       setHasProfile(docSnap.exists());
+      // If profile exists, ensure the dashboard starts on the default view
+      if (docSnap.exists()) {
+        setInitialDashboardView('dashboard');
+      }
     } catch (error) {
       console.error("Error checking user profile:", error);
       setHasProfile(false);
     } finally {
+      // Removed setLoading(false) here as 'checkingProfile' handles this state
       setCheckingProfile(false);
     }
   };
@@ -60,11 +68,24 @@ const App = () => {
 
   const handleProfileComplete = () => {
     setHasProfile(true);
+    // Set initial dashboard view to 'my-profile' after profile creation
+    setInitialDashboardView('my-profile');
   };
 
-  const handleLogout = () => {
-    setHasProfile(false);
-    setCheckingProfile(true);
+  /**
+   * Handles logging out the user from Firebase and resetting app state.
+   * This will redirect the user back to the LandingPage.
+   */
+  const handleLogout = async () => {
+    try {
+      await signOut(auth); // Sign out the user from Firebase
+      setHasProfile(false); // Reset profile state
+      setCheckingProfile(true); // Trigger re-check of auth state
+      setInitialDashboardView('dashboard'); // Reset initial view for next login
+    } catch (err) {
+      console.error("Error logging out:", err);
+      // Optionally, set an error state to display to the user
+    }
   };
 
   if (loading || checkingProfile) {
@@ -78,9 +99,11 @@ const App = () => {
   if (!user) {
     return <LandingPage onAuthSuccess={handleAuthSuccess} />;
   } else if (!hasProfile) {
-    return <ProfileCreationPage userId={user.uid} onProfileComplete={handleProfileComplete} />;
+    // Pass handleLogout to ProfileCreationPage so it can be used to go back to LandingPage
+    return <ProfileCreationPage userId={user.uid} onProfileComplete={handleProfileComplete} onGoBackToLanding={handleLogout} />;
   } else {
-    return <DashboardPage user={user} onLogout={handleLogout} />;
+    // Pass the initialDashboardView to DashboardPage
+    return <DashboardPage user={user} onLogout={handleLogout} initialView={initialDashboardView} />;
   }
 };
 

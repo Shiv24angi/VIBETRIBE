@@ -6,7 +6,7 @@ import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import VibeMoodSelector from './VibeMoodSelector';
 import LoadingSpinner from './LoadingSpinner';
 
-const ProfileForm = ({ userId, onProfileCreated }) => {
+const ProfileForm = ({ userId, onProfileCreated, onGoBackToLanding }) => { // Added onGoBackToLanding prop
   const [name, setName] = useState('');
   const [bio, setBio] = useState('');
   const [selectedVibes, setSelectedVibes] = useState([]);
@@ -16,7 +16,14 @@ const ProfileForm = ({ userId, onProfileCreated }) => {
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
   const [currentImageUrl, setCurrentImageUrl] = useState(null);
-  // Removed location state from here
+  // Removed location state from here as it's handled in DashboardPage now
+
+  // New states for additional profile details
+  const [age, setAge] = useState('');
+  const [gender, setGender] = useState('');
+  const [city, setCity] = useState(''); // New state for city
+  const [schedule, setSchedule] = useState('');
+  const [petFriendly, setPetFriendly] = useState(false);
 
   const vibeOptions = [
     'Chill', 'Energetic', 'Creative', 'Analytical', 'Adventurous', 'Calm',
@@ -29,6 +36,10 @@ const ProfileForm = ({ userId, onProfileCreated }) => {
     'Inspired', 'Content', 'Joyful', 'Calm', 'Hopeful', 'Amused',
     'Enthusiastic', 'Serene', 'Vibrant'
   ];
+
+  const genderOptions = ['Male', 'Female', 'Non-binary', 'Prefer not to say'];
+  const scheduleOptions = ['Early Bird', 'Night Owl', 'Flexible'];
+
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -48,7 +59,12 @@ const ProfileForm = ({ userId, onProfileCreated }) => {
           setSelectedVibes(data.vibes || []);
           setSelectedMoods(data.moods || []);
           setCurrentImageUrl(data.imageUrl || null);
-          // Removed location loading from here
+          // Load new profile fields
+          setAge(data.age || '');
+          setGender(data.gender || '');
+          setCity(data.city || ''); // Load existing city
+          setSchedule(data.schedule || '');
+          setPetFriendly(data.petFriendly || false);
           setMessage('Profile loaded successfully!');
         } else {
           setMessage('Welcome! Please create your profile.');
@@ -63,8 +79,6 @@ const ProfileForm = ({ userId, onProfileCreated }) => {
 
     fetchProfile();
   }, [userId]);
-
-  // Removed handleGetLocation function from here
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -85,7 +99,7 @@ const ProfileForm = ({ userId, onProfileCreated }) => {
       let imageUrl = currentImageUrl;
       if (imageFile) {
         const storageRef = ref(storage, `profiles/${userId}/${imageFile.name}`);
-        await uploadBytes(storageRef, imageFile); // Pass imageFile directly
+        await uploadBytes(storageRef, imageFile); 
         imageUrl = await getDownloadURL(storageRef);
       }
 
@@ -96,7 +110,12 @@ const ProfileForm = ({ userId, onProfileCreated }) => {
         moods: selectedMoods,
         userId: userId,
         imageUrl: imageUrl,
-        // Removed location from profileData here
+        // Add new profile fields to data saved to Firestore
+        age: Number(age), // Ensure age is stored as a number
+        gender,
+        city, // Save city data
+        schedule,
+        petFriendly,
         createdAt: new Date(),
         updatedAt: new Date(),
       };
@@ -104,7 +123,7 @@ const ProfileForm = ({ userId, onProfileCreated }) => {
       await setDoc(profileDocRef, profileData, { merge: true });
 
       setMessage('Profile saved successfully!');
-      onProfileCreated();
+      onProfileCreated(); // Call onProfileCreated to navigate to Dashboard
     } catch (err) {
       console.error("Error saving profile:", err);
       setError("Failed to save profile. Please try again.");
@@ -164,6 +183,100 @@ const ProfileForm = ({ userId, onProfileCreated }) => {
           />
         </div>
 
+        {/* New: Age Input */}
+        <div>
+          <label htmlFor="age" className="block text-[#2A1E5C] text-lg font-semibold mb-2">
+            Your Age:
+          </label>
+          <input
+            type="number"
+            id="age"
+            className="w-full px-4 py-3 border border-[#A970FF] rounded-lg focus:ring-2 focus:ring-[#A970FF] focus:border-transparent transition duration-200 text-lg"
+            placeholder="e.g., 25"
+            value={age}
+            onChange={(e) => setAge(e.target.value)}
+            min="18" // Assuming minimum age for dating app
+            max="99"
+            required
+          />
+        </div>
+
+        {/* New: Gender Selection */}
+        <div>
+          <label htmlFor="gender" className="block text-[#2A1E5C] text-lg font-semibold mb-2">
+            Your Gender:
+          </label>
+          <select
+            id="gender"
+            className="w-full px-4 py-3 border border-[#A970FF] rounded-lg focus:ring-2 focus:ring-[#A970FF] focus:border-transparent transition duration-200 text-lg bg-white"
+            value={gender}
+            onChange={(e) => setGender(e.target.value)}
+            required
+          >
+            <option value="">Select Gender</option>
+            {genderOptions.map((option) => (
+              <option key={option} value={option}>{option}</option>
+            ))}
+          </select>
+        </div>
+
+        {/* New: City Input */}
+        <div>
+          <label htmlFor="city" className="block text-[#2A1E5C] text-lg font-semibold mb-2">
+            Your City:
+          </label>
+          <input
+            type="text"
+            id="city"
+            className="w-full px-4 py-3 border border-[#A970FF] rounded-lg focus:ring-2 focus:ring-[#A970FF] focus:border-transparent transition duration-200 text-lg"
+            placeholder="e.g., New York"
+            value={city}
+            onChange={(e) => setCity(e.target.value)}
+            required
+          />
+        </div>
+
+        {/* New: Schedule Selection */}
+        <div>
+          <label htmlFor="schedule" className="block text-[#2A1E5C] text-lg font-semibold mb-2">
+            Your Typical Schedule:
+          </label>
+          <select
+            id="schedule"
+            className="w-full px-4 py-3 border border-[#A970FF] rounded-lg focus:ring-2 focus:ring-[#A970FF] focus:border-transparent transition duration-200 text-lg bg-white"
+            value={schedule}
+            onChange={(e) => setSchedule(e.target.value)}
+          >
+            <option value="">Select Schedule</option>
+            {scheduleOptions.map((option) => (
+              <option key={option} value={option}>{option}</option>
+            ))}
+          </select>
+        </div>
+
+        {/* New: Pet Friendly Toggle */}
+        <div className="flex items-center justify-between">
+          <label htmlFor="petFriendly" className="text-lg font-semibold text-[#2A1E5C]">
+            Pet Friendly? 🐾
+          </label>
+          <button
+            type="button"
+            onClick={() => setPetFriendly(!petFriendly)}
+            className={`
+              relative w-14 h-8 flex items-center rounded-full p-1 transition-colors duration-300
+              ${petFriendly ? 'bg-[#A970FF]' : 'bg-gray-300'}
+            `}
+          >
+            <span
+              className={`
+                block w-6 h-6 rounded-full bg-white shadow-md transform transition-transform duration-300
+                ${petFriendly ? 'translate-x-6' : 'translate-x-0'}
+              `}
+            />
+          </button>
+        </div>
+
+
         <VibeMoodSelector
           title="Select Your Vibes"
           options={vibeOptions}
@@ -178,8 +291,6 @@ const ProfileForm = ({ userId, onProfileCreated }) => {
           onSelectionChange={setSelectedMoods}
         />
 
-        {/* Removed Location button and display from here */}
-
         <button
           type="submit"
           className="w-full bg-[#A970FF] text-white py-4 rounded-lg font-semibold text-xl hover:bg-[#8B4DEB] transition duration-300 shadow-md"
@@ -190,6 +301,14 @@ const ProfileForm = ({ userId, onProfileCreated }) => {
 
       {message && <p className="text-green-600 text-center mt-6 text-lg">{message}</p>}
       {error && <p className="text-red-600 text-center mt-6 text-lg">{error}</p>}
+
+      {/* Changed to "Back to Home" and calls onGoBackToLanding */}
+      <button
+        onClick={onGoBackToLanding} // This will trigger navigation back to the LandingPage
+        className="w-full mt-4 bg-gray-300 text-gray-800 py-3 rounded-lg font-semibold hover:bg-gray-400 transition duration-300"
+      >
+        Back to Home
+      </button>
     </div>
   );
 };
