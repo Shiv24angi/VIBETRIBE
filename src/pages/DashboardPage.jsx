@@ -33,6 +33,7 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => { // Ac
   const [error, setError] = useState('');
   const [view, setView] = useState(initialView); // Initialize view with initialView prop
   const [selectedMatch, setSelectedMatch] = useState(null);
+  const [filterTrigger, setFilterTrigger] = useState(0); // New state to trigger filtering
   
   // State for chat functionality
   const [messages, setMessages] = useState([]);
@@ -191,12 +192,16 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => { // Ac
     return () => unsubscribe(); // Cleanup listener on unmount
   }, [selectedMatch, user]);
 
+  // Use filterTrigger to control when to fetch profiles
   useEffect(() => {
-    // Fetch profiles initially and whenever settings change
     fetchUserProfileAndMatches();
-  }, [user, settings]); // Added settings to dependency array
+  }, [user, filterTrigger]); 
 
-  // Simplified handleLogout to just call the prop from App.jsx
+  // Function to manually trigger filtering
+  const handleApplyFilters = () => {
+    setFilterTrigger(prev => prev + 1);
+  };
+
   const handleLogout = () => {
     onLogout(); // This calls the handleLogout function defined in App.jsx
   };
@@ -475,26 +480,16 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => { // Ac
             <div>
               <div className="flex justify-between items-center mb-2">
                 <label className="text-lg font-semibold text-[#2A1E5C]">Age Range 🎂</label>
-                <span className="text-gray-500">{settings.minAge} - {settings.maxAge}</span>
+                <span className="text-gray-500">Up to {settings.maxAge}</span> {/* Display only max age */}
               </div>
-              <div className="flex items-center space-x-4">
-                <input
-                  type="range"
-                  min="18"
-                  max="60"
-                  value={settings.minAge}
-                  onChange={(e) => setSettings({ ...settings, minAge: Number(e.target.value) })}
-                  className="w-1/2 appearance-none h-2 bg-gray-200 rounded-lg outline-none slider-thumb-purple"
-                />
-                <input
-                  type="range"
-                  min="18"
-                  max="60"
-                  value={settings.maxAge}
-                  onChange={(e) => setSettings({ ...settings, maxAge: Number(e.target.value) })}
-                  className="w-1/2 appearance-none h-2 bg-gray-200 rounded-lg outline-none slider-thumb-purple"
-                />
-              </div>
+              <input
+                type="range"
+                min="18"
+                max="60"
+                value={settings.maxAge}
+                onChange={(e) => setSettings({ ...settings, maxAge: Number(e.target.value) })}
+                className="w-full appearance-none h-2 bg-gray-200 rounded-lg outline-none slider-thumb-purple"
+              />
             </div>
 
             {/* Gender Preference Setting */}
@@ -623,7 +618,7 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => { // Ac
 
             {/* Apply Filters Button */}
             <button
-              onClick={fetchUserProfileAndMatches} // Trigger re-fetch with current settings
+              onClick={handleApplyFilters} // Trigger re-fetch with current settings
               className="w-full mt-8 bg-[#A970FF] text-white py-3 rounded-lg font-semibold text-xl hover:bg-[#8B4DEB] transition duration-300 shadow-md"
             >
               Apply Filters
@@ -644,7 +639,7 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => { // Ac
               placeholder="Search for a vibe..."
               className="px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#A970FF]"
             />
-            <button className="px-4 py-2 bg-gray-200 rounded-lg text-gray-700 hover:bg-gray-300 transition-colors duration-200">
+            <button onClick={() => setView('settings')} className="px-4 py-2 bg-gray-200 rounded-lg text-gray-700 hover:bg-gray-300 transition-colors duration-200">
               Filters
             </button>
           </div>
