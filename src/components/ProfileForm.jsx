@@ -1,6 +1,8 @@
+// components/ProfileForm.jsx
 import React, { useState, useEffect } from 'react';
 import { doc, setDoc, getDoc } from 'firebase/firestore';
-import { db } from '../firebase/firebaseConfig';
+import { db, storage } from '../firebase/firebaseConfig';
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import VibeMoodSelector from './VibeMoodSelector';
 import LoadingSpinner from './LoadingSpinner';
 
@@ -9,9 +11,11 @@ const ProfileForm = ({ userId, onProfileCreated }) => {
   const [bio, setBio] = useState('');
   const [selectedVibes, setSelectedVibes] = useState([]);
   const [selectedMoods, setSelectedMoods] = useState([]);
+  const [imageFile, setImageFile] = useState(null);
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
+  const [currentImageUrl, setCurrentImageUrl] = useState(null);
 
   const vibeOptions = [
     'Chill', 'Energetic', 'Creative', 'Analytical', 'Adventurous', 'Calm',
@@ -42,6 +46,7 @@ const ProfileForm = ({ userId, onProfileCreated }) => {
           setBio(data.bio || '');
           setSelectedVibes(data.vibes || []);
           setSelectedMoods(data.moods || []);
+          setCurrentImageUrl(data.imageUrl || null);
           setMessage('Profile loaded successfully!');
         } else {
           setMessage('Welcome! Please create your profile.');
@@ -72,16 +77,26 @@ const ProfileForm = ({ userId, onProfileCreated }) => {
     try {
       const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
       const profileDocRef = doc(db, `artifacts/${appId}/users/${userId}/profiles`, 'myProfile');
+      
+      let imageUrl = currentImageUrl;
+      if (imageFile) {
+        const storageRef = ref(storage, `profiles/${userId}/${imageFile.name}`);
+        await uploadBytes(storageRef, imageFile);
+        imageUrl = await getDownloadURL(storageRef);
+      }
 
-      await setDoc(profileDocRef, {
+      const profileData = {
         name,
         bio,
         vibes: selectedVibes,
         moods: selectedMoods,
         userId: userId,
+        imageUrl: imageUrl,
         createdAt: new Date(),
         updatedAt: new Date(),
-      }, { merge: true });
+      };
+
+      await setDoc(profileDocRef, profileData, { merge: true });
 
       setMessage('Profile saved successfully!');
       onProfileCreated();
@@ -129,6 +144,19 @@ const ProfileForm = ({ userId, onProfileCreated }) => {
             value={bio}
             onChange={(e) => setBio(e.target.value)}
           ></textarea>
+        </div>
+
+        <div>
+          <label htmlFor="image" className="block text-[#2A1E5C] text-lg font-semibold mb-2">
+            Profile Picture:
+          </label>
+          <input
+            type="file"
+            id="image"
+            accept="image/*"
+            className="w-full text-lg file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-[#E8E3F5] file:text-[#2A1E5C] hover:file:bg-[#D6CCF1]"
+            onChange={(e) => setImageFile(e.target.files[0])}
+          />
         </div>
 
         <VibeMoodSelector

@@ -1,7 +1,16 @@
 // src/pages/DashboardPage.jsx
 import React, { useState, useEffect } from 'react';
 import { getAuth, signOut } from 'firebase/auth';
-import { doc, getDoc, collection, getDocs } from 'firebase/firestore';
+import { 
+  doc, 
+  getDoc, 
+  collection, 
+  query, 
+  orderBy, 
+  onSnapshot, 
+  addDoc, 
+  serverTimestamp 
+} from 'firebase/firestore';
 import { db } from '../firebase/firebaseConfig';
 import LoadingSpinner from '../components/LoadingSpinner';
 import ProfileForm from '../components/ProfileForm';
@@ -20,9 +29,12 @@ const DashboardPage = ({ user, onLogout }) => {
   const [matches, setMatches] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  // 'vibemate' is the new state for the messaging view.
-  const [view, setView] = useState('dashboard'); // 'dashboard', 'my-profile', 'edit-profile', 'vibemate', 'settings'
+  const [view, setView] = useState('dashboard');
   const [selectedMatch, setSelectedMatch] = useState(null);
+  
+  // New state for chat functionality
+  const [messages, setMessages] = useState([]);
+  const [newMessage, setNewMessage] = useState('');
 
   // State for the new settings functionality
   const [settings, setSettings] = useState({
@@ -37,8 +49,6 @@ const DashboardPage = ({ user, onLogout }) => {
 
   /**
    * Fetches the current user's profile and all potential matches from Firestore.
-   * This function looks for profiles of other users (including those signed in with Google)
-   * who share at least one "vibe" with the current user.
    */
   const fetchUserProfileAndMatches = async () => {
     if (!user || !user.uid) {
@@ -76,10 +86,28 @@ const DashboardPage = ({ user, onLogout }) => {
     }
   };
 
+   useEffect(() => {
+    if (!selectedMatch || !user) return;
+
+    const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+    const chatId = [user.uid, selectedMatch.id].sort().join('_');
+    
+    // Use the same path as the message sending function
+    const messagesCollectionRef = collection(db, `artifacts/${appId}/chats/${chatId}/messages`);
+    const q = query(messagesCollectionRef, orderBy('timestamp'));
+
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      const msgs = snapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setMessages(msgs);
+    });
+
+    return () => unsubscribe(); // Cleanup listener on unmount
+  }, [selectedMatch, user]);
+
   useEffect(() => {
-    // This effect runs on component mount and whenever the 'user' object changes.
-    // This is where the app fetches all potential matches, including those
-    // who signed in via Google, as long as they have a profile created.
     fetchUserProfileAndMatches();
   }, [user]);
 
@@ -97,6 +125,27 @@ const DashboardPage = ({ user, onLogout }) => {
   const handleProfileUpdate = () => {
     fetchUserProfileAndMatches(); // Re-fetch all data after profile update
     setView('my-profile');
+  };
+
+  // New function to handle sending a message
+  const handleSendMessage = async (e) => {
+    e.preventDefault();
+    if (newMessage.trim() === '' || !selectedMatch || !user) return;
+
+    const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+    const chatId = [user.uid, selectedMatch.id].sort().join('_');
+    const messagesCollectionRef = collection(db, `artifacts/${appId}/chats/${chatId}/messages`);
+
+    try {
+      await addDoc(messagesCollectionRef, {
+        text: newMessage,
+        senderId: user.uid,
+        timestamp: serverTimestamp(),
+      });
+      setNewMessage('');
+    } catch (err) {
+      console.error("Error sending message:", err);
+    }
   };
 
   if (loading) {
@@ -228,22 +277,34 @@ const DashboardPage = ({ user, onLogout }) => {
                   />
                   <h3 className="text-2xl font-bold">{selectedMatch.name}</h3>
                 </div>
+                {/* Chat messages will be displayed here */}
                 <div className="flex-1 overflow-y-auto space-y-4">
-                  {/* Chat messages will be displayed here */}
-                  <p className="text-center text-gray-500">Chat history will appear here...</p>
+                  {messages.length > 0 ? (
+                    messages.map((msg) => (
+                      <div key={msg.id} className={`flex ${msg.senderId === user.uid ? 'justify-end' : 'justify-start'}`}>
+                        <div className={`p-3 rounded-lg max-w-[70%] ${msg.senderId === user.uid ? 'bg-[#A970FF] text-white' : 'bg-gray-200 text-gray-800'}`}>
+                          {msg.text}
+                        </div>
+                      </div>
+                    ))
+                  ) : (
+                    <p className="text-center text-gray-500">Say hello!</p>
+                  )}
                 </div>
-                <div className="flex items-center mt-4 pt-4 border-t border-gray-200">
+                <form onSubmit={handleSendMessage} className="flex items-center mt-4 pt-4 border-t border-gray-200">
                   <input
                     type="text"
                     placeholder={`Message ${selectedMatch.name}...`}
+                    value={newMessage}
+                    onChange={(e) => setNewMessage(e.target.value)}
                     className="flex-1 px-4 py-3 rounded-full bg-gray-100 focus:outline-none focus:ring-2 focus:ring-[#A970FF]"
                   />
-                  <button className="ml-4 bg-[#A970FF] text-white p-3 rounded-full hover:bg-[#8B4DEB] transition-colors duration-200">
+                  <button type="submit" className="ml-4 bg-[#A970FF] text-white p-3 rounded-full hover:bg-[#8B4DEB] transition-colors duration-200">
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
                     </svg>
                   </button>
-                </div>
+                </form>
               </>
             ) : (
               <div className="flex flex-1 items-center justify-center text-center text-gray-500">

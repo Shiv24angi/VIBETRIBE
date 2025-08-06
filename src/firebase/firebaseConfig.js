@@ -4,6 +4,7 @@
 import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
+import { getStorage } from 'firebase/storage'; // Added this line
 
 // Your web app's Firebase configuration
 // These variables are provided by the Canvas environment.
@@ -24,5 +25,6 @@ const firebaseConfig = typeof __firebase_config !== 'undefined'
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
+const storage = getStorage(app); // Added this line
 
-export { app, auth, db };
+export { app, auth, db, storage };
