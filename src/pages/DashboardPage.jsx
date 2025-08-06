@@ -1,9 +1,11 @@
+// src/pages/DashboardPage.jsx
 import React, { useState, useEffect } from 'react';
 import { getAuth, signOut } from 'firebase/auth';
 import { doc, getDoc, collection, getDocs } from 'firebase/firestore';
 import { db } from '../firebase/firebaseConfig';
 import LoadingSpinner from '../components/LoadingSpinner';
 import ProfileForm from '../components/ProfileForm';
+import { fetchMatches } from '../utils/MatchinLogic';
 
 /**
  * DashboardPage component displays the user's dashboard, including their profile
@@ -61,41 +63,11 @@ const DashboardPage = ({ user, onLogout }) => {
       const userProfileData = docSnap.data();
       setProfile(userProfileData);
 
-      // 2. Fetch all user documents to get their UIDs
-      const usersRef = collection(db, `artifacts/${appId}/users`);
-      const usersSnapshot = await getDocs(usersRef);
-      
-      const allMatches = [];
+      // 2. Fetch matches using the new efficient logic
       const userVibes = userProfileData.vibes || [];
+      const matchedProfiles = await fetchMatches(user, userVibes);
+      setMatches(matchedProfiles);
 
-      if (userVibes.length > 0) {
-        for (const userDoc of usersSnapshot.docs) {
-          // Exclude the current user from the matches list
-          if (userDoc.id !== user.uid) { 
-            // Correctly build the path to the other user's nested profile document
-            const otherProfileDocRef = doc(db, `artifacts/${appId}/users/${userDoc.id}/profiles`, 'myProfile');
-            const otherProfileDoc = await getDoc(otherProfileDocRef);
-            
-            if (otherProfileDoc.exists()) {
-              const otherProfileData = otherProfileDoc.data();
-              const otherUserVibes = otherProfileData.vibes || [];
-              
-              // Check for at least one common vibe
-              const hasMatchingVibe = otherUserVibes.some(vibe => userVibes.includes(vibe));
-              
-              if (hasMatchingVibe) {
-                allMatches.push({
-                  id: userDoc.id,
-                  name: otherProfileData.name,
-                  imageUrl: `https://placehold.co/150x150/A970FF/FFFFFF?text=${otherProfileData.name.charAt(0)}`,
-                  ...otherProfileData,
-                });
-              }
-            }
-          }
-        }
-      }
-      setMatches(allMatches);
     } catch (err) {
       console.error("Error fetching dashboard data:", err);
       setError("Failed to load dashboard data. Please try again.");
@@ -136,6 +108,7 @@ const DashboardPage = ({ user, onLogout }) => {
   }
 
   const userDisplayName = profile?.name || user?.displayName || user?.email;
+  const userAvatarUrl = profile?.imageUrl || `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='150' viewBox='0 0 150 150'%3E%3Crect width='100%25' height='100%25' fill='%23A970FF'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial, sans-serif' font-size='80' fill='%23FFFFFF'%3E${(userDisplayName ? userDisplayName.charAt(0).toUpperCase() : 'V')}%3C/text%3E%3C/svg%3E`;
 
   const renderContent = () => {
     if (view === 'edit-profile') {
@@ -155,7 +128,7 @@ const DashboardPage = ({ user, onLogout }) => {
               <>
                 <div className="flex flex-col items-center mb-6">
                   <div className="w-24 h-24 bg-gray-300 rounded-full mb-4">
-                    <img src="https://via.placeholder.com/150" alt="User Avatar" className="w-full h-full object-cover rounded-full" />
+                    <img src={userAvatarUrl} alt="User Avatar" className="w-full h-full object-cover rounded-full" />
                   </div>
                   <h3 className="text-2xl font-semibold">{profile.name || 'Anonymous User'}</h3>
                   <p className="text-gray-500">{profile.bio || 'No bio provided.'}</p>
@@ -230,7 +203,7 @@ const DashboardPage = ({ user, onLogout }) => {
                   `}
                 >
                   <img
-                    src={match.imageUrl || `https://placehold.co/50x50/A970FF/FFFFFF?text=${match.name.charAt(0)}`}
+                    src={match.imageUrl}
                     alt={match.name}
                     className="w-12 h-12 rounded-full object-cover"
                   />
@@ -453,7 +426,7 @@ const DashboardPage = ({ user, onLogout }) => {
                 className="relative rounded-xl overflow-hidden shadow-md group text-left cursor-pointer transition-transform duration-300 hover:scale-[1.02]"
               >
                 <img
-                  src={match.imageUrl || `https://placehold.co/150x150/A970FF/FFFFFF?text=${match.name.charAt(0)}`}
+                  src={match.imageUrl}
                   alt={match.name}
                   className="w-full h-80 object-cover group-hover:scale-105 transition-transform duration-300"
                 />
@@ -493,7 +466,7 @@ const DashboardPage = ({ user, onLogout }) => {
             className="w-full flex items-center space-x-4 mb-8 text-left p-2 rounded-lg hover:bg-gray-700 transition-colors duration-200"
           >
             <div className="w-12 h-12 bg-gray-400 rounded-full overflow-hidden">
-              <img src="https://via.placeholder.com/150" alt="User" className="w-full h-full object-cover" />
+              <img src={userAvatarUrl} alt="User" className="w-full h-full object-cover" />
             </div>
             <div className="flex-1">
               <h2 className="text-lg font-semibold">{userDisplayName}</h2>
