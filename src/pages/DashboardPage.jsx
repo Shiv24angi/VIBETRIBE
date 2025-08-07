@@ -509,279 +509,329 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => {
               Personalize Your Vibe ⚙
             </h2>
             <p className="text-red-500 text-2xl font-bold text-center"></p>
+            {/* Age Range Setting - Replaced with a single slider */}
             <div>
-              {/* Age Range Setting - Replaced with a single slider */}
-              <div>
-                <div className="flex justify-between items-center mb-2">
-                  <label className="text-lg font-semibold text-[#2A1E5C]">Max Age 🎂</label>
-                  <span className="text-gray-500">{settings.maxAge}</span>
-                </div>
-                <input
-                  type="range"
-                  min="18"
-                  max="60"
-                  value={settings.maxAge}
-                  onChange={(e) => setSettings({ ...settings, maxAge: Number(e.target.value) })}
-                  className="w-full appearance-none h-2 bg-gray-200 rounded-lg outline-none slider-thumb-purple"
-                />
-              
-              
+              <div className="flex justify-between items-center mb-2">
+                <label className="text-lg font-semibold text-[#2A1E5C]">Max Age 🎂</label>
+                <span className="text-gray-500">{settings.maxAge}</span>
+              </div>
+              <input
+                type="range"
+                min="18"
+                max="60"
+                value={settings.maxAge}
+                onChange={(e) => setSettings({ ...settings, maxAge: Number(e.target.value) })}
+                className="w-full appearance-none h-2 bg-gray-200 rounded-lg outline-none slider-thumb-purple"
+              />
             </div>
-          </div>
-
-          <div>
-            <label className="block text-lg font-semibold text-[#2A1E5C] mb-2">Gender Preference 🤔</label>
-            <div className="flex flex-wrap gap-3">
-              {['Male', 'Female', 'Non-binary', 'All'].map((gender) => (
-                <button
-                  key={gender}
-                  onClick={() => setSettings({ ...settings, gender })}
-                  className={`
+            
+            {/* Gender Preference Setting */}
+            <div>
+              <label className="block text-lg font-semibold text-[#2A1E5C] mb-2">Gender Preference 🤔</label>
+              <div className="flex flex-wrap gap-3">
+                {['Male', 'Female', 'Non-binary', 'All'].map((gender) => (
+                  <button
+                    key={gender}
+                    onClick={() => setSettings({ ...settings, gender })}
+                    className={`
                       px-5 py-2 rounded-full text-sm font-medium transition duration-300 ease-in-out
                       ${settings.gender === gender
-                      ? 'bg-[#A970FF] text-white shadow-md'
-                      : 'bg-[#E8E3F5] text-[#2A1E5C] hover:bg-[#D6CCF1]'
-                    }
+                        ? 'bg-[#A970FF] text-white shadow-md'
+                        : 'bg-[#E8E3F5] text-[#2A1E5C] hover:bg-[#D6CCF1]'
+                      }
                     `}
-                >
-                  {gender}
-                </button>
-              ))}
+                  >
+                    {gender}
+                  </button>
+                ))}
+              </div>
             </div>
-          </div>
 
-          <div>
-            <div className="flex justify-between items-center mb-2">
-              <label className="text-lg font-semibold text-[#2A1E5C]">Max Distance 📍</label>
-              <span className="text-gray-500">{settings.maxDistance} km</span>
+            {/* Max Distance Setting */}
+            <div>
+              <div className="flex justify-between items-center mb-2">
+                <label className="text-lg font-semibold text-[#2A1E5C]">Max Distance 📍</label>
+                <span className="text-gray-500">{settings.maxDistance} km</span>
+              </div>
+              <input
+                type="range"
+                min="1"
+                max="200"
+                value={settings.maxDistance}
+                onChange={(e) => setSettings({ ...settings, maxDistance: Number(e.target.value) })}
+                className="w-full appearance-none h-2 bg-gray-200 rounded-lg outline-none slider-thumb-purple"
+              />
             </div>
-            <input
-              type="range"
-              min="1"
-              max="200"
-              value={settings.maxDistance}
-              onChange={(e) => setSettings({ ...settings, maxDistance: Number(e.target.value) })}
-              className="w-full appearance-none h-2 bg-gray-200 rounded-lg outline-none slider-thumb-purple"
-            />
-          </div>
-
-          <div>
-            <div className="flex justify-between items-center mb-2">
-              <label className="text-lg font-semibold text-[#2A1E5C]">Min Vibe Match Score ✨</label>
-              <span className="text-gray-500">{settings.minVibeScore}%</span>
+            
+            {/* Min Vibe Match Score Setting */}
+            <div>
+              <div className="flex justify-between items-center mb-2">
+                <label className="text-lg font-semibold text-[#2A1E5C]">Min Vibe Match Score ✨</label>
+                <span className="text-gray-500">{settings.minVibeScore}%</span>
+              </div>
+              <input
+                type="range"
+                min="0"
+                max="100"
+                step="5"
+                value={settings.minVibeScore}
+                onChange={(e) => setSettings({ ...settings, minVibeScore: Number(e.target.value) })}
+                className="w-full appearance-none h-2 bg-gray-200 rounded-lg outline-none slider-thumb-purple"
+              />
             </div>
-            <input
-              type="range"
-              min="0"
-              max="100"
-              step="5"
-              value={settings.minVibeScore}
-              onChange={(e) => setSettings({ ...settings, minVibeScore: Number(e.target.value) })}
-              className="w-full appearance-none h-2 bg-gray-200 rounded-lg outline-none slider-thumb-purple"
-            />
-          </div>
-
-          <div>
-            <label className="block text-lg font-semibold text-[#2A1E5C] mb-2">Your Schedule ⏰</label>
-            <div className="flex flex-wrap gap-3">
-              {['Night Owl', 'Early Bird'].map((schedule) => (
-                <button
-                  key={schedule}
-                  onClick={() => setSettings({ ...settings, schedule })}
-                  className={`
+            
+            {/* Schedule Preference Setting - Added 'All Time' option */}
+            <div>
+              <label className="block text-lg font-semibold text-[#2A1E5C] mb-2">Your Schedule ⏰</label>
+              <div className="flex flex-wrap gap-3">
+                {['Night Owl', 'Early Bird', 'All'].map((scheduleOption) => (
+                  <button
+                    key={scheduleOption}
+                    onClick={() => setSettings({ ...settings, schedule: scheduleOption })}
+                    className={`
                       px-5 py-2 rounded-full text-sm font-medium transition duration-300 ease-in-out
-                      ${settings.schedule === schedule
-                      ? 'bg-[#A970FF] text-white shadow-md'
-                      : 'bg-[#E8E3F5] text-[#2A1E5C] hover:bg-[#D6CCF1]'
-                    }
+                      ${settings.schedule === scheduleOption
+                        ? 'bg-[#A970FF] text-white shadow-md'
+                        : 'bg-[#E8E3F5] text-[#2A1E5C] hover:bg-[#D6CCF1]'
+                      }
                     `}
-                >
-                  {schedule}
-                </button>
-              ))}
+                  >
+                    {scheduleOption === 'All' ? 'All Time' : scheduleOption}
+                  </button>
+                ))}
+              </div>
             </div>
-          </div>
-
-          <div className="flex items-center justify-between">
-            <label className="text-lg font-semibold text-[#2A1E5C]">Pet Friendly 🐾</label>
-            <button
-              onClick={() => setSettings({ ...settings, petFriendly: !settings.petFriendly })}
-              className={`
+            
+            {/* Pet Friendly Setting */}
+            <div className="flex items-center justify-between">
+              <label className="text-lg font-semibold text-[#2A1E5C]">Pet Friendly 🐾</label>
+              <button
+                onClick={() => setSettings({ ...settings, petFriendly: !settings.petFriendly })}
+                className={`
                   relative w-14 h-8 flex items-center rounded-full p-1 transition-colors duration-300
                   ${settings.petFriendly ? 'bg-[#A970FF]' : 'bg-gray-300'}
                 `}
-            >
-              <span
-                className={`
+              >
+                <span
+                  className={`
                     block w-6 h-6 rounded-full bg-white shadow-md transform transition-transform duration-300
                     ${settings.petFriendly ? 'translate-x-6' : 'translate-x-0'}
                   `}
-              />
-            </button>
-          </div>
+                />
+              </button>
+            </div>
+             {/* New: Location Sharing Controls */}
+            <div className="space-y-4">
+              <h4 className="text-xl font-bold text-[#2A1E5C] mb-2">Location Sharing</h4>
+              <p className="text-sm text-gray-500">
+                {profile?.location
+                  ? 'Location sharing is ON. Matches can see your approximate distance.'
+                  : 'Location sharing is OFF. Enable to see distance to matches.'}
+              </p>
+              {profile?.location ? (
+                <button
+                  onClick={handleStopSharingLocation}
+                  className="w-full bg-gray-300 text-gray-800 py-3 rounded-lg font-semibold hover:bg-gray-400 transition duration-300"
+                >
+                  Stop Sharing Location
+                </button>
+              ) : (
+                <button
+                  onClick={handleGetLocation}
+                  className="w-full bg-[#A970FF] text-white py-3 rounded-lg font-semibold hover:bg-[#8B4DEB] transition duration-300 shadow-md"
+                >
+                  Turn On Location Sharing
+                </button>
+              )}
+            </div>
+            
+             {/* New: Account Management Options */}
+            <div className="space-y-4 pt-6 mt-6 border-t border-gray-200">
+              <h4 className="text-xl font-bold text-[#2A1E5C] mb-2">Account Actions</h4>
+              <p className="text-sm text-gray-500">
+                Deactivating your account will hide your profile from all other users.
+              </p>
+              <button
+                onClick={handleDeactivateAccount}
+                className="w-full bg-yellow-500 text-white py-3 rounded-lg font-semibold hover:bg-yellow-600 transition duration-300 shadow-md"
+              >
+                Deactivate Account
+              </button>
+              <p className="text-sm text-gray-500 mt-4">
+                Warning: Deleting your account is a permanent action and cannot be undone.
+              </p>
+              <button
+                onClick={handleDeleteAccount}
+                className="w-full bg-red-500 text-white py-3 rounded-lg font-semibold hover:bg-red-600 transition duration-300 shadow-md"
+              >
+                Permanently Delete Account
+              </button>
+            </div>
 
-          <button
-            onClick={handleApplyFilters}
-            className="w-full mt-8 bg-[#A970FF] text-white py-3 rounded-lg font-semibold hover:bg-[#8B4DEB] transition duration-300 shadow-md"
-          >
-            Save Settings
-          </button>
-          {error && <p className="text-red-600 text-center mt-4">{error}</p>}
+
+            {/* Save Button */}
+            <button
+              onClick={handleApplyFilters}
+              className="w-full mt-8 bg-[#A970FF] text-white py-3 rounded-lg font-semibold hover:bg-[#8B4DEB] transition duration-300 shadow-md"
+            >
+              Save Settings
+            </button>
+            {error && <p className="text-red-600 text-center mt-4">{error}</p>}
+          </div>
         </div>
-        </div >
       );
     }
 
-if (view === 'profile_view') {
-  const matchProfile = selectedMatch;
-  const matchAvatarUrl = matchProfile?.imageUrl || `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='150' viewBox='0 0 150 150'%3E%3Crect width='100%25' height='100%25' fill='%23A970FF'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial, sans-serif' font-size='80' fill='%23FFFFFF'%3E${(matchProfile?.name ? matchProfile.name.charAt(0).toUpperCase() : 'V')}%3C/text%3E%3C/svg%3E`;
+    if (view === 'profile_view') {
+      const matchProfile = selectedMatch;
+      const matchAvatarUrl = matchProfile?.imageUrl || `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='150' viewBox='0 0 150 150'%3E%3Crect width='100%25' height='100%25' fill='%23A970FF'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial, sans-serif' font-size='80' fill='%23FFFFFF'%3E${(matchProfile?.name ? matchProfile.name.charAt(0).toUpperCase() : 'V')}%3C/text%3E%3C/svg%3E`;
 
-  return (
-    <div className="flex-1 p-8">
-      <p className="text-green-500 text-2xl font-bold text-center mb-4"></p>
-      <p className="text-blue-500 text-xl text-center"></p>
+      return (
+        <div className="flex-1 p-8">
+          <p className="text-green-500 text-2xl font-bold text-center mb-4"></p>
+          <p className="text-blue-500 text-xl text-center"></p>
 
-      <div className="bg-white p-8 rounded-xl shadow-lg w-full max-w-2xl mx-auto text-[#2A1E5C]">
-        <h2 className="text-4xl font-bold mb-4 text-center">
-          {matchProfile?.name}'s Profile
-        </h2>
-        {matchProfile ? (
-          <>
-            <div className="flex flex-col items-center mb-6">
-              <div className="w-24 h-24 bg-gray-300 rounded-full mb-4 overflow-hidden">
-                <img src={matchAvatarUrl} alt="Match Avatar" className="w-full h-full object-cover rounded-full" />
-              </div>
-              <h3 className="text-2xl font-semibold">{matchProfile.name || 'Unknown User'}</h3>
-              <p className="text-gray-500">{matchProfile.bio || 'No bio provided.'}</p>
-              {matchProfile.distance && (
-                <span className="text-sm text-gray-500 mt-2">{matchProfile.distance} km away</span>
-              )}
-            </div>
-
-            <div className="space-y-4">
-              <div>
-                <h4 className="text-xl font-bold mb-2">Vibes</h4>
-                <div className="flex flex-wrap gap-2">
-                  {matchProfile.vibes && matchProfile.vibes.length > 0 ? (
-                    matchProfile.vibes.map((vibe, index) => (
-                      <span key={index} className="bg-[#A970FF] text-white px-3 py-1 rounded-full text-sm shadow">
-                        {vibe}
-                      </span>
-                    ))
-                  ) : (
-                    <p className="text-gray-500">No vibes selected.</p>
+          <div className="bg-white p-8 rounded-xl shadow-lg w-full max-w-2xl mx-auto text-[#2A1E5C]">
+            <h2 className="text-4xl font-bold mb-4 text-center">
+              {matchProfile?.name}'s Profile
+            </h2>
+            {matchProfile ? (
+              <>
+                <div className="flex flex-col items-center mb-6">
+                  <div className="w-24 h-24 bg-gray-300 rounded-full mb-4 overflow-hidden">
+                    <img src={matchAvatarUrl} alt="Match Avatar" className="w-full h-full object-cover rounded-full" />
+                  </div>
+                  <h3 className="text-2xl font-semibold">{matchProfile.name || 'Unknown User'}</h3>
+                  <p className="text-gray-500">{matchProfile.bio || 'No bio provided.'}</p>
+                  {matchProfile.distance && (
+                    <span className="text-sm text-gray-500 mt-2">{matchProfile.distance} km away</span>
                   )}
                 </div>
-              </div>
 
-              <div>
-                <h4 className="text-xl font-bold mb-2">Moods</h4>
-                <div className="flex flex-wrap gap-2">
-                  {matchProfile.moods && matchProfile.moods.length > 0 ? (
-                    matchProfile.moods.map((mood, index) => (
-                      <span key={index} className="bg-[#A970FF] text-white px-3 py-1 rounded-full text-sm shadow">
-                        {mood}
-                      </span>
-                    ))
-                  ) : (
-                    <p className="text-gray-500">No moods selected.</p>
-                  )}
+                <div className="space-y-4">
+                  <div>
+                    <h4 className="text-xl font-bold mb-2">Vibes</h4>
+                    <div className="flex flex-wrap gap-2">
+                      {matchProfile.vibes && matchProfile.vibes.length > 0 ? (
+                        matchProfile.vibes.map((vibe, index) => (
+                          <span key={index} className="bg-[#A970FF] text-white px-3 py-1 rounded-full text-sm shadow">
+                            {vibe}
+                          </span>
+                        ))
+                      ) : (
+                        <p className="text-gray-500">No vibes selected.</p>
+                      )}
+                    </div>
+                  </div>
+
+                  <div>
+                    <h4 className="text-xl font-bold mb-2">Moods</h4>
+                    <div className="flex flex-wrap gap-2">
+                      {matchProfile.moods && matchProfile.moods.length > 0 ? (
+                        matchProfile.moods.map((mood, index) => (
+                          <span key={index} className="bg-[#A970FF] text-white px-3 py-1 rounded-full text-sm shadow">
+                            {mood}
+                          </span>
+                        ))
+                      ) : (
+                        <p className="text-gray-500">No moods selected.</p>
+                      )}
+                    </div>
+                  </div>
+
+                  <div>
+                    <h4 className="text-xl font-bold mb-2">Basic Info</h4>
+                    <p className="text-gray-700">Age: {matchProfile.age || 'N/A'}</p>
+                    <p className="text-gray-700">Gender: {matchProfile.gender || 'N/A'}</p>
+                    <p className="text-gray-700">City: {matchProfile.city || 'N/A'}</p>
+                    <p className="text-gray-700">Schedule: {matchProfile.schedule || 'N/A'}</p>
+                    <p className="text-gray-700">Pet Friendly: {matchProfile.petFriendly ? 'Yes' : 'No'}</p>
+                  </div>
                 </div>
-              </div>
 
-              <div>
-                <h4 className="text-xl font-bold mb-2">Basic Info</h4>
-                <p className="text-gray-700">Age: {matchProfile.age || 'N/A'}</p>
-                <p className="text-gray-700">Gender: {matchProfile.gender || 'N/A'}</p>
-                <p className="text-gray-700">City: {matchProfile.city || 'N/A'}</p>
-                <p className="text-gray-700">Schedule: {matchProfile.schedule || 'N/A'}</p>
-                <p className="text-gray-700">Pet Friendly: {matchProfile.petFriendly ? 'Yes' : 'No'}</p>
-              </div>
-            </div>
-
-            <button
-              onClick={() => handleMatchClick(matchProfile)}
-              className="w-full mt-8 bg-[#A970FF] text-white py-3 rounded-lg font-semibold hover:bg-[#8B4DEB] transition duration-300 shadow-md"
-            >
-              Start Chat
-            </button>
-            <button
-              onClick={() => setView('dashboard')}
-              className="w-full mt-4 bg-gray-300 text-gray-800 py-3 rounded-lg font-semibold hover:bg-gray-400 transition duration-300"
-            >
-              Back to VibeMates List
-            </button>
-          </>
-        ) : (
-          <p className="text-lg text-red-600 text-center">Profile not found.</p>
-        )}
-      </div>
-    </div>
-  );
-}
-return (
-  <div className="flex-1 p-8">
-    <header className="flex justify-between items-center mb-8">
-      <h2 className="text-3xl font-bold">Who's Nearby?</h2>
-      <div className="flex items-center space-x-4">
-        <input
-          type="text"
-          placeholder="Search for a vibe..."
-          className="px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#A970FF]"
-        />
-        <button onClick={() => setView('settings')} className="px-4 py-2 bg-gray-200 rounded-lg text-gray-700 hover:bg-gray-300 transition-colors duration-200">
-          Filters
-        </button>
-      </div>
-    </header>
-
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-      {matches.length > 0 ? (
-        matches.map((match) => (
-          <div
-            key={match.id}
-            className={`
-                  relative rounded-xl overflow-hidden shadow-md group text-left cursor-pointer transition-transform duration-300 hover:scale-[1.02]
-                `}
-          >
-            <img
-              src={match.imageUrl}
-              alt={match.name}
-              className="w-full h-80 object-cover group-hover:scale-105 transition-transform duration-300"
+                <button
+                  onClick={() => handleMatchClick(matchProfile)}
+                  className="w-full mt-8 bg-[#A970FF] text-white py-3 rounded-lg font-semibold hover:bg-[#8B4DEB] transition duration-300 shadow-md"
+                >
+                  Start Chat
+                </button>
+                <button
+                  onClick={() => setView('dashboard')}
+                  className="w-full mt-4 bg-gray-300 text-gray-800 py-3 rounded-lg font-semibold hover:bg-gray-400 transition duration-300"
+                >
+                  Back to VibeMates List
+                </button>
+              </>
+            ) : (
+              <p className="text-lg text-red-600 text-center">Profile not found.</p>
+            )}
+          </div>
+        </div>
+      );
+    }
+    return (
+      <div className="flex-1 p-8">
+        <header className="flex justify-between items-center mb-8">
+          <h2 className="text-3xl font-bold">Who's Nearby?</h2>
+          <div className="flex items-center space-x-4">
+            <input
+              type="text"
+              placeholder="Search for a vibe..."
+              className="px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#A970FF]"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent p-4 flex flex-col justify-end">
-              <h3 className="text-xl font-bold text-white mb-1">{match.name}</h3>
-              {match.distance && (
-                <span className="text-sm text-gray-300">{match.distance} km away</span>
-              )}
-            </div>
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                console.log('Visiting profile for:', match);
-                setSelectedMatch(match);
-                setView('profile_view');
-              }}
-              className="absolute bottom-4 right-4 text-white bg-[#A970FF] px-4 py-2 rounded-full font-semibold opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-            >
-              Visit Profile
+            <button onClick={() => setView('settings')} className="px-4 py-2 bg-gray-200 rounded-lg text-gray-700 hover:bg-gray-300 transition-colors duration-200">
+              Filters
             </button>
           </div>
-        ))
-      ) : (
-        <p className="text-center text-xl text-gray-500 col-span-full">
-          No matches found. Adjust your filters in settings!
-        </p>
-      )}
-    </div>
-  </div>
-);
+        </header>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {matches.length > 0 ? (
+            matches.map((match) => (
+              <div
+                key={match.id}
+                className={`
+                  relative rounded-xl overflow-hidden shadow-md group text-left cursor-pointer transition-transform duration-300 hover:scale-[1.02]
+                `}
+              >
+                <img
+                  src={match.imageUrl}
+                  alt={match.name}
+                  className="w-full h-80 object-cover group-hover:scale-105 transition-transform duration-300"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent p-4 flex flex-col justify-end">
+                  <h3 className="text-xl font-bold text-white mb-1">{match.name}</h3>
+                  {match.distance && (
+                    <span className="text-sm text-gray-300">{match.distance} km away</span>
+                  )}
+                </div>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    console.log('Visiting profile for:', match);
+                    setSelectedMatch(match);
+                    setView('profile_view');
+                  }}
+                  className="absolute bottom-4 right-4 text-white bg-[#A970FF] px-4 py-2 rounded-full font-semibold opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                >
+                  Visit Profile
+                </button>
+              </div>
+            ))
+          ) : (
+            <p className="text-center text-xl text-gray-500 col-span-full">
+              No matches found. Adjust your filters in settings!
+            </p>
+          )}
+        </div>
+      </div>
+    );
   };
 
-return (
-  <div className="flex min-h-screen bg-[#F0F2F5] text-[#2A1E5C]">
-    <style>
-      {`
+  return (
+    <div className="flex min-h-screen bg-[#F0F2F5] text-[#2A1E5C]">
+      <style>
+        {`
           .slider-thumb-purple::-webkit-slider-thumb {
             -webkit-appearance: none;
             width: 16px;
@@ -813,52 +863,52 @@ return (
             border-radius: 4px;
           }
         `}
-    </style>
-    <aside className="w-64 bg-[#2A1E5C] text-white p-6 shadow-xl flex flex-col justify-between">
-      <div>
+      </style>
+      <aside className="w-64 bg-[#2A1E5C] text-white p-6 shadow-xl flex flex-col justify-between">
+        <div>
+          <button
+            onClick={() => setView('dashboard')}
+            className="w-full flex items-center space-x-2 mb-8 text-left"
+          >
+            <div className="w-10 h-10 bg-[#A970FF] rounded-full flex items-center justify-center text-white font-bold text-xl">V</div>
+            <h1 className="text-2xl font-bold">VibeTribe</h1>
+          </button>
+          <button
+            onClick={() => setView('my-profile')}
+            className="w-full flex items-center space-x-4 mb-8 text-left p-2 rounded-lg hover:bg-gray-700 transition-colors duration-200"
+          >
+            <div className="w-12 h-12 bg-gray-400 rounded-full overflow-hidden">
+              <img src={userAvatarUrl} alt="User" className="w-full h-full object-cover" />
+            </div>
+            <div className="flex-1">
+              <h2 className="text-lg font-semibold">{userDisplayName}</h2>
+              <span className="text-sm text-gray-400">Online</span>
+            </div>
+          </button>
+          <nav className="space-y-2 mb-8">
+            <button onClick={() => setView('dashboard')} className="w-full flex items-center p-3 rounded-lg hover:bg-gray-700 transition-colors duration-200 text-left">
+              <span className="mr-3">🏠</span> Discover
+            </button>
+            <button onClick={() => setView('vibemate')} className="w-full flex items-center p-3 rounded-lg hover:bg-gray-700 transition-colors duration-200 text-left">
+              <span className="mr-3">✉</span> VibeMate
+            </button>
+            <button onClick={() => setView('settings')} className="w-full flex items-center p-3 rounded-lg hover:bg-gray-700 transition-colors duration-200 text-left">
+              <span className="mr-3">⚙</span> Settings
+            </button>
+          </nav>
+        </div>
         <button
-          onClick={() => setView('dashboard')}
-          className="w-full flex items-center space-x-2 mb-8 text-left"
+          onClick={handleLogout}
+          className="w-full bg-[#A970FF] text-white py-3 px-6 rounded-lg font-semibold hover:bg-[#8B4DEB] transition duration-300 shadow-md"
         >
-          <div className="w-10 h-10 bg-[#A970FF] rounded-full flex items-center justify-center text-white font-bold text-xl">V</div>
-          <h1 className="text-2xl font-bold">VibeTribe</h1>
+          Log Out
         </button>
-        <button
-          onClick={() => setView('my-profile')}
-          className="w-full flex items-center space-x-4 mb-8 text-left p-2 rounded-lg hover:bg-gray-700 transition-colors duration-200"
-        >
-          <div className="w-12 h-12 bg-gray-400 rounded-full overflow-hidden">
-            <img src={userAvatarUrl} alt="User" className="w-full h-full object-cover" />
-          </div>
-          <div className="flex-1">
-            <h2 className="text-lg font-semibold">{userDisplayName}</h2>
-            <span className="text-sm text-gray-400">Online</span>
-          </div>
-        </button>
-        <nav className="space-y-2 mb-8">
-          <button onClick={() => setView('dashboard')} className="w-full flex items-center p-3 rounded-lg hover:bg-gray-700 transition-colors duration-200 text-left">
-            <span className="mr-3">🏠</span> Discover
-          </button>
-          <button onClick={() => setView('vibemate')} className="w-full flex items-center p-3 rounded-lg hover:bg-gray-700 transition-colors duration-200 text-left">
-            <span className="mr-3">✉</span> VibeMate
-          </button>
-          <button onClick={() => setView('settings')} className="w-full flex items-center p-3 rounded-lg hover:bg-gray-700 transition-colors duration-200 text-left">
-            <span className="mr-3">⚙</span> Settings
-          </button>
-        </nav>
-      </div>
-      <button
-        onClick={handleLogout}
-        className="w-full bg-[#A970FF] text-white py-3 px-6 rounded-lg font-semibold hover:bg-[#8B4DEB] transition duration-300 shadow-md"
-      >
-        Log Out
-      </button>
-    </aside>
-    <main className="flex-1">
-      {renderContent()}
-    </main>
-  </div>
-);
+      </aside>
+      <main className="flex-1">
+        {renderContent()}
+      </main>
+    </div>
+  );
 };
 
 export default DashboardPage;
