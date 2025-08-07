@@ -26,15 +26,15 @@ import { fetchMatches, calculateDistance } from '../utils/MatchinLogic';
  * @param {function(): void} props.onLogout - Callback function to handle user logout.
  * @param {string} [props.initialView='dashboard'] - The initial view to display on the dashboard.
  */
-const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => {
+const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => { // Accept initialView prop
   const [profile, setProfile] = useState(null);
   const [matches, setMatches] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const [view, setView] = useState(initialView);
-  console.log('Current view:', view);
+  const [view, setView] = useState(initialView); // Initialize view with initialView prop
+  console.log('Current view:', view); // Keep this for debugging
   const [selectedMatch, setSelectedMatch] = useState(null);
-  const [filterTrigger, setFilterTrigger] = useState(0); 
+  const [filterTrigger, setFilterTrigger] = useState(0); // New state to trigger filtering
   
   // State for chat functionality
   const [messages, setMessages] = useState([]);
@@ -44,18 +44,18 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => {
   const [settings, setSettings] = useState({
     minAge: 18,
     maxAge: 35,
-    gender: 'All',
-    maxDistance: 50,
+    gender: 'All', // 'All' means no filter for gender
+    maxDistance: 50, // in km
     minVibeScore: 50,
-    schedule: 'All',
-    petFriendly: false,
+    schedule: 'All', // 'All' means no filter for schedule
+    petFriendly: false, // false means no filter for petFriendly, true means only petFriendly
   });
 
   /**
    * Handles requesting the user's current geolocation and saving it to Firestore.
    */
   const handleGetLocation = () => {
-    setError('');
+    setError(''); // Clear previous errors
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         async (position) => {
@@ -68,15 +68,16 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => {
             const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
             const profileDocRef = doc(db, `artifacts/${appId}/users/${user.uid}/profiles`, 'myProfile');
             await setDoc(profileDocRef, { location: newLocation }, { merge: true });
-            setProfile(prevProfile => ({ ...prevProfile, location: newLocation }));
-            setError('Location saved successfully!');
+            setProfile(prevProfile => ({ ...prevProfile, location: newLocation })); // Update local state
+            setError('Location saved successfully!'); // Use error state for success message
+            setTimeout(() => setError(''), 3000); // Clear message after 3 seconds
           } catch (err) {
             console.error("Error saving location:", err);
             setError("Failed to save location. Please try again.");
           }
         },
         (err) => {
-          setError('Location access denied. Please enable location services for this site to use this feature.');
+          setError(`Location access denied. Please enable location services for this site to use this feature.`);
           console.error("Geolocation error:", err);
         }
       );
@@ -93,9 +94,11 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => {
     try {
       const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
       const profileDocRef = doc(db, `artifacts/${appId}/users/${user.uid}/profiles`, 'myProfile');
+      // Set location to null to remove it from the document
       await setDoc(profileDocRef, { location: null }, { merge: true });
-      setProfile(prevProfile => ({ ...prevProfile, location: null }));
+      setProfile(prevProfile => ({ ...prevProfile, location: null })); // Update local state
       setError('Location sharing stopped successfully!');
+      setTimeout(() => setError(''), 3000); // Clear message after 3 seconds
     } catch (err) {
       console.error("Error stopping location sharing:", err);
       setError("Failed to stop location sharing. Please try again.");
@@ -108,15 +111,19 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => {
    */
   const handleDeactivateAccount = async () => {
     setError('');
+    // IMPORTANT: Replaced window.confirm with a custom modal/message box in a real app
     const confirmation = window.confirm("Are you sure you want to deactivate your account? This will hide your profile from all VibeMates.");
     if (!confirmation) return;
 
     try {
       const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
       const profileDocRef = doc(db, `artifacts/${appId}/users/${user.uid}/profiles`, 'myProfile');
+      // Set isDeactivated flag to true instead of deleting the profile
       await setDoc(profileDocRef, { isDeactivated: true }, { merge: true });
+      // After deactivating, log out the user and return to landing page
       onLogout();
       setError('Account deactivated successfully.');
+      setTimeout(() => setError(''), 3000); // Clear message after 3 seconds
     } catch (err) {
       console.error("Error deactivating account:", err);
       setError("Failed to deactivate account. Please try again.");
@@ -129,6 +136,7 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => {
    */
   const handleDeleteAccount = async () => {
     setError('');
+    // IMPORTANT: Replaced window.confirm with a custom modal/message box in a real app
     const confirmation = window.confirm("WARNING: Are you absolutely sure you want to permanently delete your account? This action cannot be undone.");
     if (!confirmation) return;
 
@@ -138,12 +146,16 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => {
       const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
       const profileDocRef = doc(db, `artifacts/${appId}/users/${currentUser.uid}/profiles`, 'myProfile');
 
+      // Delete the profile data first
       await deleteDoc(profileDocRef);
       
+      // Then delete the user's authentication account
       await deleteUser(currentUser);
 
+      // After deleting, log out the user and return to landing page
       onLogout();
       setError('Account and all associated data permanently deleted.');
+      setTimeout(() => setError(''), 3000); // Clear message after 3 seconds
     } catch (err) {
       console.error("Error deleting account:", err);
       setError("Failed to delete account. Please try again.");
@@ -165,6 +177,7 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => {
       setLoading(true);
       const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
 
+      // 1. Fetch the current user's profile from the nested subcollection
       const profileDocRef = doc(db, `artifacts/${appId}/users/${user.uid}/profiles`, 'myProfile');
       const docSnap = await getDoc(profileDocRef);
 
@@ -177,21 +190,28 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => {
       const userProfileData = docSnap.data();
       setProfile(userProfileData);
 
-      setSettings(prevSettings => ({
-        ...prevSettings,
-        minAge: userProfileData.filterSettings?.minAge !== undefined ? userProfileData.filterSettings.minAge : prevSettings.minAge,
-        maxAge: userProfileData.filterSettings?.maxAge !== undefined ? userProfileData.filterSettings.maxAge : prevSettings.maxAge,
-        gender: userProfileData.filterSettings?.gender || prevSettings.gender,
-        maxDistance: userProfileData.filterSettings?.maxDistance !== undefined ? userProfileData.filterSettings.maxDistance : prevSettings.maxDistance,
-        minVibeScore: userProfileData.filterSettings?.minVibeScore !== undefined ? userProfileData.filterSettings.minVibeScore : prevSettings.minVibeScore,
-        schedule: userProfileData.filterSettings?.schedule || prevSettings.schedule,
-        petFriendly: userProfileData.filterSettings?.petFriendly !== undefined ? userProfileData.filterSettings.petFriendly : prevSettings.petFriendly,
-      }));
+      // Determine the filters to use for fetching matches
+      // This will be the saved filterSettings from Firestore, or the default state if not present
+      const filtersToApply = {
+        minAge: userProfileData.filterSettings?.minAge !== undefined ? userProfileData.filterSettings.minAge : settings.minAge,
+        maxAge: userProfileData.filterSettings?.maxAge !== undefined ? userProfileData.filterSettings.maxAge : settings.maxAge,
+        gender: userProfileData.filterSettings?.gender || settings.gender,
+        maxDistance: userProfileData.filterSettings?.maxDistance !== undefined ? userProfileData.filterSettings.maxDistance : settings.maxDistance,
+        minVibeScore: userProfileData.filterSettings?.minVibeScore !== undefined ? userProfileData.filterSettings.minVibeScore : settings.minVibeScore,
+        schedule: userProfileData.filterSettings?.schedule || settings.schedule,
+        petFriendly: userProfileData.filterSettings?.petFriendly !== undefined ? userProfileData.filterSettings.petFriendly : settings.petFriendly,
+      };
 
-      const currentFilters = userProfileData.filterSettings || settings; 
-      let matchedProfiles = await fetchMatches(user, userProfileData.vibes || [], currentFilters);
+      // Update the component's settings state with the fetched or default filters
+      setSettings(filtersToApply);
+
+
+      // 2. Fetch matches using the new efficient logic, passing current settings as filters
+      // Important: Use the updated filtersToApply directly here
+      let matchedProfiles = await fetchMatches(user, userProfileData.vibes || [], filtersToApply);
       
-      if (userProfileData.location && currentFilters.maxDistance > 0) {
+      // Post-fetch filtering for distance, as Firestore doesn't support geospatial queries directly
+      if (userProfileData.location && filtersToApply.maxDistance > 0) {
         matchedProfiles = matchedProfiles.filter(match => {
           if (match.location) {
             const distance = calculateDistance(
@@ -200,12 +220,13 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => {
               match.location.latitude,
               match.location.longitude
             );
-            return distance <= currentFilters.maxDistance;
+            return distance <= filtersToApply.maxDistance;
           }
-          return false;
+          return false; // Exclude profiles without location if distance filter is active
         });
       }
 
+      // Calculate distance for each matched profile if current user has location
       const profilesWithDistance = matchedProfiles.map(match => {
         if (userProfileData.location && match.location) {
           const distance = calculateDistance(
@@ -214,7 +235,7 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => {
             match.location.latitude,
             match.location.longitude
           );
-          return { ...match, distance: distance.toFixed(1) };
+          return { ...match, distance: distance.toFixed(1) }; // Round to 1 decimal place
         }
         return match;
       });
@@ -228,26 +249,30 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => {
     }
   };
 
+  // New function to handle selecting a match
   const handleMatchClick = (match) => {
     setSelectedMatch(match);
-    setMessages([]);
-    setNewMessage('');
+    setMessages([]); // Clear messages when switching matches
+    setNewMessage(''); // Clear new message input
     setView('vibemate');
   };
   
+  // New function to switch to chat view
   const handleChatClick = () => {
-    setView('vibemate');
+    setView('vibemate'); // This is already the correct view for the combined list/chat
   };
+  // New function to switch to profile view
   const handleProfileViewClick = () => {
     setView('profile_view');
   }
 
-  useEffect(() => {
+    useEffect(() => {
     if (!selectedMatch || !user) return;
 
     const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
     const chatId = [user.uid, selectedMatch.id].sort().join('_');
     
+    // Use the same path as the message sending function
     const messagesCollectionRef = collection(db, `artifacts/${appId}/chats/${chatId}/messages`);
     const q = query(messagesCollectionRef, orderBy('timestamp'));
 
@@ -259,41 +284,48 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => {
       setMessages(msgs);
     });
 
-    return () => unsubscribe();
+    return () => unsubscribe(); // Cleanup listener on unmount
   }, [selectedMatch, user]);
 
   useEffect(() => {
+    // Fetch profiles initially and whenever settings change
     fetchUserProfileAndMatches();
   }, [user, filterTrigger]); 
 
+  // Function to manually trigger filtering
   const handleApplyFilters = async () => {
+    // Save current settings to user profile in Firestore
     try {
       const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
       const profileDocRef = doc(db, `artifacts/${appId}/users/${user.uid}/profiles`, 'myProfile');
       await setDoc(profileDocRef, { filterSettings: settings }, { merge: true });
+      // Update the local profile state immediately after saving
       setProfile(prevProfile => ({ ...prevProfile, filterSettings: settings }));
       setError('Filters saved and applied successfully!');
+      setTimeout(() => setError(''), 3000); // Clear success message after 3 seconds
     } catch (err) {
       console.error("Error saving filter settings:", err);
       setError("Failed to save filters. Please try again.");
     }
-    setFilterTrigger(prev => prev + 1);
+    setFilterTrigger(prev => prev + 1); // Trigger re-fetch with current settings
   };
 
   const handleLogout = () => {
-    onLogout();
+    onLogout(); // This calls the handleLogout function defined in App.jsx
   };
 
+  // New function to handle going back to the dashboard from edit profile
   const handleGoBackToDashboard = () => {
-    setView('my-profile');
-    fetchUserProfileAndMatches();
+    setView('my-profile'); // Set view back to 'my-profile' or 'dashboard' as needed
+    fetchUserProfileAndMatches(); // Re-fetch data to ensure it's up-to-date
   };
 
   const handleProfileUpdate = () => {
-    fetchUserProfileAndMatches();
+    fetchUserProfileAndMatches(); // Re-fetch all data after profile update
     setView('my-profile');
   };
 
+  // New function to handle sending a message
   const handleSendMessage = async (e) => {
     e.preventDefault();
     if (newMessage.trim() === '' || !selectedMatch || !user) return;
@@ -418,6 +450,7 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => {
 
       return (
         <div className="flex flex-1 p-8">
+          {/* Left panel: Match List */}
           <div className="flex flex-col w-1/3 bg-white rounded-l-xl shadow-lg border-r border-gray-200 p-4 space-y-4">
             <h3 className="text-2xl font-bold text-[#2A1E5C] mb-4">VibeMates</h3>
             {matches.length > 0 ? (
@@ -448,6 +481,7 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => {
             )}
           </div>
 
+          {/* Right panel: Profile Details and Chat Interface */}
           <div className="flex-1 bg-white rounded-r-xl shadow-lg p-6 flex flex-col">
             {selectedMatch ? (
               <>
@@ -506,9 +540,15 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => {
         <div className="flex flex-1 items-center justify-center p-8 text-[#2A1E5C]">
           <div className="bg-white p-8 rounded-xl shadow-lg w-full max-w-2xl mx-auto space-y-6">
             <h2 className="text-4xl font-bold text-center text-[#2A1E5C] mb-4">
-              Personalize Your Vibe ⚙
+              Personalize Your Vibe ⚙️
             </h2>
-            <p className="text-red-500 text-2xl font-bold text-center"></p>
+            {/* Display error/success messages here */}
+            {error && (
+              <p className={`text-center text-lg font-semibold ${error.includes('successfully') ? 'text-green-600' : 'text-red-600'}`}>
+                {error}
+              </p>
+            )}
+            {/* Age Range Setting */}
             <div>
               <div className="flex justify-between items-center mb-2">
                 <label className="text-lg font-semibold text-[#2A1E5C]">Age Range 🎂</label>
@@ -534,6 +574,7 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => {
               </div>
             </div>
 
+            {/* Gender Preference Setting */}
             <div>
               <label className="block text-lg font-semibold text-[#2A1E5C] mb-2">Gender Preference 🤔</label>
               <div className="flex flex-wrap gap-3">
@@ -555,6 +596,7 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => {
               </div>
             </div>
 
+            {/* Distance Setting */}
             <div>
               <div className="flex justify-between items-center mb-2">
                 <label className="text-lg font-semibold text-[#2A1E5C]">Max Distance 📍</label>
@@ -570,6 +612,7 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => {
               />
             </div>
             
+            {/* Vibe Match Score Setting */}
             <div>
               <div className="flex justify-between items-center mb-2">
                 <label className="text-lg font-semibold text-[#2A1E5C]">Min Vibe Match Score ✨</label>
@@ -586,10 +629,11 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => {
               />
             </div>
             
+            {/* Schedule Preference Setting */}
             <div>
               <label className="block text-lg font-semibold text-[#2A1E5C] mb-2">Your Schedule ⏰</label>
               <div className="flex flex-wrap gap-3">
-                {['Night Owl', 'Early Bird'].map((schedule) => (
+                {['Night Owl', 'Early Bird', 'All'].map((schedule) => (
                   <button
                     key={schedule}
                     onClick={() => setSettings({ ...settings, schedule })}
@@ -601,12 +645,13 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => {
                       }
                     `}
                   >
-                    {schedule}
+                    {schedule === 'All' ? 'All Time' : schedule}
                   </button>
                 ))}
               </div>
             </div>
             
+            {/* Pet Friendly Setting */}
             <div className="flex items-center justify-between">
               <label className="text-lg font-semibold text-[#2A1E5C]">Pet Friendly 🐾</label>
               <button
@@ -625,105 +670,155 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => {
               </button>
             </div>
 
+            {/* Location Sharing Controls */}
+            <div className="space-y-4">
+              <h4 className="text-xl font-bold text-[#2A1E5C] mb-2">Location Sharing</h4>
+              {profile?.location ? (
+                <>
+                  <p className="text-sm text-gray-500">
+                    Location sharing is ON. Matches can see your approximate distance.
+                  </p>
+                  <p className="text-sm text-gray-500">
+                    Your current coordinates: Latitude {profile.location.latitude.toFixed(4)}, Longitude {profile.location.longitude.toFixed(4)}
+                  </p>
+                  <button
+                    onClick={handleStopSharingLocation}
+                    className="w-full bg-gray-300 text-gray-800 py-3 rounded-lg font-semibold hover:bg-gray-400 transition duration-300"
+                  >
+                    Stop Sharing Location
+                  </button>
+                </>
+              ) : (
+                <>
+                  <p className="text-sm text-gray-500">
+                    Location sharing is OFF. Enable it to see the distance to your matches.
+                  </p>
+                  <button
+                    onClick={handleGetLocation}
+                    className="w-full bg-[#A970FF] text-white py-3 rounded-lg font-semibold hover:bg-[#8B4DEB] transition duration-300 shadow-md"
+                  >
+                    Turn On Location Sharing
+                  </button>
+                </>
+              )}
+            </div>
+
+            {/* Account Management Options */}
+            <div className="space-y-4 pt-6 mt-6 border-t border-gray-200">
+              <h4 className="text-xl font-bold text-[#2A1E5C] mb-2">Account Actions</h4>
+              <p className="text-sm text-gray-500">
+                Deactivating your account will hide your profile from all other users.
+              </p>
+              <button
+                onClick={handleDeactivateAccount}
+                className="w-full bg-yellow-500 text-white py-3 rounded-lg font-semibold hover:bg-yellow-600 transition duration-300 shadow-md"
+              >
+                Deactivate Account
+              </button>
+              <p className="text-sm text-gray-500 mt-4">
+                Warning: Deleting your account is a permanent action and cannot be undone.
+              </p>
+              <button
+                onClick={handleDeleteAccount}
+                className="w-full bg-red-500 text-white py-3 rounded-lg font-semibold hover:bg-red-600 transition duration-300 shadow-md"
+              >
+                Permanently Delete Account
+              </button>
+            </div>
+
+            {/* Save Button */}
             <button
-              onClick={handleApplyFilters}
+              onClick={handleApplyFilters} // Changed to call handleApplyFilters
               className="w-full mt-8 bg-[#A970FF] text-white py-3 rounded-lg font-semibold hover:bg-[#8B4DEB] transition duration-300 shadow-md"
             >
               Save Settings
             </button>
-            {error && <p className="text-red-600 text-center mt-4">{error}</p>}
           </div>
         </div>
       );
     }
 
+    // New: Profile View for selected match
     if (view === 'profile_view') {
-      const matchProfile = selectedMatch;
-      const matchAvatarUrl = matchProfile?.imageUrl || `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='150' viewBox='0 0 150 150'%3E%3Crect width='100%25' height='100%25' fill='%23A970FF'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial, sans-serif' font-size='80' fill='%23FFFFFF'%3E${(matchProfile?.name ? matchProfile.name.charAt(0).toUpperCase() : 'V')}%3C/text%3E%3C/svg%3E`;
-
-      return (
-        <div className="flex-1 p-8">
-          <p className="text-green-500 text-2xl font-bold text-center mb-4"></p>
-          <p className="text-blue-500 text-xl text-center"></p>
-
-          <div className="bg-white p-8 rounded-xl shadow-lg w-full max-w-2xl mx-auto text-[#2A1E5C]">
-            <h2 className="text-4xl font-bold mb-4 text-center">
-              {matchProfile?.name}'s Profile
-            </h2>
-            {matchProfile ? (
-              <>
-                <div className="flex flex-col items-center mb-6">
-                  <div className="w-24 h-24 bg-gray-300 rounded-full mb-4 overflow-hidden">
-                    <img src={matchAvatarUrl} alt="Match Avatar" className="w-full h-full object-cover rounded-full" />
-                  </div>
-                  <h3 className="text-2xl font-semibold">{matchProfile.name || 'Unknown User'}</h3>
-                  <p className="text-gray-500">{matchProfile.bio || 'No bio provided.'}</p>
-                  {matchProfile.distance && (
-                    <span className="text-sm text-gray-500 mt-2">{matchProfile.distance} km away</span>
-                  )}
+        if (!selectedMatch) {
+            return (
+                <div className="p-8 text-center text-xl text-gray-500">
+                    No profile selected.
                 </div>
+            );
+        }
+        const matchAvatarUrl = selectedMatch?.imageUrl || `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='150' viewBox='0 0 150 150'%3E%3Crect width='100%25' height='100%25' fill='%23A970FF'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial, sans-serif' font-size='80' fill='%23FFFFFF'%3E${(selectedMatch.name ? selectedMatch.name.charAt(0).toUpperCase() : 'V')}%3C/text%3E%3C/svg%3E`;
 
-                <div className="space-y-4">
-                  <div>
-                    <h4 className="text-xl font-bold mb-2">Vibes</h4>
-                    <div className="flex flex-wrap gap-2">
-                      {matchProfile.vibes && matchProfile.vibes.length > 0 ? (
-                        matchProfile.vibes.map((vibe, index) => (
-                          <span key={index} className="bg-[#A970FF] text-white px-3 py-1 rounded-full text-sm shadow">
-                            {vibe}
-                          </span>
-                        ))
-                      ) : (
-                        <p className="text-gray-500">No vibes selected.</p>
-                      )}
-                    </div>
-                  </div>
+        return (
+            <div className="p-8">
+                <div className="bg-white p-8 rounded-xl shadow-lg w-full max-w-2xl mx-auto text-[#2A1E5C]">
+                    <h2 className="text-4xl font-bold mb-4 text-center">{selectedMatch.name}'s Profile</h2>
+                    <>
+                        <div className="flex flex-col items-center mb-6">
+                            <div className="w-24 h-24 bg-gray-300 rounded-full mb-4">
+                                <img src={matchAvatarUrl} alt="Match Avatar" className="w-full h-full object-cover rounded-full" />
+                            </div>
+                            <h3 className="text-2xl font-semibold">{selectedMatch.name || 'Anonymous User'}</h3>
+                            <p className="text-gray-500">{selectedMatch.bio || 'No bio provided.'}</p>
+                        </div>
 
-                  <div>
-                    <h4 className="text-xl font-bold mb-2">Moods</h4>
-                    <div className="flex flex-wrap gap-2">
-                      {matchProfile.moods && matchProfile.moods.length > 0 ? (
-                        matchProfile.moods.map((mood, index) => (
-                          <span key={index} className="bg-[#A970FF] text-white px-3 py-1 rounded-full text-sm shadow">
-                            {mood}
-                          </span>
-                        ))
-                      ) : (
-                        <p className="text-gray-500">No moods selected.</p>
-                      )}
-                    </div>
-                  </div>
+                        <div className="space-y-4">
+                            <div>
+                                <h4 className="text-xl font-bold mb-2">Vibes</h4>
+                                <div className="flex flex-wrap gap-2">
+                                    {selectedMatch.vibes && selectedMatch.vibes.length > 0 ? (
+                                        selectedMatch.vibes.map((vibe, index) => (
+                                            <span key={index} className="bg-[#A970FF] text-white px-3 py-1 rounded-full text-sm shadow">
+                                                {vibe}
+                                            </span>
+                                        ))
+                                    ) : (
+                                        <p className="text-gray-500">No vibes selected.</p>
+                                    )}
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <h4 className="text-xl font-bold mb-2">Moods</h4>
+                                <div className="flex flex-wrap gap-2">
+                                    {selectedMatch.moods && selectedMatch.moods.length > 0 ? (
+                                        selectedMatch.moods.map((mood, index) => (
+                                            <span key={index} className="bg-[#A970FF] text-white px-3 py-1 rounded-full text-sm shadow">
+                                                {mood}
+                                            </span>
+                                        ))
+                                    ) : (
+                                        <p className="text-gray-500">No moods selected.</p>
+                                    )}
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <h4 className="text-xl font-bold mb-2">Basic Info</h4>
+                                <p className="text-gray-700">Age: {selectedMatch.age || 'N/A'}</p>
+                                <p className="text-700">Gender: {selectedMatch.gender || 'N/A'}</p>
+                                <p className="text-gray-700">City: {selectedMatch.city || 'N/A'}</p> 
+                                <p className="text-gray-700">Schedule: {selectedMatch.schedule || 'N/A'}</p>
+                                <p className="text-gray-700">Pet Friendly: {selectedMatch.petFriendly ? 'Yes' : 'No'}</p>
+                                {selectedMatch.distance && (
+                                    <p className="text-gray-700">Distance: {selectedMatch.distance} km away</p>
+                                )}
+                            </div>
+                        </div>
 
-                  <div>
-                    <h4 className="text-xl font-bold mb-2">Basic Info</h4>
-                    <p className="text-gray-700">Age: {matchProfile.age || 'N/A'}</p>
-                    <p className="text-gray-700">Gender: {matchProfile.gender || 'N/A'}</p>
-                    <p className="text-gray-700">City: {matchProfile.city || 'N/A'}</p>
-                    <p className="text-gray-700">Schedule: {matchProfile.schedule || 'N/A'}</p>
-                    <p className="text-gray-700">Pet Friendly: {matchProfile.petFriendly ? 'Yes' : 'No'}</p>
-                  </div>
+                        <button
+                          onClick={() => setView('dashboard')}
+                          className="w-full mt-8 bg-gray-300 text-gray-800 py-3 rounded-lg font-semibold hover:bg-gray-400 transition duration-300"
+                        >
+                          Back to Dashboard
+                        </button>
+                    </>
                 </div>
-
-                <button
-                  onClick={() => handleMatchClick(matchProfile)}
-                  className="w-full mt-8 bg-[#A970FF] text-white py-3 rounded-lg font-semibold hover:bg-[#8B4DEB] transition duration-300 shadow-md"
-                >
-                  Start Chat
-                </button>
-                <button
-                  onClick={() => setView('dashboard')}
-                  className="w-full mt-4 bg-gray-300 text-gray-800 py-3 rounded-lg font-semibold hover:bg-gray-400 transition duration-300"
-                >
-                  Back to VibeMates List
-                </button>
-              </>
-            ) : (
-              <p className="text-lg text-red-600 text-center">Profile not found.</p>
-            )}
-          </div>
-        </div>
-      );
+            </div>
+        );
     }
+    
+    // Default 'dashboard' view
     return (
       <div className="flex-1 p-8">
         <header className="flex justify-between items-center mb-8">
@@ -760,12 +855,12 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => {
                     <span className="text-sm text-gray-300">{match.distance} km away</span>
                   )}
                 </div>
+                {/* The "Visit Profile" button now correctly handles the navigation */}
                 <button 
                   onClick={(e) => {
-                    e.stopPropagation();
-                    console.log('Visiting profile for:', match);
+                    e.stopPropagation(); // Prevent the parent div's onClick from firing
                     setSelectedMatch(match);
-                    setView('profile_view');
+                    setView('profile_view'); // Change view to 'profile_view'
                   }}
                   className="absolute bottom-4 right-4 text-white bg-[#A970FF] px-4 py-2 rounded-full font-semibold opacity-0 group-hover:opacity-100 transition-opacity duration-300"
                 >
@@ -819,6 +914,7 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => {
           }
         `}
       </style>
+      {/* Sidebar */}
       <aside className="w-64 bg-[#2A1E5C] text-white p-6 shadow-xl flex flex-col justify-between">
         <div>
           <button
@@ -845,10 +941,10 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => {
               <span className="mr-3">🏠</span> Discover
             </button>
             <button onClick={() => setView('vibemate')} className="w-full flex items-center p-3 rounded-lg hover:bg-gray-700 transition-colors duration-200 text-left">
-              <span className="mr-3">✉</span> VibeMate
+              <span className="mr-3">✉️</span> VibeMate
             </button>
             <button onClick={() => setView('settings')} className="w-full flex items-center p-3 rounded-lg hover:bg-gray-700 transition-colors duration-200 text-left">
-              <span className="mr-3">⚙</span> Settings
+              <span className="mr-3">⚙️</span> Settings
             </button>
           </nav>
         </div>
