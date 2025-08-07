@@ -38,7 +38,11 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => { // Ac
   
   // State for chat functionality
   const [messages, setMessages] = useState([]);
-  const [newMessage, setNewMessage] = useState('');
+  const [newMessage, setNewMessage] = useState(''); // Corrected: useState initialization
+
+  // Constants for age range
+  const MIN_AGE_LIMIT = 18;
+  const MAX_AGE_LIMIT = 60;
 
   // State for settings and filters
   const [settings, setSettings] = useState({
@@ -205,9 +209,6 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => { // Ac
       // Update the component's settings state with the fetched or default filters
       setSettings(filtersToApply);
 
-
-      // 2. Fetch matches using the new efficient logic, passing current settings as filters
-      // Important: Use the updated filtersToApply directly here
       let matchedProfiles = await fetchMatches(user, userProfileData.vibes || [], filtersToApply);
       
       // Post-fetch filtering for distance, as Firestore doesn't support geospatial queries directly
@@ -222,7 +223,8 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => { // Ac
             );
             return distance <= filtersToApply.maxDistance;
           }
-          return false; // Exclude profiles without location if distance filter is active
+          // Changed to return true: Keep profiles that don't have location data
+          return true; 
         });
       }
 
@@ -251,9 +253,11 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => { // Ac
 
   // New function to handle selecting a match
   const handleMatchClick = (match) => {
+    console.log('handleMatchClick called with match:', match); // Debugging log
     setSelectedMatch(match);
     setMessages([]); // Clear messages when switching matches
     setNewMessage(''); // Clear new message input
+    console.log('Setting view to vibemate'); // Debugging log
     setView('vibemate');
   };
   
@@ -358,6 +362,11 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => { // Ac
   const userAvatarUrl = profile?.imageUrl || `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='150' viewBox='0 0 150 150'%3E%3Crect width='100%25' height='100%25' fill='%23A970FF'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial, sans-serif' font-size='80' fill='%23FFFFFF'%3E${(userDisplayName ? userDisplayName.charAt(0).toUpperCase() : 'V')}%3C/text%3E%3C/svg%3E`;
 
   const renderContent = () => {
+    console.log('renderContent called. Current view state:', view); // Debugging log
+    // Calculate derived min/max age for display in settings
+    const displayedMinAge = settings.minAge;
+    const displayedMaxAge = settings.maxAge;
+
     if (view === 'edit-profile') {
       return (
         <div className="p-8">
@@ -548,29 +557,56 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => { // Ac
                 {error}
               </p>
             )}
-            {/* Age Range Setting */}
+            {/* Age Range Setting - Single Slider */}
             <div>
               <div className="flex justify-between items-center mb-2">
                 <label className="text-lg font-semibold text-[#2A1E5C]">Age Range 🎂</label>
                 <span className="text-gray-500">{settings.minAge} - {settings.maxAge}</span>
               </div>
-              <div className="flex items-center space-x-4">
+              <div className="relative h-2 bg-gray-200 rounded-lg">
                 <input
                   type="range"
-                  min="18"
-                  max="60"
+                  min={MIN_AGE_LIMIT}
+                  max={MAX_AGE_LIMIT}
                   value={settings.minAge}
-                  onChange={(e) => setSettings({ ...settings, minAge: Number(e.target.value) })}
-                  className="w-1/2 appearance-none h-2 bg-gray-200 rounded-lg outline-none slider-thumb-purple"
+                  onChange={(e) => {
+                    const newMinAge = Number(e.target.value);
+                    setSettings(prevSettings => ({
+                      ...prevSettings,
+                      minAge: Math.min(newMinAge, prevSettings.maxAge - 1), // Ensure min is always less than max
+                    }));
+                  }}
+                  className="absolute w-full appearance-none h-2 bg-transparent rounded-lg outline-none slider-thumb-purple z-20"
+                  style={{
+                    background: 'none',
+                    pointerEvents: 'auto',
+                  }}
                 />
                 <input
                   type="range"
-                  min="18"
-                  max="60"
+                  min={MIN_AGE_LIMIT}
+                  max={MAX_AGE_LIMIT}
                   value={settings.maxAge}
-                  onChange={(e) => setSettings({ ...settings, maxAge: Number(e.target.value) })}
-                  className="w-1/2 appearance-none h-2 bg-gray-200 rounded-lg outline-none slider-thumb-purple"
+                  onChange={(e) => {
+                    const newMaxAge = Number(e.target.value);
+                    setSettings(prevSettings => ({
+                      ...prevSettings,
+                      maxAge: Math.max(newMaxAge, prevSettings.minAge + 1), // Ensure max is always greater than min
+                    }));
+                  }}
+                  className="absolute w-full appearance-none h-2 bg-transparent rounded-lg outline-none slider-thumb-purple z-20"
+                  style={{
+                    background: 'none',
+                    pointerEvents: 'auto',
+                  }}
                 />
+                <div 
+                  className="absolute h-full bg-[#A970FF] rounded-lg z-10"
+                  style={{
+                    left: `${((settings.minAge - MIN_AGE_LIMIT) / (MAX_AGE_LIMIT - MIN_AGE_LIMIT)) * 100}%`,
+                    width: `${((settings.maxAge - settings.minAge) / (MAX_AGE_LIMIT - MIN_AGE_LIMIT)) * 100}%`,
+                  }}
+                ></div>
               </div>
             </div>
 
@@ -616,7 +652,7 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => { // Ac
             <div>
               <div className="flex justify-between items-center mb-2">
                 <label className="text-lg font-semibold text-[#2A1E5C]">Min Vibe Match Score ✨</label>
-                <span className="text-gray-500">{settings.minVibeScore}%</span>
+                <span className="text-500">{settings.minVibeScore}%</span>
               </div>
               <input
                 type="range"
@@ -753,7 +789,8 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => { // Ac
             <div className="p-8">
                 <div className="bg-white p-8 rounded-xl shadow-lg w-full max-w-2xl mx-auto text-[#2A1E5C]">
                     <h2 className="text-4xl font-bold mb-4 text-center">{selectedMatch.name}'s Profile</h2>
-                    <>
+                    {/* Replaced Fragment with a div */}
+                    <div> 
                         <div className="flex flex-col items-center mb-6">
                             <div className="w-24 h-24 bg-gray-300 rounded-full mb-4">
                                 <img src={matchAvatarUrl} alt="Match Avatar" className="w-full h-full object-cover rounded-full" />
@@ -806,13 +843,21 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => { // Ac
                             </div>
                         </div>
 
+                        {/* New "Start Chat" button */}
+                        <button
+                          onClick={() => handleMatchClick(selectedMatch)} // Reuses handleMatchClick to set up chat
+                          className="w-full mt-8 bg-[#A970FF] text-white py-3 rounded-lg font-semibold hover:bg-[#8B4DEB] transition duration-300 shadow-md"
+                        >
+                          Start Chat
+                        </button>
+
                         <button
                           onClick={() => setView('dashboard')}
-                          className="w-full mt-8 bg-gray-300 text-gray-800 py-3 rounded-lg font-semibold hover:bg-gray-400 transition duration-300"
+                          className="w-full mt-4 bg-gray-300 text-gray-800 py-3 rounded-lg font-semibold hover:bg-gray-400 transition duration-300"
                         >
                           Back to Dashboard
                         </button>
-                    </>
+                    </div> {/* Closing div for the content previously in Fragment */}
                 </div>
             </div>
         );
@@ -824,11 +869,7 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => { // Ac
         <header className="flex justify-between items-center mb-8">
           <h2 className="text-3xl font-bold">Who's Nearby?</h2>
           <div className="flex items-center space-x-4">
-            <input
-              type="text"
-              placeholder="Search for a vibe..."
-              className="px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#A970FF]"
-            />
+            {/* Removed search input */}
             <button onClick={() => setView('settings')} className="px-4 py-2 bg-gray-200 rounded-lg text-gray-700 hover:bg-gray-300 transition-colors duration-200">
               Filters
             </button>

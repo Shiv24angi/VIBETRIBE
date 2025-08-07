@@ -1,4 +1,3 @@
-// src/utils/MatchinLogic.js
 import { collectionGroup, query, where, getDocs, doc, getDoc } from 'firebase/firestore';
 import { db } from '../firebase/firebaseConfig';
 
@@ -74,13 +73,13 @@ export const fetchMatches = async (currentUser, userVibes, filters) => {
         if (isMatch) {
           // Generate a data URI for the image to avoid external network calls
           const firstLetter = profileData.name ? profileData.name.charAt(0).toUpperCase() : 'V';
-          const imageUrl = `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='150' viewBox='0 0 150 150'%3E%3Crect width='100%25' height='100%25' fill='%23A970FF'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial, sans-serif' font-size='80' fill='%23FFFFFF'%3E${firstLetter}%3C/text%3E%3C/svg%3E`;  
+          const imageUrl = `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='150' viewBox='0 0 150 150'%3E%3Crect width='100%25' height='100%25' fill='%23A970FF'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial, sans-serif' font-size='80' fill='%23FFFFFF'%3E${firstLetter}%3C/text%3E%3C/svg%3E`; 
 
           allMatches.push({
             id: profileData.userId,
             name: profileData.name,
             imageUrl: imageUrl,
-            location: profileData.location,
+            location: profileData.location, // Keep location data, but it won't be used for filtering
             ...profileData,
           });
         }
