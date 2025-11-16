@@ -352,7 +352,7 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => { // Ac
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[#EFE0E5]">
+      <div className="min-h-screen flex items-center justify-center bg-[var(--bg-page)]">
         <LoadingSpinner />
       </div>
     );
@@ -920,7 +920,7 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => { // Ac
   };
 
   return (
-    <div className="flex min-h-screen bg-[#F0F2F5] text-[#2A1E5C]">
+    <div className="flex min-h-screen bg-[var(--bg-page)] text-[var(--text-strong)]">
       <style>
         {`
           .slider-thumb-purple::-webkit-slider-thumb {
@@ -956,13 +956,13 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => { // Ac
         `}
       </style>
       {/* Sidebar */}
-      <aside className="w-64 bg-[#2A1E5C] text-white p-6 shadow-xl flex flex-col justify-between">
+      <aside className="w-64 bg-[var(--text-strong)] text-white p-6 shadow-xl flex flex-col justify-between">
         <div>
           <button
             onClick={() => setView('dashboard')}
             className="w-full flex items-center space-x-2 mb-8 text-left"
           >
-            <div className="w-10 h-10 bg-[#A970FF] rounded-full flex items-center justify-center text-white font-bold text-xl">V</div>
+            <div className="w-10 h-10 bg-[var(--accent)] rounded-full flex items-center justify-center text-white font-bold text-xl">V</div>
             <h1 className="text-2xl font-bold">VibeTribe</h1>
           </button>
           <button
@@ -991,7 +991,7 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => { // Ac
         </div>
         <button
           onClick={handleLogout}
-          className="w-full bg-[#A970FF] text-white py-3 px-6 rounded-lg font-semibold hover:bg-[#8B4DEB] transition duration-300 shadow-md"
+          className="w-full bg-[var(--accent)] text-white py-3 px-6 rounded-lg font-semibold hover:bg-[var(--accent-2)] transition duration-300 shadow-md"
         >
           Log Out
         </button>
