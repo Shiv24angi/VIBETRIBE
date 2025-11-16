@@ -460,8 +460,8 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => { // Ac
       return (
         <div className="flex flex-1 p-8">
           {/* Left panel: Match List */}
-          <div className="flex flex-col w-1/3 bg-white rounded-l-xl shadow-lg border-r border-gray-200 p-4 space-y-4">
-            <h3 className="text-2xl font-bold text-[#2A1E5C] mb-4">VibeMates</h3>
+          <div className="flex flex-col w-1/3 bg-[var(--panel)] rounded-l-xl shadow-lg border-r border-[var(--muted-2)] p-4 space-y-4">
+            <h3 className="text-2xl font-bold text-[var(--text-strong)] mb-4">VibeMates</h3>
             {matches.length > 0 ? (
               matches.map((match) => (
                 <button
@@ -469,7 +469,7 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => { // Ac
                   onClick={() => handleMatchClick(match)}
                   className={`
                     flex items-center space-x-4 p-3 rounded-lg transition-colors duration-200
-                    ${selectedMatch?.id === match.id ? 'bg-[#E8E3F5] text-[#2A1E5C] font-semibold' : 'hover:bg-gray-100'}
+                    ${selectedMatch?.id === match.id ? 'bg-[var(--muted-1)] text-[var(--text-strong)] font-semibold' : 'hover:bg-[var(--muted-2)]'}
                   `}
                 >
                   <img
@@ -491,11 +491,11 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => { // Ac
           </div>
 
           {/* Right panel: Profile Details and Chat Interface */}
-          <div className="flex-1 bg-white rounded-r-xl shadow-lg p-6 flex flex-col">
+          <div className="flex-1 bg-[var(--panel)] rounded-r-xl shadow-lg p-6 flex flex-col">
             {selectedMatch ? (
               <>
                 <div className="flex-grow overflow-y-auto space-y-4">
-                  <div className="flex items-center space-x-4 border-b border-gray-200 pb-4 mb-4">
+                  <div className="flex items-center space-x-4 border-b border-[var(--muted-2)] pb-4 mb-4">
                     <img
                       src={matchAvatarUrl}
                       alt={selectedMatch.name}
@@ -508,7 +508,7 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => { // Ac
                     {messages.length > 0 ? (
                       messages.map((msg) => (
                         <div key={msg.id} className={`flex ${msg.senderId === user.uid ? 'justify-end' : 'justify-start'}`}>
-                          <div className={`p-3 rounded-lg max-w-[70%] ${msg.senderId === user.uid ? 'bg-[#A970FF] text-white' : 'bg-gray-200 text-gray-800'}`}>
+                          <div className={`p-3 rounded-lg max-w-[70%] ${msg.senderId === user.uid ? 'bg-[var(--accent)] text-white' : 'bg-[var(--muted-2)] text-[var(--text-strong)]'}`}>
                             {msg.text}
                           </div>
                         </div>
@@ -519,15 +519,15 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => { // Ac
                   </div>
                 </div>
 
-                <form onSubmit={handleSendMessage} className="flex items-center mt-4 pt-4 border-t border-gray-200">
+                <form onSubmit={handleSendMessage} className="flex items-center mt-4 pt-4 border-t border-[var(--muted-2)]">
                   <input
                     type="text"
                     placeholder={`Message ${selectedMatch.name}...`}
                     value={newMessage}
                     onChange={(e) => setNewMessage(e.target.value)}
-                    className="flex-1 px-4 py-3 rounded-full bg-gray-100 focus:outline-none focus:ring-2 focus:ring-[#A970FF]"
+                    className="flex-1 px-4 py-3 rounded-full bg-[var(--muted-2)] focus:outline-none focus:ring-2 focus:ring-[var(--accent)]"
                   />
-                  <button type="submit" className="ml-4 bg-[#A970FF] text-white p-3 rounded-full hover:bg-[#8B4DEB] transition-colors duration-200">
+                  <button type="submit" className="ml-4 bg-[var(--accent)] text-white p-3 rounded-full hover:bg-[var(--accent-2)] transition-colors duration-200">
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
                     </svg>
