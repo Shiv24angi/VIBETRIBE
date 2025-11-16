@@ -50,8 +50,8 @@ const LandingPage = ({ onAuthSuccess }) => {
       }}
     >
       {/* Header - Always visible and fixed */}
-      <header className="w-full bg-white bg-opacity-90 shadow-md py-4 px-8 flex justify-between items-center fixed top-0 left-0 z-50">
-        <h1 className="text-3xl font-extrabold text-[#2A1E5C]">VibeTribe</h1>
+      <header className="w-full bg-[var(--panel)] bg-opacity-95 shadow-md py-4 px-8 flex justify-between items-center fixed top-0 left-0 z-50">
+        <h1 className="text-3xl font-extrabold text-[var(--text-strong)]">VibeTribe</h1>
         <nav className="flex items-center space-x-6">
           <button
             onClick={() => scrollToSection(welcomeRef)}
