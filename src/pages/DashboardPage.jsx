@@ -979,13 +979,13 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => { // Ac
             </div>
           </button>
           <nav className="space-y-2 mb-8">
-            <button onClick={() => setView('dashboard')} className="w-full flex items-center p-3 rounded-lg hover:bg-gray-700 transition-colors duration-200 text-left">
+            <button onClick={() => setView('dashboard')} className="w-full flex items-center p-3 rounded-lg hover:bg-[var(--accent)] hover:text-white transition-colors duration-200 text-left">
               <span className="mr-3">🏠</span> Discover
             </button>
-            <button onClick={() => setView('vibemate')} className="w-full flex items-center p-3 rounded-lg hover:bg-gray-700 transition-colors duration-200 text-left">
+            <button onClick={() => setView('vibemate')} className="w-full flex items-center p-3 rounded-lg hover:bg-[var(--accent)] hover:text-white transition-colors duration-200 text-left">
               <span className="mr-3">✉️</span> VibeMate
             </button>
-            <button onClick={() => setView('settings')} className="w-full flex items-center p-3 rounded-lg hover:bg-gray-700 transition-colors duration-200 text-left">
+            <button onClick={() => setView('settings')} className="w-full flex items-center p-3 rounded-lg hover:bg-[var(--accent)] hover:text-white transition-colors duration-200 text-left">
               <span className="mr-3">⚙️</span> Settings
             </button>
           </nav>
