@@ -600,9 +600,10 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => { // Ac
                     pointerEvents: 'auto',
                   }}
                 />
-                <div 
-                  className="absolute h-full bg-[#A970FF] rounded-lg z-10"
+                <div
+                  className="absolute h-full rounded-lg z-10"
                   style={{
+                    backgroundColor: 'var(--accent)',
                     left: `${((settings.minAge - MIN_AGE_LIMIT) / (MAX_AGE_LIMIT - MIN_AGE_LIMIT)) * 100}%`,
                     width: `${((settings.maxAge - settings.minAge) / (MAX_AGE_LIMIT - MIN_AGE_LIMIT)) * 100}%`,
                   }}
