@@ -787,7 +787,7 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => { // Ac
 
         return (
             <div className="p-8">
-                <div className="bg-white p-8 rounded-xl shadow-lg w-full max-w-2xl mx-auto text-[#2A1E5C]">
+                <div className="bg-[var(--panel)] p-8 rounded-xl shadow-lg w-full max-w-2xl mx-auto text-[var(--text-strong)]">
                     <h2 className="text-4xl font-bold mb-4 text-center">{selectedMatch.name}'s Profile</h2>
                     {/* Replaced Fragment with a div */}
                     <div> 
@@ -805,7 +805,7 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => { // Ac
                                 <div className="flex flex-wrap gap-2">
                                     {selectedMatch.vibes && selectedMatch.vibes.length > 0 ? (
                                         selectedMatch.vibes.map((vibe, index) => (
-                                            <span key={index} className="bg-[#A970FF] text-white px-3 py-1 rounded-full text-sm shadow">
+                                            <span key={index} className="bg-[var(--accent)] text-white px-3 py-1 rounded-full text-sm shadow">
                                                 {vibe}
                                             </span>
                                         ))
@@ -820,7 +820,7 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => { // Ac
                                 <div className="flex flex-wrap gap-2">
                                     {selectedMatch.moods && selectedMatch.moods.length > 0 ? (
                                         selectedMatch.moods.map((mood, index) => (
-                                            <span key={index} className="bg-[#A970FF] text-white px-3 py-1 rounded-full text-sm shadow">
+                                            <span key={index} className="bg-[var(--accent)] text-white px-3 py-1 rounded-full text-sm shadow">
                                                 {mood}
                                             </span>
                                         ))
@@ -845,15 +845,15 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => { // Ac
 
                         {/* New "Start Chat" button */}
                         <button
-                          onClick={() => handleMatchClick(selectedMatch)} // Reuses handleMatchClick to set up chat
-                          className="w-full mt-8 bg-[#A970FF] text-white py-3 rounded-lg font-semibold hover:bg-[#8B4DEB] transition duration-300 shadow-md"
+                          onClick={() => handleMatchClick(selectedMatch)}
+                          className="w-full mt-8 bg-[var(--accent)] text-white py-3 rounded-lg font-semibold hover:bg-[var(--accent-2)] transition duration-300 shadow-md"
                         >
                           Start Chat
                         </button>
 
                         <button
                           onClick={() => setView('dashboard')}
-                          className="w-full mt-4 bg-gray-300 text-gray-800 py-3 rounded-lg font-semibold hover:bg-gray-400 transition duration-300"
+                          className="w-full mt-4 bg-[var(--muted-2)] text-[var(--text-strong)] py-3 rounded-lg font-semibold hover:bg-[var(--soft-lilac)] transition duration-300"
                         >
                           Back to Dashboard
                         </button>
