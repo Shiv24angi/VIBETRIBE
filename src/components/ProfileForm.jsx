@@ -135,20 +135,20 @@ const ProfileForm = ({ userId, onProfileCreated, onGoBackToLanding }) => { // Ad
   if (loading) return <LoadingSpinner />;
 
   return (
-    <div className="bg-[#FFF3F6] p-8 rounded-xl shadow-lg w-full max-w-2xl mx-auto">
-      <h2 className="text-3xl font-bold text-center text-[#2A1E5C] mb-8">
+    <div className="bg-[var(--muted-1)] p-8 rounded-xl shadow-lg w-full max-w-2xl mx-auto">
+      <h2 className="text-3xl font-bold text-center text-[var(--text-strong)] mb-8">
         Create Your VibeTribe Profile
       </h2>
 
       <form onSubmit={handleSubmit} className="space-y-6">
         <div>
-          <label htmlFor="name" className="block text-[#2A1E5C] text-lg font-semibold mb-2">
+          <label htmlFor="name" className="block text-[var(--text-strong)] text-lg font-semibold mb-2">
             Your Name:
           </label>
           <input
             type="text"
             id="name"
-            className="w-full px-4 py-3 border border-[#A970FF] rounded-lg focus:ring-2 focus:ring-[#A970FF] focus:border-transparent transition duration-200 text-lg"
+            className="w-full px-4 py-3 border border-[var(--accent)] rounded-lg focus:ring-2 focus:ring-[var(--accent)] focus:border-transparent transition duration-200 text-lg"
             placeholder="harshit"
             value={name}
             onChange={(e) => setName(e.target.value)}
@@ -157,13 +157,13 @@ const ProfileForm = ({ userId, onProfileCreated, onGoBackToLanding }) => { // Ad
         </div>
 
         <div>
-          <label htmlFor="bio" className="block text-[#2A1E5C] text-lg font-semibold mb-2">
+          <label htmlFor="bio" className="block text-[var(--text-strong)] text-lg font-semibold mb-2">
             Short Bio:
           </label>
           <textarea
             id="bio"
             rows="4"
-            className="w-full px-4 py-3 border border-[#A970FF] rounded-lg focus:ring-2 focus:ring-[#A970FF] focus:border-transparent transition duration-200 text-lg resize-y"
+            className="w-full px-4 py-3 border border-[var(--accent)] rounded-lg focus:ring-2 focus:ring-[var(--accent)] focus:border-transparent transition duration-200 text-lg resize-y"
             placeholder="hello fam"
             value={bio}
             onChange={(e) => setBio(e.target.value)}
@@ -171,27 +171,27 @@ const ProfileForm = ({ userId, onProfileCreated, onGoBackToLanding }) => { // Ad
         </div>
 
         <div>
-          <label htmlFor="image" className="block text-[#2A1E5C] text-lg font-semibold mb-2">
+          <label htmlFor="image" className="block text-[var(--text-strong)] text-lg font-semibold mb-2">
             Profile Picture:
           </label>
           <input
             type="file"
             id="image"
             accept="image/*"
-            className="w-full text-lg file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-[#E8E3F5] file:text-[#2A1E5C] hover:file:bg-[#D6CCF1]"
+            className="w-full text-lg file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-[var(--muted-2)] file:text-[var(--text-strong)] hover:file:bg-[var(--soft-lilac)]"
             onChange={(e) => setImageFile(e.target.files[0])}
           />
         </div>
 
         {/* New: Age Input */}
         <div>
-          <label htmlFor="age" className="block text-[#2A1E5C] text-lg font-semibold mb-2">
+          <label htmlFor="age" className="block text-[var(--text-strong)] text-lg font-semibold mb-2">
             Your Age:
           </label>
           <input
             type="number"
             id="age"
-            className="w-full px-4 py-3 border border-[#A970FF] rounded-lg focus:ring-2 focus:ring-[#A970FF] focus:border-transparent transition duration-200 text-lg"
+            className="w-full px-4 py-3 border border-[var(--accent)] rounded-lg focus:ring-2 focus:ring-[var(--accent)] focus:border-transparent transition duration-200 text-lg"
             placeholder="e.g., 25"
             value={age}
             onChange={(e) => setAge(e.target.value)}
@@ -203,12 +203,12 @@ const ProfileForm = ({ userId, onProfileCreated, onGoBackToLanding }) => { // Ad
 
         {/* New: Gender Selection */}
         <div>
-          <label htmlFor="gender" className="block text-[#2A1E5C] text-lg font-semibold mb-2">
+          <label htmlFor="gender" className="block text-[var(--text-strong)] text-lg font-semibold mb-2">
             Your Gender:
           </label>
           <select
             id="gender"
-            className="w-full px-4 py-3 border border-[#A970FF] rounded-lg focus:ring-2 focus:ring-[#A970FF] focus:border-transparent transition duration-200 text-lg bg-white"
+            className="w-full px-4 py-3 border border-[var(--accent)] rounded-lg focus:ring-2 focus:ring-[var(--accent)] focus:border-transparent transition duration-200 text-lg bg-white"
             value={gender}
             onChange={(e) => setGender(e.target.value)}
             required
@@ -222,13 +222,13 @@ const ProfileForm = ({ userId, onProfileCreated, onGoBackToLanding }) => { // Ad
 
         {/* New: City Input */}
         <div>
-          <label htmlFor="city" className="block text-[#2A1E5C] text-lg font-semibold mb-2">
+          <label htmlFor="city" className="block text-[var(--text-strong)] text-lg font-semibold mb-2">
             Your City:
           </label>
           <input
             type="text"
             id="city"
-            className="w-full px-4 py-3 border border-[#A970FF] rounded-lg focus:ring-2 focus:ring-[#A970FF] focus:border-transparent transition duration-200 text-lg"
+            className="w-full px-4 py-3 border border-[var(--accent)] rounded-lg focus:ring-2 focus:ring-[var(--accent)] focus:border-transparent transition duration-200 text-lg"
             placeholder="e.g., New York"
             value={city}
             onChange={(e) => setCity(e.target.value)}
@@ -238,12 +238,12 @@ const ProfileForm = ({ userId, onProfileCreated, onGoBackToLanding }) => { // Ad
 
         {/* New: Schedule Selection */}
         <div>
-          <label htmlFor="schedule" className="block text-[#2A1E5C] text-lg font-semibold mb-2">
+          <label htmlFor="schedule" className="block text-[var(--text-strong)] text-lg font-semibold mb-2">
             Your Typical Schedule:
           </label>
           <select
             id="schedule"
-            className="w-full px-4 py-3 border border-[#A970FF] rounded-lg focus:ring-2 focus:ring-[#A970FF] focus:border-transparent transition duration-200 text-lg bg-white"
+            className="w-full px-4 py-3 border border-[var(--accent)] rounded-lg focus:ring-2 focus:ring-[var(--accent)] focus:border-transparent transition duration-200 text-lg bg-white"
             value={schedule}
             onChange={(e) => setSchedule(e.target.value)}
           >
@@ -256,7 +256,7 @@ const ProfileForm = ({ userId, onProfileCreated, onGoBackToLanding }) => { // Ad
 
         {/* New: Pet Friendly Toggle */}
         <div className="flex items-center justify-between">
-          <label htmlFor="petFriendly" className="text-lg font-semibold text-[#2A1E5C]">
+          <label htmlFor="petFriendly" className="text-lg font-semibold text-[var(--text-strong)]">
             Pet Friendly? 🐾
           </label>
           <button
@@ -264,7 +264,7 @@ const ProfileForm = ({ userId, onProfileCreated, onGoBackToLanding }) => { // Ad
             onClick={() => setPetFriendly(!petFriendly)}
             className={`
               relative w-14 h-8 flex items-center rounded-full p-1 transition-colors duration-300
-              ${petFriendly ? 'bg-[#A970FF]' : 'bg-gray-300'}
+              ${petFriendly ? 'bg-[var(--accent)]' : 'bg-gray-300'}
             `}
           >
             <span
@@ -293,7 +293,7 @@ const ProfileForm = ({ userId, onProfileCreated, onGoBackToLanding }) => { // Ad
 
         <button
           type="submit"
-          className="w-full bg-[#A970FF] text-white py-4 rounded-lg font-semibold text-xl hover:bg-[#8B4DEB] transition duration-300 shadow-md"
+          className="w-full bg-[var(--accent)] text-white py-4 rounded-lg font-semibold text-xl hover:bg-[var(--accent-2)] transition duration-300 shadow-md"
         >
           Save Profile
         </button>
@@ -305,7 +305,7 @@ const ProfileForm = ({ userId, onProfileCreated, onGoBackToLanding }) => { // Ad
       {/* Changed to "Back to Home" and calls onGoBackToLanding */}
       <button
         onClick={onGoBackToLanding} // This will trigger navigation back to the LandingPage
-        className="w-full mt-4 bg-gray-300 text-gray-800 py-3 rounded-lg font-semibold hover:bg-gray-400 transition duration-300"
+        className="w-full mt-4 bg-[var(--muted-2)] text-[var(--text-strong)] py-3 rounded-lg font-semibold hover:bg-[var(--soft-lilac)] transition duration-300"
       >
         Back to Home
       </button>
