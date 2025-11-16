@@ -51,20 +51,20 @@ const AuthForm = ({ onAuthSuccess }) => {
   };
 
   return (
-    <div className="bg-[#FFF3F6] p-8 rounded-xl shadow-lg w-full max-w-md">
-      <h2 className="text-3xl font-bold text-center text-[#2A1E5C] mb-6">
+    <div className="bg-[var(--muted-1)] p-8 rounded-xl shadow-lg w-full max-w-md">
+      <h2 className="text-3xl font-bold text-center text-[var(--text-strong)] mb-6">
         {isLogin ? 'Login' : 'Sign Up'}
       </h2>
 
       <form onSubmit={handleEmailAuth} className="space-y-4">
         <div>
-          <label htmlFor="email" className="block text-[#2A1E5C] text-sm font-semibold mb-2">
+          <label htmlFor="email" className="block text-[var(--text-strong)] text-sm font-semibold mb-2">
             Email
           </label>
           <input
             type="email"
             id="email"
-            className="w-full px-4 py-2 border border-[#A970FF] rounded-lg focus:ring-2 focus:ring-[#A970FF] focus:border-transparent transition duration-200"
+            className="w-full px-4 py-2 border border-[var(--accent)] rounded-lg focus:ring-2 focus:ring-[var(--accent)] focus:border-transparent transition duration-200"
             placeholder="your@email.com"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
@@ -72,13 +72,13 @@ const AuthForm = ({ onAuthSuccess }) => {
           />
         </div>
         <div>
-          <label htmlFor="password" className="block text-[#2A1E5C] text-sm font-semibold mb-2">
+          <label htmlFor="password" className="block text-[var(--text-strong)] text-sm font-semibold mb-2">
             Password
           </label>
           <input
             type="password"
             id="password"
-            className="w-full px-4 py-2 border border-[#A970FF] rounded-lg focus:ring-2 focus:ring-[#A970FF] focus:border-transparent transition duration-200"
+            className="w-full px-4 py-2 border border-[var(--accent)] rounded-lg focus:ring-2 focus:ring-[var(--accent)] focus:border-transparent transition duration-200"
             placeholder="••••••••"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
@@ -88,21 +88,21 @@ const AuthForm = ({ onAuthSuccess }) => {
 
         <button
           type="submit"
-          className="w-full bg-[#A970FF] text-white py-3 rounded-lg font-semibold hover:bg-[#8B4DEB] transition duration-300 shadow-md"
+          className="w-full bg-[var(--accent)] text-white py-3 rounded-lg font-semibold hover:bg-[var(--accent-2)] transition duration-300 shadow-md"
         >
           {isLogin ? 'Login' : 'Sign Up'}
         </button>
       </form>
 
       <div className="flex items-center my-6">
-        <div className="flex-grow border-t border-[#A970FF]"></div>
-        <span className="flex-shrink mx-4 text-[#2A1E5C]">OR</span>
-        <div className="flex-grow border-t border-[#A970FF]"></div>
+        <div className="flex-grow border-t border-[var(--accent)]"></div>
+        <span className="flex-shrink mx-4 text-[var(--text-strong)]">OR</span>
+        <div className="flex-grow border-t border-[var(--accent)]"></div>
       </div>
 
       <button
         onClick={handleGoogleSignIn}
-        className="w-full flex items-center justify-center bg-[#A970FF] text-white py-3 rounded-lg font-semibold hover:bg-[#8B4DEB] transition duration-300 shadow-md"
+        className="w-full flex items-center justify-center bg-[var(--accent)] text-white py-3 rounded-lg font-semibold hover:bg-[var(--accent-2)] transition duration-300 shadow-md"
       >
         <svg className="w-5 h-5 mr-2" viewBox="0 0 48 48">
           <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.6-6.44C36.83 4.01 30.41 2 24 2 15.16 2 7.41 6.66 3.19 14.15l6.75 4.62C11.65 11.85 17.77 9.5 24 9.5z"></path>
@@ -117,11 +117,11 @@ const AuthForm = ({ onAuthSuccess }) => {
       {message && <p className="text-green-600 text-center mt-4">{message}</p>}
       {error && <p className="text-red-600 text-center mt-4">{error}</p>}
 
-      <p className="text-center text-[#2A1E5C] mt-6">
+      <p className="text-center text-[var(--text-strong)] mt-6">
         {isLogin ? "Don't have an account?" : "Already have an account?"}{' '}
         <button
           onClick={() => setIsLogin(!isLogin)}
-          className="text-[#F8A6C5] hover:underline font-semibold"
+          className="text-[var(--accent)] hover:underline font-semibold"
         >
           {isLogin ? 'Sign Up' : 'Login'}
         </button>
