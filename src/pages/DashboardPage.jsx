@@ -957,7 +957,7 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => { // Ac
         `}
       </style>
       {/* Sidebar */}
-      <aside className="w-64 bg-[var(--text-strong)] text-white p-6 shadow-xl flex flex-col justify-between">
+      <aside className="w-64 bg-gradient-to-b from-[var(--soft-lilac)] to-[var(--muted-2)] text-[var(--text-strong)] p-6 shadow-xl flex flex-col justify-between">
         <div>
           <button
             onClick={() => setView('dashboard')}
