@@ -968,7 +968,7 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => { // Ac
           </button>
           <button
             onClick={() => setView('my-profile')}
-            className="w-full flex items-center space-x-4 mb-8 text-left p-2 rounded-lg hover:bg-gray-700 transition-colors duration-200"
+            className="w-full flex items-center space-x-4 mb-8 text-left p-2 rounded-lg hover:bg-[var(--accent)] hover:text-white transition-colors duration-200"
           >
             <div className="w-12 h-12 bg-gray-400 rounded-full overflow-hidden">
               <img src={userAvatarUrl} alt="User" className="w-full h-full object-cover" />
