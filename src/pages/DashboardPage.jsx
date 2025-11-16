@@ -928,7 +928,7 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => { // Ac
             -webkit-appearance: none;
             width: 16px;
             height: 16px;
-            background-color: #A970FF;
+            background-color: var(--accent);
             border-radius: 50%;
             cursor: pointer;
             border: none;
@@ -938,7 +938,7 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => { // Ac
           .slider-thumb-purple::-moz-range-thumb {
             width: 16px;
             height: 16px;
-            background-color: #A970FF;
+            background-color: var(--accent);
             border-radius: 50%;
             cursor: pointer;
             border: none;
@@ -946,12 +946,12 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => { // Ac
           }
           .slider-thumb-purple::-webkit-slider-runnable-track {
             height: 4px;
-            background: #e8e3f5;
+            background: var(--muted-2);
             border-radius: 4px;
           }
           .slider-thumb-purple::-moz-range-track {
             height: 4px;
-            background: #e8e3f5;
+            background: var(--muted-2);
             border-radius: 4px;
           }
         `}
