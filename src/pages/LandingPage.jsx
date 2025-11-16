@@ -55,25 +55,25 @@ const LandingPage = ({ onAuthSuccess }) => {
         <nav className="flex items-center space-x-6">
           <button
             onClick={() => scrollToSection(welcomeRef)}
-            className="text-gray-700 hover:text-[#A970FF] font-semibold transition duration-300"
+            className="text-[var(--text-muted)] hover:text-[var(--accent)] font-semibold transition duration-300"
           >
             Home
           </button>
           <button
             onClick={() => scrollToSection(aboutRef)}
-            className="text-gray-700 hover:text-[#A970FF] font-semibold transition duration-300"
+            className="text-[var(--text-muted)] hover:text-[var(--accent)] font-semibold transition duration-300"
           >
             About
           </button>
           <button
             onClick={() => scrollToSection(contactRef)}
-            className="text-gray-700 hover:text-[#A970FF] font-semibold transition duration-300"
+            className="text-[var(--text-muted)] hover:text-[var(--accent)] font-semibold transition duration-300"
           >
             Contact Us
           </button>
           <button
             onClick={() => setShowAuthForm(true)}
-            className="px-6 py-2 bg-[#A970FF] text-white font-bold rounded-full shadow-lg hover:bg-[#8B4DEB] transition duration-300 transform hover:scale-105"
+            className="px-6 py-2 bg-[var(--accent)] text-white font-bold rounded-full shadow-lg hover:bg-[var(--accent-2)] transition duration-300 transform hover:scale-105"
           >
             Sign In / Sign Up
           </button>
