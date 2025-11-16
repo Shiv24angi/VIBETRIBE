@@ -369,7 +369,7 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => { // Ac
 
     if (view === 'edit-profile') {
       return (
-        <div className="p-8">
+        <div className="p-8 bg-[var(--bg-page)]">
           <ProfileForm userId={user.uid} onProfileCreated={handleProfileUpdate} onGoBackToLanding={handleGoBackToDashboard} />
         </div>
       );
@@ -378,7 +378,7 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => { // Ac
     if (view === 'my-profile') {
       return (
         <div className="p-8">
-          <div className="bg-white p-8 rounded-xl shadow-lg w-full max-w-2xl mx-auto text-[#2A1E5C]">
+          <div className="bg-[var(--panel)] p-8 rounded-xl shadow-lg w-full max-w-2xl mx-auto text-[var(--text-strong)]">
             <h2 className="text-4xl font-bold mb-4 text-center">My Profile</h2>
             {profile ? (
               <>
@@ -396,7 +396,7 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => { // Ac
                     <div className="flex flex-wrap gap-2">
                       {profile.vibes && profile.vibes.length > 0 ? (
                         profile.vibes.map((vibe, index) => (
-                          <span key={index} className="bg-[#A970FF] text-white px-3 py-1 rounded-full text-sm shadow">
+                          <span key={index} className="bg-[var(--accent)] text-white px-3 py-1 rounded-full text-sm shadow">
                             {vibe}
                           </span>
                         ))
@@ -411,7 +411,7 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => { // Ac
                     <div className="flex flex-wrap gap-2">
                       {profile.moods && profile.moods.length > 0 ? (
                         profile.moods.map((mood, index) => (
-                          <span key={index} className="bg-[#A970FF] text-white px-3 py-1 rounded-full text-sm shadow">
+                          <span key={index} className="bg-[var(--accent)] text-white px-3 py-1 rounded-full text-sm shadow">
                             {mood}
                           </span>
                         ))
@@ -434,13 +434,13 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => { // Ac
 
                 <button
                   onClick={() => setView('edit-profile')}
-                  className="w-full mt-8 bg-[#8B4DEB] text-white py-3 rounded-lg font-semibold hover:bg-[#6A39B1] transition duration-300 shadow-md"
+                  className="w-full mt-8 bg-[var(--accent-2)] text-white py-3 rounded-lg font-semibold hover:bg-[#6A39B1] transition duration-300 shadow-md"
                 >
                   Edit Profile
                 </button>
                 <button
                   onClick={() => setView('dashboard')}
-                  className="w-full mt-4 bg-gray-300 text-gray-800 py-3 rounded-lg font-semibold hover:bg-gray-400 transition duration-300"
+                  className="w-full mt-4 bg-[var(--muted-2)] text-[var(--text-strong)] py-3 rounded-lg font-semibold hover:bg-[var(--soft-lilac)] transition duration-300"
                 >
                   Back to Dashboard
                 </button>
