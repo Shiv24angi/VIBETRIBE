@@ -15,7 +15,7 @@ const ProfileCreationPage = ({ userId, onProfileComplete, onGoBackToLanding }) =
     <div
       className="min-h-screen flex flex-col items-center justify-center p-4 font-inter"
       style={{
-        background: 'linear-gradient(135deg, #1e215d 0%, #2c2f78 30%, #463c97 60%, #8c59c6 80%, #db7dc9 100%)',
+        background: 'linear-gradient(135deg, #E0B8F0 0%, #D6CCF1 25%, #A970FF 50%, #8B4DEB 75%, #6A39B1 100%)',
       }}
     >
       {/* Pass onGoBackToLanding to ProfileForm */}

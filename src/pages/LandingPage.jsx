@@ -46,34 +46,34 @@ const LandingPage = ({ onAuthSuccess }) => {
     <div
       className="min-h-screen flex flex-col font-inter"
       style={{
-        background: 'linear-gradient(135deg, #1e215d 0%, #2c2f78 30%, #463c97 60%, #8c59c6 80%, #db7dc9 100%)',
+        background: 'linear-gradient(135deg, #E0B8F0 0%, #D6CCF1 25%, #A970FF 50%, #8B4DEB 75%, #6A39B1 100%)',
       }}
     >
       {/* Header - Always visible and fixed */}
-      <header className="w-full bg-white bg-opacity-90 shadow-md py-4 px-8 flex justify-between items-center fixed top-0 left-0 z-50">
-        <h1 className="text-3xl font-extrabold text-[#2A1E5C]">VibeTribe</h1>
+      <header className="w-full bg-[var(--panel)] bg-opacity-95 shadow-md py-4 px-8 flex justify-between items-center fixed top-0 left-0 z-50">
+        <h1 className="text-3xl font-extrabold text-[var(--text-strong)]">VibeTribe</h1>
         <nav className="flex items-center space-x-6">
           <button
             onClick={() => scrollToSection(welcomeRef)}
-            className="text-gray-700 hover:text-[#A970FF] font-semibold transition duration-300"
+            className="text-[var(--text-muted)] hover:text-[var(--accent)] font-semibold transition duration-300"
           >
             Home
           </button>
           <button
             onClick={() => scrollToSection(aboutRef)}
-            className="text-gray-700 hover:text-[#A970FF] font-semibold transition duration-300"
+            className="text-[var(--text-muted)] hover:text-[var(--accent)] font-semibold transition duration-300"
           >
             About
           </button>
           <button
             onClick={() => scrollToSection(contactRef)}
-            className="text-gray-700 hover:text-[#A970FF] font-semibold transition duration-300"
+            className="text-[var(--text-muted)] hover:text-[var(--accent)] font-semibold transition duration-300"
           >
             Contact Us
           </button>
           <button
             onClick={() => setShowAuthForm(true)}
-            className="px-6 py-2 bg-[#A970FF] text-white font-bold rounded-full shadow-lg hover:bg-[#8B4DEB] transition duration-300 transform hover:scale-105"
+            className="px-6 py-2 bg-[var(--accent)] text-white font-bold rounded-full shadow-lg hover:bg-[var(--accent-2)] transition duration-300 transform hover:scale-105"
           >
             Sign In / Sign Up
           </button>
@@ -99,17 +99,17 @@ const LandingPage = ({ onAuthSuccess }) => {
                 <br></br>
                 <br></br>
                 <br></br>
-                <h2 className="text-6xl font-extrabold leading-tight mb-4 drop-shadow-lg text-[#F3EBFF]">
-                  
+                <h2 className="text-6xl font-extrabold leading-tight mb-4 drop-shadow-lg text-white">
+
                   Discover Your Tribe
                 </h2>
-                <p className="text-2xl font-light max-w-2xl mx-auto drop-shadow-md text-[#F3EBFF] mb-6">
+                <p className="text-2xl font-light max-w-2xl mx-auto drop-shadow-md text-white mb-6">
                   Connect with like-minded people who match your vibe. Whether you're quirky, calm,
                   creative, or chaotic — there’s a tribe for everyone.
                 </p>
                 <button
                   onClick={() => setShowAuthForm(true)}
-                  className="px-8 py-3 bg-[#A970FF] text-white font-semibold rounded-full shadow-md hover:bg-[#8B4DEB] transition duration-300 transform hover:scale-105"
+                  className="px-8 py-3 bg-white text-[var(--accent)] font-semibold rounded-full shadow-md hover:bg-[var(--muted-1)] transition duration-300 transform hover:scale-105"
                 >
                   Get Started
                 </button>
@@ -119,7 +119,7 @@ const LandingPage = ({ onAuthSuccess }) => {
             {/* About Section */}
             <section
               ref={aboutRef}
-              className="bg-white bg-opacity-20 p-10 rounded-xl shadow-lg w-full max-w-4xl mx-auto mb-20 text-white"
+              className="bg-[var(--panel)] bg-opacity-15 p-10 rounded-xl shadow-lg w-full max-w-4xl mx-auto mb-20 text-white"
               style={{ minHeight: `calc(100vh - ${headerHeight}px)` }} // Adjust min-height for header
             >
               <div className="flex flex-col items-center justify-center h-full">
@@ -128,7 +128,7 @@ const LandingPage = ({ onAuthSuccess }) => {
                 <br></br>
                 <br></br>
                 <br></br>
-                <h3 className="text-4xl font-bold text-center text-[#F3EBFF] mb-6">About VibeTribe</h3>
+                <h3 className="text-4xl font-bold text-center text-white mb-6">About VibeTribe</h3>
                 <p className="text-lg leading-relaxed mb-4">
                   VibeTribe helps you discover meaningful connections through:
                 </p>
@@ -146,11 +146,11 @@ const LandingPage = ({ onAuthSuccess }) => {
             {/* Contact Section (Form) */}
             <section
               ref={contactRef}
-              className="bg-white bg-opacity-20 p-10 rounded-xl shadow-lg w-full max-w-4xl mx-auto mb-20 text-white"
+              className="bg-[var(--panel)] bg-opacity-15 p-10 rounded-xl shadow-lg w-full max-w-4xl mx-auto mb-20 text-white"
               style={{ minHeight: `calc(100vh - ${headerHeight}px)` }} // Adjust min-height for header
             >
               <div className="flex flex-col items-center justify-center h-full">
-                <h3 className="text-4xl font-bold text-center text-[#F3EBFF] mb-6">Contact Us</h3>
+                <h3 className="text-4xl font-bold text-center text-white mb-6">Contact Us</h3>
                 <p className="text-lg leading-relaxed text-center mb-4">
                   Got feedback or ideas? We'd love to hear from you!
                 </p>
@@ -196,7 +196,7 @@ const LandingPage = ({ onAuthSuccess }) => {
                   </div>
                   <button
                     type="submit"
-                    className="px-8 py-3 bg-[#A970FF] text-white font-semibold rounded-full shadow-md hover:bg-[#8B4DEB] transition duration-300 transform hover:scale-105 w-full"
+                    className="px-8 py-3 bg-white text-[var(--accent)] font-semibold rounded-full shadow-md hover:bg-[var(--muted-1)] transition duration-300 transform hover:scale-105 w-full"
                   >
                     Send Message
                   </button>
@@ -226,13 +226,13 @@ const LandingPage = ({ onAuthSuccess }) => {
             <svg viewBox="0 0 1440 100" preserveAspectRatio="none" className="w-full h-28">
               <path
                 d="M0,50 C180,10 360,90 540,50 C720,10 900,90 1080,50 C1260,10 1440,50 1440,50 L1440,100 L0,100 Z"
-                fill="#8c59c6"
+                fill="var(--accent)"
               />
             </svg>
           </div>
 
           {/* Footer Content */}
-          <div className="py-6 px-4 flex justify-between items-center" style={{ backgroundColor: '#8c59c6' }}>
+          <div className="py-6 px-4 flex justify-between items-center" style={{ backgroundColor: 'var(--accent)' }}>
             {/* Left content */}
             <div className="text-white text-sm">
               <p>Designed by </p>

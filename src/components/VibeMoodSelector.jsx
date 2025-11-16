@@ -14,8 +14,8 @@ const VibeMoodSelector = ({ title, options, selectedOptions, onSelectionChange }
   };
 
   return (
-    <div className="bg-[#FFF3F6] p-6 rounded-xl shadow-md mb-6">
-      <h3 className="text-xl font-semibold text-[#2A1E5C] mb-4">{title}</h3>
+    <div className="bg-[var(--muted-1)] p-6 rounded-xl shadow-md mb-6">
+      <h3 className="text-xl font-semibold text-[var(--text-strong)] mb-4">{title}</h3>
       <div className="flex flex-wrap gap-3">
         {options.map((option) => (
           <button
@@ -25,8 +25,8 @@ const VibeMoodSelector = ({ title, options, selectedOptions, onSelectionChange }
             className={`
               px-5 py-2 rounded-full text-sm font-medium transition duration-300 ease-in-out
               ${selectedOptions.includes(option)
-                ? 'bg-[#A970FF] text-white shadow-md'
-                : 'bg-[#E8E3F5] text-[#2A1E5C] hover:bg-[#D6CCF1]'
+                ? 'bg-[var(--accent)] text-white shadow-md'
+                : 'bg-[var(--muted-1)] text-[var(--text-strong)] hover:bg-[var(--muted-2)]'
               }
             `}
           >

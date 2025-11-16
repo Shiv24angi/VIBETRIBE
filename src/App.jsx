@@ -90,7 +90,7 @@ const App = () => {
 
   if (loading || checkingProfile) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[#EFE0E5]">
+      <div className="min-h-screen flex items-center justify-center bg-[var(--bg-page)]">
         <LoadingSpinner />
       </div>
     );

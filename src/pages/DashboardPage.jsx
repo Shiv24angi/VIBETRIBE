@@ -352,7 +352,7 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => { // Ac
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[#EFE0E5]">
+      <div className="min-h-screen flex items-center justify-center bg-[var(--bg-page)]">
         <LoadingSpinner />
       </div>
     );
@@ -369,7 +369,7 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => { // Ac
 
     if (view === 'edit-profile') {
       return (
-        <div className="p-8">
+        <div className="p-8 bg-[var(--bg-page)]">
           <ProfileForm userId={user.uid} onProfileCreated={handleProfileUpdate} onGoBackToLanding={handleGoBackToDashboard} />
         </div>
       );
@@ -378,7 +378,7 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => { // Ac
     if (view === 'my-profile') {
       return (
         <div className="p-8">
-          <div className="bg-white p-8 rounded-xl shadow-lg w-full max-w-2xl mx-auto text-[#2A1E5C]">
+          <div className="bg-[var(--panel)] p-8 rounded-xl shadow-lg w-full max-w-2xl mx-auto text-[var(--text-strong)]">
             <h2 className="text-4xl font-bold mb-4 text-center">My Profile</h2>
             {profile ? (
               <>
@@ -396,7 +396,7 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => { // Ac
                     <div className="flex flex-wrap gap-2">
                       {profile.vibes && profile.vibes.length > 0 ? (
                         profile.vibes.map((vibe, index) => (
-                          <span key={index} className="bg-[#A970FF] text-white px-3 py-1 rounded-full text-sm shadow">
+                          <span key={index} className="bg-[var(--accent)] text-white px-3 py-1 rounded-full text-sm shadow">
                             {vibe}
                           </span>
                         ))
@@ -411,7 +411,7 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => { // Ac
                     <div className="flex flex-wrap gap-2">
                       {profile.moods && profile.moods.length > 0 ? (
                         profile.moods.map((mood, index) => (
-                          <span key={index} className="bg-[#A970FF] text-white px-3 py-1 rounded-full text-sm shadow">
+                          <span key={index} className="bg-[var(--accent)] text-white px-3 py-1 rounded-full text-sm shadow">
                             {mood}
                           </span>
                         ))
@@ -434,13 +434,13 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => { // Ac
 
                 <button
                   onClick={() => setView('edit-profile')}
-                  className="w-full mt-8 bg-[#8B4DEB] text-white py-3 rounded-lg font-semibold hover:bg-[#6A39B1] transition duration-300 shadow-md"
+                  className="w-full mt-8 bg-[var(--accent-2)] text-white py-3 rounded-lg font-semibold hover:bg-[#6A39B1] transition duration-300 shadow-md"
                 >
                   Edit Profile
                 </button>
                 <button
                   onClick={() => setView('dashboard')}
-                  className="w-full mt-4 bg-gray-300 text-gray-800 py-3 rounded-lg font-semibold hover:bg-gray-400 transition duration-300"
+                  className="w-full mt-4 bg-[var(--muted-2)] text-[var(--text-strong)] py-3 rounded-lg font-semibold hover:bg-[var(--soft-lilac)] transition duration-300"
                 >
                   Back to Dashboard
                 </button>
@@ -460,8 +460,8 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => { // Ac
       return (
         <div className="flex flex-1 p-8">
           {/* Left panel: Match List */}
-          <div className="flex flex-col w-1/3 bg-white rounded-l-xl shadow-lg border-r border-gray-200 p-4 space-y-4">
-            <h3 className="text-2xl font-bold text-[#2A1E5C] mb-4">VibeMates</h3>
+          <div className="flex flex-col w-1/3 bg-[var(--panel)] rounded-l-xl shadow-lg border-r border-[var(--muted-2)] p-4 space-y-4">
+            <h3 className="text-2xl font-bold text-[var(--text-strong)] mb-4">VibeMates</h3>
             {matches.length > 0 ? (
               matches.map((match) => (
                 <button
@@ -469,7 +469,7 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => { // Ac
                   onClick={() => handleMatchClick(match)}
                   className={`
                     flex items-center space-x-4 p-3 rounded-lg transition-colors duration-200
-                    ${selectedMatch?.id === match.id ? 'bg-[#E8E3F5] text-[#2A1E5C] font-semibold' : 'hover:bg-gray-100'}
+                    ${selectedMatch?.id === match.id ? 'bg-[var(--muted-1)] text-[var(--text-strong)] font-semibold' : 'hover:bg-[var(--muted-2)]'}
                   `}
                 >
                   <img
@@ -491,11 +491,11 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => { // Ac
           </div>
 
           {/* Right panel: Profile Details and Chat Interface */}
-          <div className="flex-1 bg-white rounded-r-xl shadow-lg p-6 flex flex-col">
+          <div className="flex-1 bg-[var(--panel)] rounded-r-xl shadow-lg p-6 flex flex-col">
             {selectedMatch ? (
               <>
                 <div className="flex-grow overflow-y-auto space-y-4">
-                  <div className="flex items-center space-x-4 border-b border-gray-200 pb-4 mb-4">
+                  <div className="flex items-center space-x-4 border-b border-[var(--muted-2)] pb-4 mb-4">
                     <img
                       src={matchAvatarUrl}
                       alt={selectedMatch.name}
@@ -508,7 +508,7 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => { // Ac
                     {messages.length > 0 ? (
                       messages.map((msg) => (
                         <div key={msg.id} className={`flex ${msg.senderId === user.uid ? 'justify-end' : 'justify-start'}`}>
-                          <div className={`p-3 rounded-lg max-w-[70%] ${msg.senderId === user.uid ? 'bg-[#A970FF] text-white' : 'bg-gray-200 text-gray-800'}`}>
+                          <div className={`p-3 rounded-lg max-w-[70%] ${msg.senderId === user.uid ? 'bg-[var(--accent)] text-white' : 'bg-[var(--muted-2)] text-[var(--text-strong)]'}`}>
                             {msg.text}
                           </div>
                         </div>
@@ -519,15 +519,15 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => { // Ac
                   </div>
                 </div>
 
-                <form onSubmit={handleSendMessage} className="flex items-center mt-4 pt-4 border-t border-gray-200">
+                <form onSubmit={handleSendMessage} className="flex items-center mt-4 pt-4 border-t border-[var(--muted-2)]">
                   <input
                     type="text"
                     placeholder={`Message ${selectedMatch.name}...`}
                     value={newMessage}
                     onChange={(e) => setNewMessage(e.target.value)}
-                    className="flex-1 px-4 py-3 rounded-full bg-gray-100 focus:outline-none focus:ring-2 focus:ring-[#A970FF]"
+                    className="flex-1 px-4 py-3 rounded-full bg-[var(--muted-2)] focus:outline-none focus:ring-2 focus:ring-[var(--accent)]"
                   />
-                  <button type="submit" className="ml-4 bg-[#A970FF] text-white p-3 rounded-full hover:bg-[#8B4DEB] transition-colors duration-200">
+                  <button type="submit" className="ml-4 bg-[var(--accent)] text-white p-3 rounded-full hover:bg-[var(--accent-2)] transition-colors duration-200">
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
                     </svg>
@@ -546,9 +546,9 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => { // Ac
 
     if (view === 'settings') {
       return (
-        <div className="flex flex-1 items-center justify-center p-8 text-[#2A1E5C]">
-          <div className="bg-white p-8 rounded-xl shadow-lg w-full max-w-2xl mx-auto space-y-6">
-            <h2 className="text-4xl font-bold text-center text-[#2A1E5C] mb-4">
+        <div className="flex flex-1 items-center justify-center p-8 text-[var(--text-strong)]">
+          <div className="bg-[var(--panel)] p-8 rounded-xl shadow-lg w-full max-w-2xl mx-auto space-y-6">
+            <h2 className="text-4xl font-bold text-center text-[var(--text-strong)] mb-4">
               Personalize Your Vibe ⚙️
             </h2>
             {/* Display error/success messages here */}
@@ -560,7 +560,7 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => { // Ac
             {/* Age Range Setting - Single Slider */}
             <div>
               <div className="flex justify-between items-center mb-2">
-                <label className="text-lg font-semibold text-[#2A1E5C]">Age Range 🎂</label>
+                <label className="text-lg font-semibold text-[var(--text-strong)]">Age Range 🎂</label>
                 <span className="text-gray-500">{settings.minAge} - {settings.maxAge}</span>
               </div>
               <div className="relative h-2 bg-gray-200 rounded-lg">
@@ -600,9 +600,10 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => { // Ac
                     pointerEvents: 'auto',
                   }}
                 />
-                <div 
-                  className="absolute h-full bg-[#A970FF] rounded-lg z-10"
+                <div
+                  className="absolute h-full rounded-lg z-10"
                   style={{
+                    backgroundColor: 'var(--accent)',
                     left: `${((settings.minAge - MIN_AGE_LIMIT) / (MAX_AGE_LIMIT - MIN_AGE_LIMIT)) * 100}%`,
                     width: `${((settings.maxAge - settings.minAge) / (MAX_AGE_LIMIT - MIN_AGE_LIMIT)) * 100}%`,
                   }}
@@ -612,7 +613,7 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => { // Ac
 
             {/* Gender Preference Setting */}
             <div>
-              <label className="block text-lg font-semibold text-[#2A1E5C] mb-2">Gender Preference 🤔</label>
+              <label className="block text-lg font-semibold text-[var(--text-strong)] mb-2">Gender Preference 🤔</label>
               <div className="flex flex-wrap gap-3">
                 {['Male', 'Female', 'Non-binary', 'All'].map((gender) => (
                   <button
@@ -621,8 +622,8 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => { // Ac
                     className={`
                       px-5 py-2 rounded-full text-sm font-medium transition duration-300 ease-in-out
                       ${settings.gender === gender
-                        ? 'bg-[#A970FF] text-white shadow-md'
-                        : 'bg-[#E8E3F5] text-[#2A1E5C] hover:bg-[#D6CCF1]'
+                        ? 'bg-[var(--accent)] text-white shadow-md'
+                        : 'bg-[var(--muted-1)] text-[var(--text-strong)] hover:bg-[var(--muted-2)]'
                       }
                     `}
                   >
@@ -635,7 +636,7 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => { // Ac
             {/* Distance Setting */}
             <div>
               <div className="flex justify-between items-center mb-2">
-                <label className="text-lg font-semibold text-[#2A1E5C]">Max Distance 📍</label>
+                <label className="text-lg font-semibold text-[var(--text-strong)]">Max Distance 📍</label>
                 <span className="text-gray-500">{settings.maxDistance} km</span>
               </div>
               <input
@@ -651,7 +652,7 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => { // Ac
             {/* Vibe Match Score Setting */}
             <div>
               <div className="flex justify-between items-center mb-2">
-                <label className="text-lg font-semibold text-[#2A1E5C]">Min Vibe Match Score ✨</label>
+                <label className="text-lg font-semibold text-[var(--text-strong)]">Min Vibe Match Score ✨</label>
                 <span className="text-500">{settings.minVibeScore}%</span>
               </div>
               <input
@@ -667,7 +668,7 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => { // Ac
             
             {/* Schedule Preference Setting */}
             <div>
-              <label className="block text-lg font-semibold text-[#2A1E5C] mb-2">Your Schedule ⏰</label>
+              <label className="block text-lg font-semibold text-[var(--text-strong)] mb-2">Your Schedule ⏰</label>
               <div className="flex flex-wrap gap-3">
                 {['Night Owl', 'Early Bird', 'All'].map((schedule) => (
                   <button
@@ -676,8 +677,8 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => { // Ac
                     className={`
                       px-5 py-2 rounded-full text-sm font-medium transition duration-300 ease-in-out
                       ${settings.schedule === schedule
-                        ? 'bg-[#A970FF] text-white shadow-md'
-                        : 'bg-[#E8E3F5] text-[#2A1E5C] hover:bg-[#D6CCF1]'
+                        ? 'bg-[var(--accent)] text-white shadow-md'
+                        : 'bg-[var(--muted-1)] text-[var(--text-strong)] hover:bg-[var(--muted-2)]'
                       }
                     `}
                   >
@@ -689,12 +690,12 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => { // Ac
             
             {/* Pet Friendly Setting */}
             <div className="flex items-center justify-between">
-              <label className="text-lg font-semibold text-[#2A1E5C]">Pet Friendly 🐾</label>
+              <label className="text-lg font-semibold text-[var(--text-strong)]">Pet Friendly 🐾</label>
               <button
                 onClick={() => setSettings({ ...settings, petFriendly: !settings.petFriendly })}
                 className={`
                   relative w-14 h-8 flex items-center rounded-full p-1 transition-colors duration-300
-                  ${settings.petFriendly ? 'bg-[#A970FF]' : 'bg-gray-300'}
+                  ${settings.petFriendly ? 'bg-[var(--accent)]' : 'bg-gray-300'}
                 `}
               >
                 <span
@@ -708,7 +709,7 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => { // Ac
 
             {/* Location Sharing Controls */}
             <div className="space-y-4">
-              <h4 className="text-xl font-bold text-[#2A1E5C] mb-2">Location Sharing</h4>
+              <h4 className="text-xl font-bold text-[var(--text-strong)] mb-2">Location Sharing</h4>
               {profile?.location ? (
                 <>
                   <p className="text-sm text-gray-500">
@@ -719,7 +720,7 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => { // Ac
                   </p>
                   <button
                     onClick={handleStopSharingLocation}
-                    className="w-full bg-gray-300 text-gray-800 py-3 rounded-lg font-semibold hover:bg-gray-400 transition duration-300"
+                    className="w-full bg-[var(--muted-2)] text-[var(--text-strong)] py-3 rounded-lg font-semibold hover:bg-[var(--soft-lilac)] transition duration-300"
                   >
                     Stop Sharing Location
                   </button>
@@ -731,7 +732,7 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => { // Ac
                   </p>
                   <button
                     onClick={handleGetLocation}
-                    className="w-full bg-[#A970FF] text-white py-3 rounded-lg font-semibold hover:bg-[#8B4DEB] transition duration-300 shadow-md"
+                    className="w-full bg-[var(--accent)] text-white py-3 rounded-lg font-semibold hover:bg-[var(--accent-2)] transition duration-300 shadow-md"
                   >
                     Turn On Location Sharing
                   </button>
@@ -740,8 +741,8 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => { // Ac
             </div>
 
             {/* Account Management Options */}
-            <div className="space-y-4 pt-6 mt-6 border-t border-gray-200">
-              <h4 className="text-xl font-bold text-[#2A1E5C] mb-2">Account Actions</h4>
+            <div className="space-y-4 pt-6 mt-6 border-t border-[var(--muted-2)]">
+              <h4 className="text-xl font-bold text-[var(--text-strong)] mb-2">Account Actions</h4>
               <p className="text-sm text-gray-500">
                 Deactivating your account will hide your profile from all other users.
               </p>
@@ -764,8 +765,8 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => { // Ac
 
             {/* Save Button */}
             <button
-              onClick={handleApplyFilters} // Changed to call handleApplyFilters
-              className="w-full mt-8 bg-[#A970FF] text-white py-3 rounded-lg font-semibold hover:bg-[#8B4DEB] transition duration-300 shadow-md"
+              onClick={handleApplyFilters}
+              className="w-full mt-8 bg-[var(--accent)] text-white py-3 rounded-lg font-semibold hover:bg-[var(--accent-2)] transition duration-300 shadow-md"
             >
               Save Settings
             </button>
@@ -787,7 +788,7 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => { // Ac
 
         return (
             <div className="p-8">
-                <div className="bg-white p-8 rounded-xl shadow-lg w-full max-w-2xl mx-auto text-[#2A1E5C]">
+                <div className="bg-[var(--panel)] p-8 rounded-xl shadow-lg w-full max-w-2xl mx-auto text-[var(--text-strong)]">
                     <h2 className="text-4xl font-bold mb-4 text-center">{selectedMatch.name}'s Profile</h2>
                     {/* Replaced Fragment with a div */}
                     <div> 
@@ -805,7 +806,7 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => { // Ac
                                 <div className="flex flex-wrap gap-2">
                                     {selectedMatch.vibes && selectedMatch.vibes.length > 0 ? (
                                         selectedMatch.vibes.map((vibe, index) => (
-                                            <span key={index} className="bg-[#A970FF] text-white px-3 py-1 rounded-full text-sm shadow">
+                                            <span key={index} className="bg-[var(--accent)] text-white px-3 py-1 rounded-full text-sm shadow">
                                                 {vibe}
                                             </span>
                                         ))
@@ -820,7 +821,7 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => { // Ac
                                 <div className="flex flex-wrap gap-2">
                                     {selectedMatch.moods && selectedMatch.moods.length > 0 ? (
                                         selectedMatch.moods.map((mood, index) => (
-                                            <span key={index} className="bg-[#A970FF] text-white px-3 py-1 rounded-full text-sm shadow">
+                                            <span key={index} className="bg-[var(--accent)] text-white px-3 py-1 rounded-full text-sm shadow">
                                                 {mood}
                                             </span>
                                         ))
@@ -845,15 +846,15 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => { // Ac
 
                         {/* New "Start Chat" button */}
                         <button
-                          onClick={() => handleMatchClick(selectedMatch)} // Reuses handleMatchClick to set up chat
-                          className="w-full mt-8 bg-[#A970FF] text-white py-3 rounded-lg font-semibold hover:bg-[#8B4DEB] transition duration-300 shadow-md"
+                          onClick={() => handleMatchClick(selectedMatch)}
+                          className="w-full mt-8 bg-[var(--accent)] text-white py-3 rounded-lg font-semibold hover:bg-[var(--accent-2)] transition duration-300 shadow-md"
                         >
                           Start Chat
                         </button>
 
                         <button
                           onClick={() => setView('dashboard')}
-                          className="w-full mt-4 bg-gray-300 text-gray-800 py-3 rounded-lg font-semibold hover:bg-gray-400 transition duration-300"
+                          className="w-full mt-4 bg-[var(--muted-2)] text-[var(--text-strong)] py-3 rounded-lg font-semibold hover:bg-[var(--soft-lilac)] transition duration-300"
                         >
                           Back to Dashboard
                         </button>
@@ -870,7 +871,7 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => { // Ac
           <h2 className="text-3xl font-bold">Who's Nearby?</h2>
           <div className="flex items-center space-x-4">
             {/* Removed search input */}
-            <button onClick={() => setView('settings')} className="px-4 py-2 bg-gray-200 rounded-lg text-gray-700 hover:bg-gray-300 transition-colors duration-200">
+            <button onClick={() => setView('settings')} className="px-4 py-2 bg-[var(--muted-1)] rounded-lg text-[var(--text-strong)] hover:bg-[var(--muted-2)] transition-colors duration-200">
               Filters
             </button>
           </div>
@@ -903,7 +904,7 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => { // Ac
                     setSelectedMatch(match);
                     setView('profile_view'); // Change view to 'profile_view'
                   }}
-                  className="absolute bottom-4 right-4 text-white bg-[#A970FF] px-4 py-2 rounded-full font-semibold opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                  className="absolute bottom-4 right-4 text-white bg-[var(--accent)] px-4 py-2 rounded-full font-semibold opacity-0 group-hover:opacity-100 transition-opacity duration-300"
                 >
                   Visit Profile
                 </button>
@@ -920,14 +921,14 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => { // Ac
   };
 
   return (
-    <div className="flex min-h-screen bg-[#F0F2F5] text-[#2A1E5C]">
+    <div className="flex min-h-screen bg-[var(--bg-page)] text-[var(--text-strong)]">
       <style>
         {`
           .slider-thumb-purple::-webkit-slider-thumb {
             -webkit-appearance: none;
             width: 16px;
             height: 16px;
-            background-color: #A970FF;
+            background-color: var(--accent);
             border-radius: 50%;
             cursor: pointer;
             border: none;
@@ -937,7 +938,7 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => { // Ac
           .slider-thumb-purple::-moz-range-thumb {
             width: 16px;
             height: 16px;
-            background-color: #A970FF;
+            background-color: var(--accent);
             border-radius: 50%;
             cursor: pointer;
             border: none;
@@ -945,29 +946,29 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => { // Ac
           }
           .slider-thumb-purple::-webkit-slider-runnable-track {
             height: 4px;
-            background: #e8e3f5;
+            background: var(--muted-2);
             border-radius: 4px;
           }
           .slider-thumb-purple::-moz-range-track {
             height: 4px;
-            background: #e8e3f5;
+            background: var(--muted-2);
             border-radius: 4px;
           }
         `}
       </style>
       {/* Sidebar */}
-      <aside className="w-64 bg-[#2A1E5C] text-white p-6 shadow-xl flex flex-col justify-between">
+      <aside className="w-64 bg-gradient-to-b from-[var(--soft-lilac)] to-[var(--muted-2)] text-[var(--text-strong)] p-6 shadow-xl flex flex-col justify-between">
         <div>
           <button
             onClick={() => setView('dashboard')}
             className="w-full flex items-center space-x-2 mb-8 text-left"
           >
-            <div className="w-10 h-10 bg-[#A970FF] rounded-full flex items-center justify-center text-white font-bold text-xl">V</div>
+            <div className="w-10 h-10 bg-[var(--accent)] rounded-full flex items-center justify-center text-white font-bold text-xl">V</div>
             <h1 className="text-2xl font-bold">VibeTribe</h1>
           </button>
           <button
             onClick={() => setView('my-profile')}
-            className="w-full flex items-center space-x-4 mb-8 text-left p-2 rounded-lg hover:bg-gray-700 transition-colors duration-200"
+            className="w-full flex items-center space-x-4 mb-8 text-left p-2 rounded-lg hover:bg-[var(--accent)] hover:text-white transition-colors duration-200"
           >
             <div className="w-12 h-12 bg-gray-400 rounded-full overflow-hidden">
               <img src={userAvatarUrl} alt="User" className="w-full h-full object-cover" />
@@ -978,20 +979,20 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => { // Ac
             </div>
           </button>
           <nav className="space-y-2 mb-8">
-            <button onClick={() => setView('dashboard')} className="w-full flex items-center p-3 rounded-lg hover:bg-gray-700 transition-colors duration-200 text-left">
+            <button onClick={() => setView('dashboard')} className="w-full flex items-center p-3 rounded-lg hover:bg-[var(--accent)] hover:text-white transition-colors duration-200 text-left">
               <span className="mr-3">🏠</span> Discover
             </button>
-            <button onClick={() => setView('vibemate')} className="w-full flex items-center p-3 rounded-lg hover:bg-gray-700 transition-colors duration-200 text-left">
+            <button onClick={() => setView('vibemate')} className="w-full flex items-center p-3 rounded-lg hover:bg-[var(--accent)] hover:text-white transition-colors duration-200 text-left">
               <span className="mr-3">✉️</span> VibeMate
             </button>
-            <button onClick={() => setView('settings')} className="w-full flex items-center p-3 rounded-lg hover:bg-gray-700 transition-colors duration-200 text-left">
+            <button onClick={() => setView('settings')} className="w-full flex items-center p-3 rounded-lg hover:bg-[var(--accent)] hover:text-white transition-colors duration-200 text-left">
               <span className="mr-3">⚙️</span> Settings
             </button>
           </nav>
         </div>
         <button
           onClick={handleLogout}
-          className="w-full bg-[#A970FF] text-white py-3 px-6 rounded-lg font-semibold hover:bg-[#8B4DEB] transition duration-300 shadow-md"
+          className="w-full bg-[var(--accent)] text-white py-3 px-6 rounded-lg font-semibold hover:bg-[var(--accent-2)] transition duration-300 shadow-md"
         >
           Log Out
         </button>

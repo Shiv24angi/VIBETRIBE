@@ -6,6 +6,19 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Color Scheme CSS Variables */
+:root {
+  --bg-page: #FFF5F8;        /* very soft pink page bg */
+  --panel: #FFFFFF;          /* white panels/cards */
+  --muted-1: #F6E9F1;        /* pale lavender strip */
+  --muted-2: #EEDFF7;        /* soft lavender background */
+  --soft-lilac: #E0B8F0;     /* soft lilac accent */
+  --accent: #A970FF;         /* main button / brand */
+  --accent-2: #8B4DEB;       /* hover / gradient end */
+  --text-strong: #2A1E5C;    /* deep indigo for headings */
+  --text-muted: #7B6A8A;     /* body text */
+}
+
 /* Global styles */
 body {
   font-family: 'Inter', sans-serif;
@@ -14,6 +27,8 @@ body {
   box-sizing: border-box;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: var(--bg-page);
+  color: var(--text-strong);
 
   /* ✨ Removed hardcoded background-color here to allow page-level gradients */
 }
