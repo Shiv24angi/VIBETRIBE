@@ -764,8 +764,8 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => { // Ac
 
             {/* Save Button */}
             <button
-              onClick={handleApplyFilters} // Changed to call handleApplyFilters
-              className="w-full mt-8 bg-[#A970FF] text-white py-3 rounded-lg font-semibold hover:bg-[#8B4DEB] transition duration-300 shadow-md"
+              onClick={handleApplyFilters}
+              className="w-full mt-8 bg-[var(--accent)] text-white py-3 rounded-lg font-semibold hover:bg-[var(--accent-2)] transition duration-300 shadow-md"
             >
               Save Settings
             </button>
