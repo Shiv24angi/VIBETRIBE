@@ -870,7 +870,7 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => { // Ac
           <h2 className="text-3xl font-bold">Who's Nearby?</h2>
           <div className="flex items-center space-x-4">
             {/* Removed search input */}
-            <button onClick={() => setView('settings')} className="px-4 py-2 bg-gray-200 rounded-lg text-gray-700 hover:bg-gray-300 transition-colors duration-200">
+            <button onClick={() => setView('settings')} className="px-4 py-2 bg-[var(--muted-1)] rounded-lg text-[var(--text-strong)] hover:bg-[var(--muted-2)] transition-colors duration-200">
               Filters
             </button>
           </div>
@@ -903,7 +903,7 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => { // Ac
                     setSelectedMatch(match);
                     setView('profile_view'); // Change view to 'profile_view'
                   }}
-                  className="absolute bottom-4 right-4 text-white bg-[#A970FF] px-4 py-2 rounded-full font-semibold opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                  className="absolute bottom-4 right-4 text-white bg-[var(--accent)] px-4 py-2 rounded-full font-semibold opacity-0 group-hover:opacity-100 transition-opacity duration-300"
                 >
                   Visit Profile
                 </button>
