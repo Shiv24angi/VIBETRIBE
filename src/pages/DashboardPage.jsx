@@ -546,9 +546,9 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => { // Ac
 
     if (view === 'settings') {
       return (
-        <div className="flex flex-1 items-center justify-center p-8 text-[#2A1E5C]">
-          <div className="bg-white p-8 rounded-xl shadow-lg w-full max-w-2xl mx-auto space-y-6">
-            <h2 className="text-4xl font-bold text-center text-[#2A1E5C] mb-4">
+        <div className="flex flex-1 items-center justify-center p-8 text-[var(--text-strong)]">
+          <div className="bg-[var(--panel)] p-8 rounded-xl shadow-lg w-full max-w-2xl mx-auto space-y-6">
+            <h2 className="text-4xl font-bold text-center text-[var(--text-strong)] mb-4">
               Personalize Your Vibe ⚙️
             </h2>
             {/* Display error/success messages here */}
@@ -560,7 +560,7 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => { // Ac
             {/* Age Range Setting - Single Slider */}
             <div>
               <div className="flex justify-between items-center mb-2">
-                <label className="text-lg font-semibold text-[#2A1E5C]">Age Range 🎂</label>
+                <label className="text-lg font-semibold text-[var(--text-strong)]">Age Range 🎂</label>
                 <span className="text-gray-500">{settings.minAge} - {settings.maxAge}</span>
               </div>
               <div className="relative h-2 bg-gray-200 rounded-lg">
@@ -612,7 +612,7 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => { // Ac
 
             {/* Gender Preference Setting */}
             <div>
-              <label className="block text-lg font-semibold text-[#2A1E5C] mb-2">Gender Preference 🤔</label>
+              <label className="block text-lg font-semibold text-[var(--text-strong)] mb-2">Gender Preference 🤔</label>
               <div className="flex flex-wrap gap-3">
                 {['Male', 'Female', 'Non-binary', 'All'].map((gender) => (
                   <button
@@ -621,8 +621,8 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => { // Ac
                     className={`
                       px-5 py-2 rounded-full text-sm font-medium transition duration-300 ease-in-out
                       ${settings.gender === gender
-                        ? 'bg-[#A970FF] text-white shadow-md'
-                        : 'bg-[#E8E3F5] text-[#2A1E5C] hover:bg-[#D6CCF1]'
+                        ? 'bg-[var(--accent)] text-white shadow-md'
+                        : 'bg-[var(--muted-1)] text-[var(--text-strong)] hover:bg-[var(--muted-2)]'
                       }
                     `}
                   >
@@ -635,7 +635,7 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => { // Ac
             {/* Distance Setting */}
             <div>
               <div className="flex justify-between items-center mb-2">
-                <label className="text-lg font-semibold text-[#2A1E5C]">Max Distance 📍</label>
+                <label className="text-lg font-semibold text-[var(--text-strong)]">Max Distance 📍</label>
                 <span className="text-gray-500">{settings.maxDistance} km</span>
               </div>
               <input
@@ -651,7 +651,7 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => { // Ac
             {/* Vibe Match Score Setting */}
             <div>
               <div className="flex justify-between items-center mb-2">
-                <label className="text-lg font-semibold text-[#2A1E5C]">Min Vibe Match Score ✨</label>
+                <label className="text-lg font-semibold text-[var(--text-strong)]">Min Vibe Match Score ✨</label>
                 <span className="text-500">{settings.minVibeScore}%</span>
               </div>
               <input
@@ -667,7 +667,7 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => { // Ac
             
             {/* Schedule Preference Setting */}
             <div>
-              <label className="block text-lg font-semibold text-[#2A1E5C] mb-2">Your Schedule ⏰</label>
+              <label className="block text-lg font-semibold text-[var(--text-strong)] mb-2">Your Schedule ⏰</label>
               <div className="flex flex-wrap gap-3">
                 {['Night Owl', 'Early Bird', 'All'].map((schedule) => (
                   <button
@@ -676,8 +676,8 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => { // Ac
                     className={`
                       px-5 py-2 rounded-full text-sm font-medium transition duration-300 ease-in-out
                       ${settings.schedule === schedule
-                        ? 'bg-[#A970FF] text-white shadow-md'
-                        : 'bg-[#E8E3F5] text-[#2A1E5C] hover:bg-[#D6CCF1]'
+                        ? 'bg-[var(--accent)] text-white shadow-md'
+                        : 'bg-[var(--muted-1)] text-[var(--text-strong)] hover:bg-[var(--muted-2)]'
                       }
                     `}
                   >
@@ -689,12 +689,12 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => { // Ac
             
             {/* Pet Friendly Setting */}
             <div className="flex items-center justify-between">
-              <label className="text-lg font-semibold text-[#2A1E5C]">Pet Friendly 🐾</label>
+              <label className="text-lg font-semibold text-[var(--text-strong)]">Pet Friendly 🐾</label>
               <button
                 onClick={() => setSettings({ ...settings, petFriendly: !settings.petFriendly })}
                 className={`
                   relative w-14 h-8 flex items-center rounded-full p-1 transition-colors duration-300
-                  ${settings.petFriendly ? 'bg-[#A970FF]' : 'bg-gray-300'}
+                  ${settings.petFriendly ? 'bg-[var(--accent)]' : 'bg-gray-300'}
                 `}
               >
                 <span
@@ -708,7 +708,7 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => { // Ac
 
             {/* Location Sharing Controls */}
             <div className="space-y-4">
-              <h4 className="text-xl font-bold text-[#2A1E5C] mb-2">Location Sharing</h4>
+              <h4 className="text-xl font-bold text-[var(--text-strong)] mb-2">Location Sharing</h4>
               {profile?.location ? (
                 <>
                   <p className="text-sm text-gray-500">
@@ -719,7 +719,7 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => { // Ac
                   </p>
                   <button
                     onClick={handleStopSharingLocation}
-                    className="w-full bg-gray-300 text-gray-800 py-3 rounded-lg font-semibold hover:bg-gray-400 transition duration-300"
+                    className="w-full bg-[var(--muted-2)] text-[var(--text-strong)] py-3 rounded-lg font-semibold hover:bg-[var(--soft-lilac)] transition duration-300"
                   >
                     Stop Sharing Location
                   </button>
@@ -731,7 +731,7 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => { // Ac
                   </p>
                   <button
                     onClick={handleGetLocation}
-                    className="w-full bg-[#A970FF] text-white py-3 rounded-lg font-semibold hover:bg-[#8B4DEB] transition duration-300 shadow-md"
+                    className="w-full bg-[var(--accent)] text-white py-3 rounded-lg font-semibold hover:bg-[var(--accent-2)] transition duration-300 shadow-md"
                   >
                     Turn On Location Sharing
                   </button>
@@ -740,8 +740,8 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => { // Ac
             </div>
 
             {/* Account Management Options */}
-            <div className="space-y-4 pt-6 mt-6 border-t border-gray-200">
-              <h4 className="text-xl font-bold text-[#2A1E5C] mb-2">Account Actions</h4>
+            <div className="space-y-4 pt-6 mt-6 border-t border-[var(--muted-2)]">
+              <h4 className="text-xl font-bold text-[var(--text-strong)] mb-2">Account Actions</h4>
               <p className="text-sm text-gray-500">
                 Deactivating your account will hide your profile from all other users.
               </p>
