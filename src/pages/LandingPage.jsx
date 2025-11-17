@@ -137,7 +137,7 @@ const LandingPage = ({ onAuthSuccess }) => {
                   <li>Matching based on personality, hobbies, and lifestyle</li>
                   <li>Community-first approach with real people</li>
                 </ul>
-                <p className="text-lg leading-relaxed mt-4">
+                <p className="text-lg leading-relaxed mt-4" style={{ color: '#6A39B1' }}>
                   Whether you’re into poetry, parkour, painting, or just peace — we’ll help you vibe with the right people.
                 </p>
               </div>
