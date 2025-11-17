@@ -224,8 +224,7 @@ const LandingPage = ({ onAuthSuccess }) => {
                 <br></br>
                 <br></br>
                 <br></br>
-                <h2 className="text-6xl font-extrabold leading-tight mb-4 drop-shadow-lg " style={{ color: '#6A39B1' }}>
-
+                <h2 className="text-7xl font-extrabold leading-tight mb-6 drop-shadow-lg animate-fade-in-up" style={{ color: '#6A39B1' }}>
                   Discover Your Tribe
                 </h2>
                 <p className="text-2xl font-light max-w-2xl mx-auto drop-shadow-md mb-6" style={{ color: '#6A39B1' }}>
