@@ -326,9 +326,9 @@ const LandingPage = ({ onAuthSuccess }) => {
                   </div>
                   <button
                     type="submit"
-                    className="px-8 py-3 bg-white text-[var(--accent)] font-semibold rounded-full shadow-md hover:bg-[var(--muted-1)] transition duration-300 transform hover:scale-105 w-full"
+                    className="px-8 py-3 bg-white text-[#6A39B1] font-bold rounded-full shadow-lg hover:shadow-2xl transition duration-300 transform hover:scale-105 w-full hover:bg-gradient-to-r hover:from-white hover:to-purple-100"
                   >
-                    Send Message
+                    ✉️ Send Message
                   </button>
                 </form>
               </div>
