@@ -271,12 +271,13 @@ const LandingPage = ({ onAuthSuccess }) => {
 
             {/* Contact Section (Form) */}
             <section
+              id="contact"
               ref={contactRef}
-              className="bg-[var(--panel)] bg-opacity-15 p-10 rounded-xl shadow-lg w-full max-w-4xl mx-auto mb-20 text-white"
-              style={{ minHeight: `calc(100vh - ${headerHeight}px)` }} // Adjust min-height for header
+              className="bg-white bg-opacity-5 backdrop-blur-sm p-12 rounded-2xl shadow-2xl w-full max-w-4xl mx-auto mb-20 text-white border border-white border-opacity-10"
+              style={{ minHeight: `calc(100vh - ${headerHeight}px)` }}
             >
               <div className="flex flex-col items-center justify-center h-full">
-                <h3 className="text-4xl font-bold text-center mb-6" style={{ color: '#6A39B1' }}>Contact Us</h3>
+                <h3 className="text-5xl font-bold text-center mb-8 animate-fade-in-up" style={{ color: '#6A39B1' }}>💬 Contact Us</h3>
                 <p className="text-lg leading-relaxed text-center mb-4" style={{ color: '#6A39B1' }}>
                   Got feedback or ideas? We'd love to hear from you!
                 </p>
