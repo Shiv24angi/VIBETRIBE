@@ -69,11 +69,111 @@ const LandingPage = ({ onAuthSuccess }) => {
 
   return (
     <div
-      className="min-h-screen flex flex-col font-inter"
+      className="min-h-screen flex flex-col font-inter overflow-x-hidden"
       style={{
         background: 'linear-gradient(135deg, #E0B8F0 0%, #D6CCF1 25%, #A970FF 50%, #8B4DEB 75%, #6A39B1 100%)',
       }}
     >
+      <style>{`
+        @keyframes fadeInUp {
+          from {
+            opacity: 0;
+            transform: translateY(30px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        @keyframes slideInLeft {
+          from {
+            opacity: 0;
+            transform: translateX(-50px);
+          }
+          to {
+            opacity: 1;
+            transform: translateX(0);
+          }
+        }
+
+        @keyframes slideInRight {
+          from {
+            opacity: 0;
+            transform: translateX(50px);
+          }
+          to {
+            opacity: 1;
+            transform: translateX(0);
+          }
+        }
+
+        @keyframes scaleIn {
+          from {
+            opacity: 0;
+            transform: scale(0.95);
+          }
+          to {
+            opacity: 1;
+            transform: scale(1);
+          }
+        }
+
+        @keyframes float {
+          0%, 100% {
+            transform: translateY(0px);
+          }
+          50% {
+            transform: translateY(-20px);
+          }
+        }
+
+        @keyframes pulse-glow {
+          0%, 100% {
+            box-shadow: 0 0 20px rgba(106, 57, 177, 0.5);
+          }
+          50% {
+            box-shadow: 0 0 40px rgba(106, 57, 177, 0.8);
+          }
+        }
+
+        .animate-fade-in-up {
+          animation: fadeInUp 0.8s ease-out;
+        }
+
+        .animate-slide-in-left {
+          animation: slideInLeft 0.8s ease-out;
+        }
+
+        .animate-slide-in-right {
+          animation: slideInRight 0.8s ease-out;
+        }
+
+        .animate-scale-in {
+          animation: scaleIn 0.6s ease-out;
+        }
+
+        .animate-float {
+          animation: float 3s ease-in-out infinite;
+        }
+
+        .pulse-glow {
+          animation: pulse-glow 2s ease-in-out infinite;
+        }
+
+        .section-visible {
+          animation: fadeInUp 0.8s ease-out;
+        }
+
+        .about-item {
+          transition: all 0.3s ease;
+        }
+
+        .about-item:hover {
+          transform: translateX(10px);
+          text-shadow: 0 0 15px rgba(106, 57, 177, 0.6);
+        }
+      `}</style>
       {/* Header - Always visible and fixed */}
       <header className="w-full bg-[var(--panel)] bg-opacity-95 shadow-md py-4 px-8 flex justify-between items-center fixed top-0 left-0 z-50">
         <h1 className="text-3xl font-extrabold text-[var(--text-strong)]">VibeTribe</h1>
