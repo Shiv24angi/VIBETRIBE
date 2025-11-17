@@ -132,7 +132,7 @@ const LandingPage = ({ onAuthSuccess }) => {
                 <p className="text-lg leading-relaxed mb-4" style={{ color: '#6A39B1' }}>
                   VibeTribe helps you discover meaningful connections through:
                 </p>
-                <ul className="list-disc pl-6 space-y-2 text-lg">
+                <ul className="list-disc pl-6 space-y-2 text-lg" style={{ color: '#6A39B1' }}>
                   <li>A playful and friendly profile creation experience</li>
                   <li>Matching based on personality, hobbies, and lifestyle</li>
                   <li>Community-first approach with real people</li>
