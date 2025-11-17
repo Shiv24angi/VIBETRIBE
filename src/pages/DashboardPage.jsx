@@ -744,25 +744,15 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => { // Ac
             <div className="space-y-3 pt-6 mt-6 border-t border-[var(--muted-2)]">
               <h4 className="text-lg font-bold text-[var(--text-strong)] mb-3">Account Actions</h4>
 
-              <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3 mb-2">
-                <p className="text-xs text-yellow-700">
-                  Deactivating your account will hide your profile from all other users.
-                </p>
-              </div>
               <button
-                onClick={handleDeactivateAccount}
+                onClick={() => setShowDeactivateModal(true)}
                 className="w-full bg-yellow-400 text-yellow-900 py-2 px-4 rounded-lg font-medium hover:bg-yellow-500 transition duration-300 text-sm"
               >
                 Deactivate Account
               </button>
 
-              <div className="bg-red-50 border border-red-200 rounded-lg p-3 mt-3 mb-2">
-                <p className="text-xs text-red-700">
-                  Deleting your account is permanent and cannot be undone.
-                </p>
-              </div>
               <button
-                onClick={handleDeleteAccount}
+                onClick={() => setShowDeleteModal(true)}
                 className="w-full bg-red-400 text-red-900 py-2 px-4 rounded-lg font-medium hover:bg-red-500 transition duration-300 text-sm"
               >
                 Permanently Delete Account
