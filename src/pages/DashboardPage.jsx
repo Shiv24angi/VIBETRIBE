@@ -766,6 +766,61 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => { // Ac
             >
               Save Settings
             </button>
+
+            {/* Deactivate Account Modal */}
+            {showDeactivateModal && (
+              <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                <div className="bg-white rounded-xl shadow-xl p-6 max-w-sm mx-4">
+                  <h3 className="text-xl font-bold text-[var(--text-strong)] mb-3">Deactivate Account?</h3>
+                  <p className="text-gray-700 text-sm mb-6">
+                    Deactivating your account will hide your profile from all other users. You can reactivate it anytime.
+                  </p>
+                  <div className="flex gap-3">
+                    <button
+                      onClick={() => setShowDeactivateModal(false)}
+                      className="flex-1 bg-gray-300 text-gray-800 py-2 px-4 rounded-lg font-medium hover:bg-gray-400 transition duration-300"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      onClick={confirmDeactivateAccount}
+                      className="flex-1 bg-yellow-400 text-yellow-900 py-2 px-4 rounded-lg font-medium hover:bg-yellow-500 transition duration-300"
+                    >
+                      Yes, Deactivate
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Delete Account Modal */}
+            {showDeleteModal && (
+              <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                <div className="bg-white rounded-xl shadow-xl p-6 max-w-sm mx-4">
+                  <h3 className="text-xl font-bold text-red-600 mb-3">Permanently Delete Account?</h3>
+                  <p className="text-gray-700 text-sm mb-3">
+                    <strong>This action cannot be undone.</strong> All your data will be permanently deleted.
+                  </p>
+                  <p className="text-gray-600 text-xs mb-6">
+                    Your profile, messages, and all associated information will be removed from VibeTribe.
+                  </p>
+                  <div className="flex gap-3">
+                    <button
+                      onClick={() => setShowDeleteModal(false)}
+                      className="flex-1 bg-gray-300 text-gray-800 py-2 px-4 rounded-lg font-medium hover:bg-gray-400 transition duration-300"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      onClick={confirmDeleteAccount}
+                      className="flex-1 bg-red-500 text-white py-2 px-4 rounded-lg font-medium hover:bg-red-600 transition duration-300"
+                    >
+                      Yes, Delete
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       );
