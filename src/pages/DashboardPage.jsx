@@ -741,23 +741,29 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => { // Ac
             </div>
 
             {/* Account Management Options */}
-            <div className="space-y-4 pt-6 mt-6 border-t border-[var(--muted-2)]">
-              <h4 className="text-xl font-bold text-[var(--text-strong)] mb-2">Account Actions</h4>
-              <p className="text-sm text-gray-500">
-                Deactivating your account will hide your profile from all other users.
-              </p>
+            <div className="space-y-3 pt-6 mt-6 border-t border-[var(--muted-2)]">
+              <h4 className="text-lg font-bold text-[var(--text-strong)] mb-3">Account Actions</h4>
+
+              <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3 mb-2">
+                <p className="text-xs text-yellow-700">
+                  Deactivating your account will hide your profile from all other users.
+                </p>
+              </div>
               <button
                 onClick={handleDeactivateAccount}
-                className="w-full bg-yellow-500 text-white py-3 rounded-lg font-semibold hover:bg-yellow-600 transition duration-300 shadow-md"
+                className="w-full bg-yellow-400 text-yellow-900 py-2 px-4 rounded-lg font-medium hover:bg-yellow-500 transition duration-300 text-sm"
               >
                 Deactivate Account
               </button>
-              <p className="text-sm text-gray-500 mt-4">
-                Warning: Deleting your account is a permanent action and cannot be undone.
-              </p>
+
+              <div className="bg-red-50 border border-red-200 rounded-lg p-3 mt-3 mb-2">
+                <p className="text-xs text-red-700">
+                  Deleting your account is permanent and cannot be undone.
+                </p>
+              </div>
               <button
                 onClick={handleDeleteAccount}
-                className="w-full bg-red-500 text-white py-3 rounded-lg font-semibold hover:bg-red-600 transition duration-300 shadow-md"
+                className="w-full bg-red-400 text-red-900 py-2 px-4 rounded-lg font-medium hover:bg-red-500 transition duration-300 text-sm"
               >
                 Permanently Delete Account
               </button>
@@ -766,7 +772,7 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => { // Ac
             {/* Save Button */}
             <button
               onClick={handleApplyFilters}
-              className="w-full mt-8 bg-[var(--accent)] text-white py-3 rounded-lg font-semibold hover:bg-[var(--accent-2)] transition duration-300 shadow-md"
+              className="w-full mt-8 bg-[var(--accent)] text-white py-2 px-4 rounded-lg font-medium hover:bg-[var(--accent-2)] transition duration-300 text-sm"
             >
               Save Settings
             </button>
@@ -980,7 +986,7 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => { // Ac
           </button>
           <nav className="space-y-2 mb-8">
             <button onClick={() => setView('dashboard')} className="w-full flex items-center p-3 rounded-lg hover:bg-[var(--accent)] hover:text-white transition-colors duration-200 text-left">
-              <span className="mr-3">🏠</span> Discover
+              <span className="mr-3">���</span> Discover
             </button>
             <button onClick={() => setView('vibemate')} className="w-full flex items-center p-3 rounded-lg hover:bg-[var(--accent)] hover:text-white transition-colors duration-200 text-left">
               <span className="mr-3">✉️</span> VibeMate
