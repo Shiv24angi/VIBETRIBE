@@ -317,7 +317,8 @@ const LandingPage = ({ onAuthSuccess }) => {
                     <textarea
                       id="contactMessage"
                       rows="5"
-                      className="shadow appearance-none border rounded w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline"
+                      className="shadow appearance-none border border-white border-opacity-30 rounded-lg w-full py-3 px-4 text-black leading-tight focus:outline-none focus:ring-2 focus:ring-[#6A39B1] focus:border-transparent transition duration-300 bg-white bg-opacity-90 resize-none"
+                      placeholder="Your message here..."
                       value={contactMessage}
                       onChange={(e) => setContactMessage(e.target.value)}
                       required
