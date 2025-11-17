@@ -128,7 +128,7 @@ const LandingPage = ({ onAuthSuccess }) => {
                 <br></br>
                 <br></br>
                 <br></br>
-                <h3 className="text-4xl font-bold text-center text-white mb-6">About VibeTribe</h3>
+                <h3 className="text-4xl font-bold text-center mb-6" style={{ color: '#6A39B1' }}>About VibeTribe</h3>
                 <p className="text-lg leading-relaxed mb-4">
                   VibeTribe helps you discover meaningful connections through:
                 </p>
