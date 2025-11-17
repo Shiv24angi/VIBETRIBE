@@ -151,7 +151,7 @@ const LandingPage = ({ onAuthSuccess }) => {
             >
               <div className="flex flex-col items-center justify-center h-full">
                 <h3 className="text-4xl font-bold text-center mb-6" style={{ color: '#6A39B1' }}>Contact Us</h3>
-                <p className="text-lg leading-relaxed text-center mb-4">
+                <p className="text-lg leading-relaxed text-center mb-4" style={{ color: '#6A39B1' }}>
                   Got feedback or ideas? We'd love to hear from you!
                 </p>
                 <form onSubmit={handleContactSubmit} className="w-full max-w-md space-y-4">
