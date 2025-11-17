@@ -169,7 +169,7 @@ const LandingPage = ({ onAuthSuccess }) => {
                     />
                   </div>
                   <div>
-                    <label htmlFor="contactEmail" className="block text-white text-sm font-bold mb-2">
+                    <label htmlFor="contactEmail" className="block text-sm font-bold mb-2" style={{ color: '#6A39B1' }}>
                       Email
                     </label>
                     <input
