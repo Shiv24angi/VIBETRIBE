@@ -117,11 +117,9 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => { // Ac
    * Handles deactivating the user's account.
    * This is a soft deletion that only marks the profile as inactive.
    */
-  const handleDeactivateAccount = async () => {
+  const confirmDeactivateAccount = async () => {
     setError('');
-    // IMPORTANT: Replaced window.confirm with a custom modal/message box in a real app
-    const confirmation = window.confirm("Are you sure you want to deactivate your account? This will hide your profile from all VibeMates.");
-    if (!confirmation) return;
+    setShowDeactivateModal(false);
 
     try {
       const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
@@ -142,11 +140,9 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => { // Ac
    * Handles permanently deleting the user's account.
    * This removes both the Firebase auth account and all associated data.
    */
-  const handleDeleteAccount = async () => {
+  const confirmDeleteAccount = async () => {
     setError('');
-    // IMPORTANT: Replaced window.confirm with a custom modal/message box in a real app
-    const confirmation = window.confirm("WARNING: Are you absolutely sure you want to permanently delete your account? This action cannot be undone.");
-    if (!confirmation) return;
+    setShowDeleteModal(false);
 
     try {
       const auth = getAuth();
@@ -156,7 +152,7 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => { // Ac
 
       // Delete the profile data first
       await deleteDoc(profileDocRef);
-      
+
       // Then delete the user's authentication account
       await deleteUser(currentUser);
 
