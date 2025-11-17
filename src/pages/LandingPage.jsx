@@ -1,11 +1,13 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import AuthForm from '../components/AuthForm'; // Correctly import AuthForm from its file
 
 const LandingPage = ({ onAuthSuccess }) => {
   const [showAuthForm, setShowAuthForm] = useState(false);
+  const [visibleSections, setVisibleSections] = useState({});
   const welcomeRef = useRef(null); // Ref for the welcome section
   const aboutRef = useRef(null);
   const contactRef = useRef(null);
+  const aboutItemsRef = useRef([]);
 
   // Function to smoothly scroll to a section
   const scrollToSection = (ref) => {
