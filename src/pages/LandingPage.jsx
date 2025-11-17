@@ -44,6 +44,29 @@ const LandingPage = ({ onAuthSuccess }) => {
   // For this example, assuming header height is roughly 96px (pt-24 on main)
   const headerHeight = 96; // Based on pt-24 on main, which pushes content down
 
+  // Intersection Observer for scroll animations
+  useEffect(() => {
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          setVisibleSections(prev => ({ ...prev, [entry.target.id]: true }));
+        }
+      });
+    }, observerOptions);
+
+    // Observe all sections
+    if (welcomeRef.current) observer.observe(welcomeRef.current);
+    if (aboutRef.current) observer.observe(aboutRef.current);
+    if (contactRef.current) observer.observe(contactRef.current);
+
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <div
       className="min-h-screen flex flex-col font-inter"
