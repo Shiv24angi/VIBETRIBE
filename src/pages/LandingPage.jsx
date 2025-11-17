@@ -249,16 +249,22 @@ const LandingPage = ({ onAuthSuccess }) => {
             >
               <div className="flex flex-col items-center justify-center h-full">
                 <h3 className="text-5xl font-bold text-center mb-8 animate-fade-in-up" style={{ color: '#6A39B1' }}>✨ About VibeTribe</h3>
-                <p className="text-lg leading-relaxed mb-4" style={{ color: '#6A39B1' }}>
+                <p className="text-xl leading-relaxed mb-8 text-center animate-fade-in-up" style={{ color: '#6A39B1', animationDelay: '0.1s' }}>
                   VibeTribe helps you discover meaningful connections through:
                 </p>
-                <ul className="list-disc pl-6 space-y-2 text-lg" style={{ color: '#6A39B1' }}>
-                  <li>A playful and friendly profile creation experience</li>
-                  <li>Matching based on personality, hobbies, and lifestyle</li>
-                  <li>Community-first approach with real people</li>
+                <ul className="space-y-4 text-lg w-full max-w-2xl mb-8">
+                  <li className="about-item p-4 rounded-lg bg-white bg-opacity-5 border-l-4 border-[#6A39B1] animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
+                    <span style={{ color: '#FFD700' }}>🎨</span> <span style={{ color: '#6A39B1', fontWeight: 'bold' }}>Playful Profile Creation</span> - Make it fun and express yourself!
+                  </li>
+                  <li className="about-item p-4 rounded-lg bg-white bg-opacity-5 border-l-4 border-[#6A39B1] animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
+                    <span style={{ color: '#FF6B9D' }}>💫</span> <span style={{ color: '#6A39B1', fontWeight: 'bold' }}>Smart Matching</span> - Based on personality, hobbies, and lifestyle
+                  </li>
+                  <li className="about-item p-4 rounded-lg bg-white bg-opacity-5 border-l-4 border-[#6A39B1] animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
+                    <span style={{ color: '#00D9FF' }}>🤝</span> <span style={{ color: '#6A39B1', fontWeight: 'bold' }}>Real People</span> - Community-first approach with genuine connections
+                  </li>
                 </ul>
                 <p className="text-lg leading-relaxed mt-4" style={{ color: '#6A39B1' }}>
-                  Whether you’re into poetry, parkour, painting, or just peace — we’ll help you vibe with the right people.
+                  Whether you’re into poetry, parkour, painting, or just peace �� we’ll help you vibe with the right people.
                 </p>
               </div>
             </section>
