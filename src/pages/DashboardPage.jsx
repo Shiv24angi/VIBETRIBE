@@ -35,10 +35,14 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => { // Ac
   console.log('Current view:', view); // Keep this for debugging
   const [selectedMatch, setSelectedMatch] = useState(null);
   const [filterTrigger, setFilterTrigger] = useState(0); // New state to trigger filtering
-  
+
   // State for chat functionality
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState(''); // Corrected: useState initialization
+
+  // Modal states for account actions
+  const [showDeactivateModal, setShowDeactivateModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   // Constants for age range
   const MIN_AGE_LIMIT = 18;
@@ -986,7 +990,7 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => { // Ac
           </button>
           <nav className="space-y-2 mb-8">
             <button onClick={() => setView('dashboard')} className="w-full flex items-center p-3 rounded-lg hover:bg-[var(--accent)] hover:text-white transition-colors duration-200 text-left">
-              <span className="mr-3">���</span> Discover
+              <span className="mr-3">🏠</span> Discover
             </button>
             <button onClick={() => setView('vibemate')} className="w-full flex items-center p-3 rounded-lg hover:bg-[var(--accent)] hover:text-white transition-colors duration-200 text-left">
               <span className="mr-3">✉️</span> VibeMate
