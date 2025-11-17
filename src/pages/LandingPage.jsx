@@ -263,7 +263,7 @@ const LandingPage = ({ onAuthSuccess }) => {
                     <span style={{ color: '#00D9FF' }}>🤝</span> <span style={{ color: '#6A39B1', fontWeight: 'bold' }}>Real People</span> - Community-first approach with genuine connections
                   </li>
                 </ul>
-                <p className="text-lg leading-relaxed mt-4" style={{ color: '#6A39B1' }}>
+                <p className="text-xl leading-relaxed text-center animate-fade-in-up" style={{ color: '#6A39B1', animationDelay: '0.5s' }}>
                   Whether you’re into poetry, parkour, painting, or just peace �� we’ll help you vibe with the right people.
                 </p>
               </div>
