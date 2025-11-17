@@ -103,7 +103,7 @@ const LandingPage = ({ onAuthSuccess }) => {
 
                   Discover Your Tribe
                 </h2>
-                <p className="text-2xl font-light max-w-2xl mx-auto drop-shadow-md text-white mb-6">
+                <p className="text-2xl font-light max-w-2xl mx-auto drop-shadow-md mb-6" style={{ color: '#6A39B1' }}>
                   Connect with like-minded people who match your vibe. Whether you're quirky, calm,
                   creative, or chaotic — there’s a tribe for everyone.
                 </p>
