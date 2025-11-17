@@ -233,9 +233,10 @@ const LandingPage = ({ onAuthSuccess }) => {
                 </p>
                 <button
                   onClick={() => setShowAuthForm(true)}
-                  className="px-8 py-3 bg-white text-[var(--accent)] font-semibold rounded-full shadow-md hover:bg-[var(--muted-1)] transition duration-300 transform hover:scale-105"
+                  className="px-8 py-4 bg-white text-[var(--accent)] font-bold rounded-full shadow-lg hover:shadow-2xl transition duration-300 transform hover:scale-110 animate-scale-in"
+                  style={{ animationDelay: '0.4s' }}
                 >
-                  Get Started
+                  🚀 Get Started
                 </button>
               </div>
             </section>
