@@ -303,7 +303,8 @@ const LandingPage = ({ onAuthSuccess }) => {
                     <input
                       type="email"
                       id="contactEmail"
-                      className="shadow appearance-none border rounded w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline"
+                      className="shadow appearance-none border border-white border-opacity-30 rounded-lg w-full py-3 px-4 text-black leading-tight focus:outline-none focus:ring-2 focus:ring-[#6A39B1] focus:border-transparent transition duration-300 bg-white bg-opacity-90"
+                      placeholder="your@email.com"
                       value={contactEmail}
                       onChange={(e) => setContactEmail(e.target.value)}
                       required
