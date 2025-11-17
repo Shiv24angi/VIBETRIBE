@@ -180,21 +180,24 @@ const LandingPage = ({ onAuthSuccess }) => {
         <nav className="flex items-center space-x-6">
           <button
             onClick={() => scrollToSection(welcomeRef)}
-            className="text-[var(--text-muted)] hover:text-[var(--accent)] font-semibold transition duration-300"
+            className="text-[var(--text-muted)] hover:text-[var(--accent)] font-semibold transition duration-300 relative group"
           >
             Home
+            <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[var(--accent)] group-hover:w-full transition-all duration-300"></span>
           </button>
           <button
             onClick={() => scrollToSection(aboutRef)}
-            className="text-[var(--text-muted)] hover:text-[var(--accent)] font-semibold transition duration-300"
+            className="text-[var(--text-muted)] hover:text-[var(--accent)] font-semibold transition duration-300 relative group"
           >
             About
+            <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[var(--accent)] group-hover:w-full transition-all duration-300"></span>
           </button>
           <button
             onClick={() => scrollToSection(contactRef)}
-            className="text-[var(--text-muted)] hover:text-[var(--accent)] font-semibold transition duration-300"
+            className="text-[var(--text-muted)] hover:text-[var(--accent)] font-semibold transition duration-300 relative group"
           >
             Contact Us
+            <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[var(--accent)] group-hover:w-full transition-all duration-300"></span>
           </button>
           <button
             onClick={() => setShowAuthForm(true)}
