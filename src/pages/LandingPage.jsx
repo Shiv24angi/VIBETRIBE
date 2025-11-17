@@ -257,7 +257,7 @@ const LandingPage = ({ onAuthSuccess }) => {
                 </p>
                 <ul className="space-y-4 text-lg w-full max-w-2xl mb-8">
                   <li className="about-item p-4 rounded-lg bg-white bg-opacity-5 border-l-4 border-[#6A39B1] animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
-                    <span style={{ color: '#FFD700' }}>🎨</span> <span style={{ color: '#6A39B1', fontWeight: 'bold' }}>Playful Profile Creation</span> - Make it fun and express yourself!
+                    <div style={{ display: 'inline', color: '#FFD700', fontWeight: '400' }}><span></span></div> <span style={{ color: '#6A39B1', fontWeight: 'bold' }}>Playful Profile Creation</span> - Make it fun and express yourself!
                   </li>
                   <li className="about-item p-4 rounded-lg bg-white bg-opacity-5 border-l-4 border-[#6A39B1] animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
                     <span style={{ color: '#FF6B9D' }}>💫</span> <span style={{ color: '#6A39B1', fontWeight: 'bold' }}>Smart Matching</span> - Based on personality, hobbies, and lifestyle
