@@ -156,7 +156,7 @@ const LandingPage = ({ onAuthSuccess }) => {
                 </p>
                 <form onSubmit={handleContactSubmit} className="w-full max-w-md space-y-4">
                   <div>
-                    <label htmlFor="contactName" className="block text-white text-sm font-bold mb-2">
+                    <label htmlFor="contactName" className="block text-sm font-bold mb-2" style={{ color: '#6A39B1' }}>
                       Name
                     </label>
                     <input
