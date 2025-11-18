@@ -372,12 +372,15 @@ const LandingPage = ({ onAuthSuccess }) => {
             </div>
 
             {/* Right content - Social Media Icons */}
-            <div className="flex space-x-4 text-xl">
-              <a href="#" className="text-white hover:text-gray-300 transition duration-300">
-                <span role="img" aria-label="Instagram">📷</span>
+            <div className="flex space-x-6">
+              <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="hover:opacity-80 transition duration-300">
+                <img src="https://cdn.builder.io/api/v1/image/assets%2F1fc6a5363316478280cbe5d81e2ae4f1%2Fd809a6db300b4090951ab73ed612e48c?format=webp&width=800" alt="Instagram" className="w-8 h-8 hover:scale-110 transition duration-300" />
               </a>
-              <a href="#" className="text-white hover:text-gray-300 transition duration-300">
-                <span role="img" aria-label="Gmail">📧</span>
+              <a href="https://mail.google.com" target="_blank" rel="noopener noreferrer" className="hover:opacity-80 transition duration-300">
+                <img src="https://cdn.builder.io/api/v1/image/assets%2F1fc6a5363316478280cbe5d81e2ae4f1%2F04d29931db5e48be8f84454e1407ad2e?format=webp&width=800" alt="Gmail" className="w-8 h-8 hover:scale-110 transition duration-300" />
+              </a>
+              <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="hover:opacity-80 transition duration-300">
+                <img src="https://cdn.builder.io/api/v1/image/assets%2F1fc6a5363316478280cbe5d81e2ae4f1%2Fc4220d6ea8c7437f97fef636c4574248?format=webp&width=800" alt="Twitter" className="w-8 h-8 hover:scale-110 transition duration-300" />
               </a>
             </div>
           </div>
