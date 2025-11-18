@@ -251,7 +251,7 @@ const LandingPage = ({ onAuthSuccess }) => {
               style={{ minHeight: `calc(100vh - ${headerHeight}px)` }}
             >
               <div className="flex flex-col items-center justify-center h-full">
-                <h3 className="text-5xl font-bold text-center mb-8 animate-fade-in-up" style={{ color: '#6A39B1' }}>✨ About VibeTribe</h3>
+                <h3 className="text-5xl font-bold text-center mb-8 animate-fade-in-up" style={{ color: '#6A39B1' }}>&nbsp;About VibeTribe</h3>
                 <p className="text-xl leading-relaxed mb-8 text-center animate-fade-in-up" style={{ color: '#6A39B1', animationDelay: '0.1s' }}>
                   VibeTribe helps you discover meaningful connections through:
                 </p>
