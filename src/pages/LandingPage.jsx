@@ -267,7 +267,7 @@ const LandingPage = ({ onAuthSuccess }) => {
                   </li>
                 </ul>
                 <p className="text-xl leading-relaxed text-center animate-fade-in-up" style={{ color: 'white', animationDelay: '0.5s' }}>
-                  Whether you’re into poetry, parkour, painting, or just peace&nbsp;&nbsp; we’ll help you vibe with the right people.
+                  Whether you’re into poetry, parkour, painting, or just peace&nbsp;&nbsp;we’ll help you vibe with the right people.
                 </p>
               </div>
             </section>
