@@ -374,16 +374,10 @@ const LandingPage = ({ onAuthSuccess }) => {
             {/* Right content - Social Media Icons */}
             <div className="flex space-x-4 text-xl">
               <a href="#" className="text-white hover:text-gray-300 transition duration-300">
-                <span role="img" aria-label="Facebook"><p>📘</p></span>
+                <span role="img" aria-label="Instagram">📷</span>
               </a>
               <a href="#" className="text-white hover:text-gray-300 transition duration-300">
-                <span role="img" aria-label="Twitter">🐦</span>
-              </a>
-              <a href="#" className="text-white hover:text-gray-300 transition duration-300">
-                <span role="img" aria-label="Google Plus">➕</span>
-              </a>
-              <a href="#" className="text-white hover:text-gray-300 transition duration-300">
-                <span role="img" aria-label="RSS">📡</span>
+                <span role="img" aria-label="Gmail">📧</span>
               </a>
             </div>
           </div>
