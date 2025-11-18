@@ -266,7 +266,7 @@ const LandingPage = ({ onAuthSuccess }) => {
                     <div style={{ display: 'inline', color: '#00D9FF', fontWeight: '400' }}><span></span></div> <span style={{ color: 'white', fontWeight: 'bold' }}>Real People</span> - <span style={{ color: 'white' }}>Community-first approach with genuine connections</span>
                   </li>
                 </ul>
-                <p className="text-xl leading-relaxed text-center animate-fade-in-up" style={{ color: '#6A39B1', animationDelay: '0.5s' }}>
+                <p className="text-xl leading-relaxed text-center animate-fade-in-up" style={{ color: 'white', animationDelay: '0.5s' }}>
                   Whether you’re into poetry, parkour, painting, or just peace&nbsp;&nbsp; �� we’ll help you vibe with the right people.
                 </p>
               </div>
