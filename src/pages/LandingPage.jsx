@@ -286,7 +286,7 @@ const LandingPage = ({ onAuthSuccess }) => {
                 </p>
                 <form onSubmit={handleContactSubmit} className="w-full max-w-md space-y-4 animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
                   <div>
-                    <label htmlFor="contactName" className="block text-sm font-bold mb-2" style={{ color: '#6A39B1' }}>
+                    <label htmlFor="contactName" className="block text-sm font-bold mb-2" style={{ color: 'white' }}>
                       Name
                     </label>
                     <input
