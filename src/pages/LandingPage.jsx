@@ -314,7 +314,7 @@ const LandingPage = ({ onAuthSuccess }) => {
                     />
                   </div>
                   <div>
-                    <label htmlFor="contactMessage" className="block text-sm font-bold mb-2" style={{ color: '#6A39B1' }}>
+                    <label htmlFor="contactMessage" className="block text-sm font-bold mb-2" style={{ color: 'white' }}>
                       Message
                     </label>
                     <textarea
