@@ -263,7 +263,7 @@ const LandingPage = ({ onAuthSuccess }) => {
                     <div style={{ display: 'inline', color: '#FF6B9D', fontWeight: '400' }}><span></span></div> <span style={{ color: 'white', fontWeight: 'bold' }}>Smart Matching</span> - <span style={{ color: 'white' }}>Based on personality, hobbies, and lifestyle</span>
                   </li>
                   <li className="about-item p-4 rounded-lg bg-white bg-opacity-5 border-l-4 border-[#6A39B1] animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
-                    <div style={{ display: 'inline', color: '#00D9FF', fontWeight: '400' }}><span></span></div> <span style={{ color: '#6A39B1', fontWeight: 'bold' }}>Real People</span> - Community-first approach with genuine connections
+                    <div style={{ display: 'inline', color: '#00D9FF', fontWeight: '400' }}><span></span></div> <span style={{ color: 'white', fontWeight: 'bold' }}>Real People</span> - <span style={{ color: 'white' }}>Community-first approach with genuine connections</span>
                   </li>
                 </ul>
                 <p className="text-xl leading-relaxed text-center animate-fade-in-up" style={{ color: '#6A39B1', animationDelay: '0.5s' }}>
