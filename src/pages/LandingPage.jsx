@@ -368,7 +368,7 @@ const LandingPage = ({ onAuthSuccess }) => {
           <div className="py-6 px-4 flex justify-between items-center" style={{ backgroundColor: 'var(--accent)' }}>
             {/* Left content */}
             <div className="text-white text-sm">
-              <p>Designed by </p>
+              <p>Designed by the Vibe Community </p>
             </div>
 
             {/* Right content - Social Media Icons */}
