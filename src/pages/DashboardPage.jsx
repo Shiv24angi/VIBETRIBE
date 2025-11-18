@@ -35,10 +35,14 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => { // Ac
   console.log('Current view:', view); // Keep this for debugging
   const [selectedMatch, setSelectedMatch] = useState(null);
   const [filterTrigger, setFilterTrigger] = useState(0); // New state to trigger filtering
-  
+
   // State for chat functionality
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState(''); // Corrected: useState initialization
+
+  // Modal states for account actions
+  const [showDeactivateModal, setShowDeactivateModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   // Constants for age range
   const MIN_AGE_LIMIT = 18;
@@ -113,11 +117,9 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => { // Ac
    * Handles deactivating the user's account.
    * This is a soft deletion that only marks the profile as inactive.
    */
-  const handleDeactivateAccount = async () => {
+  const confirmDeactivateAccount = async () => {
     setError('');
-    // IMPORTANT: Replaced window.confirm with a custom modal/message box in a real app
-    const confirmation = window.confirm("Are you sure you want to deactivate your account? This will hide your profile from all VibeMates.");
-    if (!confirmation) return;
+    setShowDeactivateModal(false);
 
     try {
       const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
@@ -138,11 +140,9 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => { // Ac
    * Handles permanently deleting the user's account.
    * This removes both the Firebase auth account and all associated data.
    */
-  const handleDeleteAccount = async () => {
+  const confirmDeleteAccount = async () => {
     setError('');
-    // IMPORTANT: Replaced window.confirm with a custom modal/message box in a real app
-    const confirmation = window.confirm("WARNING: Are you absolutely sure you want to permanently delete your account? This action cannot be undone.");
-    if (!confirmation) return;
+    setShowDeleteModal(false);
 
     try {
       const auth = getAuth();
@@ -152,7 +152,7 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => { // Ac
 
       // Delete the profile data first
       await deleteDoc(profileDocRef);
-      
+
       // Then delete the user's authentication account
       await deleteUser(currentUser);
 
@@ -741,23 +741,19 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => { // Ac
             </div>
 
             {/* Account Management Options */}
-            <div className="space-y-4 pt-6 mt-6 border-t border-[var(--muted-2)]">
-              <h4 className="text-xl font-bold text-[var(--text-strong)] mb-2">Account Actions</h4>
-              <p className="text-sm text-gray-500">
-                Deactivating your account will hide your profile from all other users.
-              </p>
+            <div className="space-y-3 pt-6 mt-6 border-t border-[var(--muted-2)]">
+              <h4 className="text-lg font-bold text-[var(--text-strong)] mb-3">Account Actions</h4>
+
               <button
-                onClick={handleDeactivateAccount}
-                className="w-full bg-yellow-500 text-white py-3 rounded-lg font-semibold hover:bg-yellow-600 transition duration-300 shadow-md"
+                onClick={() => setShowDeactivateModal(true)}
+                className="w-full bg-yellow-400 text-yellow-900 py-2 px-4 rounded-lg font-medium hover:bg-yellow-500 transition duration-300 text-sm"
               >
                 Deactivate Account
               </button>
-              <p className="text-sm text-gray-500 mt-4">
-                Warning: Deleting your account is a permanent action and cannot be undone.
-              </p>
+
               <button
-                onClick={handleDeleteAccount}
-                className="w-full bg-red-500 text-white py-3 rounded-lg font-semibold hover:bg-red-600 transition duration-300 shadow-md"
+                onClick={() => setShowDeleteModal(true)}
+                className="w-full bg-red-400 text-red-900 py-2 px-4 rounded-lg font-medium hover:bg-red-500 transition duration-300 text-sm"
               >
                 Permanently Delete Account
               </button>
@@ -766,10 +762,65 @@ const DashboardPage = ({ user, onLogout, initialView = 'dashboard' }) => { // Ac
             {/* Save Button */}
             <button
               onClick={handleApplyFilters}
-              className="w-full mt-8 bg-[var(--accent)] text-white py-3 rounded-lg font-semibold hover:bg-[var(--accent-2)] transition duration-300 shadow-md"
+              className="w-full mt-8 bg-[var(--accent)] text-white py-2 px-4 rounded-lg font-medium hover:bg-[var(--accent-2)] transition duration-300 text-sm"
             >
               Save Settings
             </button>
+
+            {/* Deactivate Account Modal */}
+            {showDeactivateModal && (
+              <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                <div className="bg-white rounded-xl shadow-xl p-6 max-w-sm mx-4">
+                  <h3 className="text-xl font-bold text-[var(--text-strong)] mb-3">Deactivate Account?</h3>
+                  <p className="text-gray-700 text-sm mb-6">
+                    Deactivating your account will hide your profile from all other users. You can reactivate it anytime.
+                  </p>
+                  <div className="flex gap-3">
+                    <button
+                      onClick={() => setShowDeactivateModal(false)}
+                      className="flex-1 bg-gray-300 text-gray-800 py-2 px-4 rounded-lg font-medium hover:bg-gray-400 transition duration-300"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      onClick={confirmDeactivateAccount}
+                      className="flex-1 bg-yellow-400 text-yellow-900 py-2 px-4 rounded-lg font-medium hover:bg-yellow-500 transition duration-300"
+                    >
+                      Yes, Deactivate
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Delete Account Modal */}
+            {showDeleteModal && (
+              <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                <div className="bg-white rounded-xl shadow-xl p-6 max-w-sm mx-4">
+                  <h3 className="text-xl font-bold text-red-600 mb-3">Permanently Delete Account?</h3>
+                  <p className="text-gray-700 text-sm mb-3">
+                    <strong>This action cannot be undone.</strong> All your data will be permanently deleted.
+                  </p>
+                  <p className="text-gray-600 text-xs mb-6">
+                    Your profile, messages, and all associated information will be removed from VibeTribe.
+                  </p>
+                  <div className="flex gap-3">
+                    <button
+                      onClick={() => setShowDeleteModal(false)}
+                      className="flex-1 bg-gray-300 text-gray-800 py-2 px-4 rounded-lg font-medium hover:bg-gray-400 transition duration-300"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      onClick={confirmDeleteAccount}
+                      className="flex-1 bg-red-500 text-white py-2 px-4 rounded-lg font-medium hover:bg-red-600 transition duration-300"
+                    >
+                      Yes, Delete
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       );
