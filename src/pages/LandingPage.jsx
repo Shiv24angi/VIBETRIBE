@@ -280,7 +280,7 @@ const LandingPage = ({ onAuthSuccess }) => {
               style={{ minHeight: `calc(100vh - ${headerHeight}px)` }}
             >
               <div className="flex flex-col items-center justify-center h-full">
-                <h3 className="text-5xl font-bold text-center mb-8 animate-fade-in-up" style={{ color: '#6A39B1' }}>💬 Contact Us</h3>
+                <h3 className="text-5xl font-bold text-center mb-8 animate-fade-in-up" style={{ color: '#6A39B1' }}>&nbsp;Contact Us</h3>
                 <p className="text-xl leading-relaxed text-center mb-8 animate-fade-in-up" style={{ color: '#6A39B1', animationDelay: '0.1s' }}>
                   Got feedback or ideas? We'd love to hear from you!
                 </p>
