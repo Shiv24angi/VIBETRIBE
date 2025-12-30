@@ -1,30 +1,31 @@
-// firebase/firebaseConfig.js
+// src/firebase/firebaseConfig.js
 
-// Import the functions you need from the Firebase SDKs
-import { initializeApp } from 'firebase/app';
-import { getAuth } from 'firebase/auth';
-import { getFirestore } from 'firebase/firestore';
-import { getStorage } from 'firebase/storage'; // Added this line
+import { initializeApp } from "firebase/app";
+import { getAuth } from "firebase/auth";
+import { getFirestore } from "firebase/firestore";
+import { getStorage } from "firebase/storage";
 
-// Your web app's Firebase configuration
-// These variables are provided by the Canvas environment.
-// If running outside Canvas, replace with your actual Firebase config.
-const firebaseConfig = typeof __firebase_config !== 'undefined'
-  ? JSON.parse(__firebase_config)
-  : {
-    apiKey: "AIzaSyCBH0a8kM3Z7h6IxxyhV7ddT8J_EVy_Ju8",
-    authDomain: "vibe-f65d9.firebaseapp.com",
-    projectId: "vibe-f65d9",
-    storageBucket: "vibe-f65d9.firebasestorage.app",
-    messagingSenderId: "1019930103489",
-    appId: "1:1019930103489:web:5da52c3ede9ecd644d8e40",
+/**
+ * Firebase configuration
+ * Values are injected from environment variables (Vite)
+ * Works locally + on Vercel
+ */
+const firebaseConfig = {
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
+};
 
-  };
-
-// Initialize Firebase
+// Initialize Firebase app
 const app = initializeApp(firebaseConfig);
+
+// Firebase services
 const auth = getAuth(app);
 const db = getFirestore(app);
-const storage = getStorage(app); // Added this line
+const storage = getStorage(app);
 
+// Exports
 export { app, auth, db, storage };
